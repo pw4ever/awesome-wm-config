@@ -728,7 +728,7 @@ for i = 1, (shifty.config.maxtags or 9) do
                       if client.focus then
                           local t = shifty.getpos(i)
                           awful.client.movetotag(t)
-                          awful.tag.viewonly(t)
+                          --awful.tag.viewonly(t)
                        end
                   end),
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
