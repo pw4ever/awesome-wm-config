@@ -46,12 +46,24 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 ---[[
-local function init_theme(theme_name)
-    local theme_path = awful.util.getdir("config") .. "/themes/" .. theme_name .. "/theme.lua"
-    beautiful.init(theme_path)
-end
 
-init_theme("zenburn")
+do
+    local config_path = awful.util.getdir("config")
+    local function init_theme(theme_name)
+        local theme_path = config_path .. "/themes/" .. theme_name .. "/theme.lua"
+        beautiful.init(theme_path)
+    end
+
+    init_theme("zenburn")
+
+    -- random wallpaper from a gallery
+    local wallpaper_freq="30s"
+
+    os.execute("( cd ".. config_path .. "/wallpaper; " ..
+    "if ! killall -q my-wallpaper-pick.sh; then " ..
+    "  ./my-wallpaper-pick.sh " .. wallpaper_freq .."; " ..
+    "fi  ) &")
+end
 --]]
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
