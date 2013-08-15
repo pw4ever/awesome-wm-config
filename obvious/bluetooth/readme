@@ -1,0 +1,12 @@
+* Bluetooth widget
+  This widget list currently available bluetooth devices.
+
+
+** Usage
+   Include the following line into your rc.lua :
+     require("obvious.bluetooth")
+
+   Add it to your wibox's widgets list:
+     obvious.bluetooth()
+
+Christian Kuka [christian@kuka.cc]

@@ -1,0 +1,94 @@
+Readme for Obvious
+
+This is a fork of the original obvious repo (git://git.mercenariesguild.net/obvious.git).
+
+-- Widget data sources
+   -- cpu()
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+   -- fs_usage(path)
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+      -- Parameters
+         -- path
+            the mountpoint to watch, / by default
+   -- io(device)
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+      -- Parameters
+         -- device
+            the harddisk to monitor, sda by default
+   -- mem()
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+   -- net.send(device) / net.recv(device)
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+      -- Parameters
+         -- device
+            the network device to monitor
+   -- wlan(device)
+      -- Widgets
+         -- textbox
+         -- graph
+         -- progressbar
+      -- Parameters
+         -- device
+            the wlan device to monitor
+   -- basic_mpd()
+      -- Widgets
+         -- textbox
+   -- battery()
+      -- Widgets
+         -- textbox
+   -- clock()
+      -- Widgets
+         -- textbox
+   -- temp_info()
+      -- Widgets
+         -- textbox
+   -- keymap_switch()
+      -- Widgets
+         -- textbox
+
+-- Widget types
+   -- "textbox"
+      -- Functions
+         -- set_format()
+   -- "graph"
+      -- Functions
+         -- set_height()
+         -- set_width()
+         -- set_border_color()
+         -- set_gradient_colors()
+         -- set_gradient_angle()
+         -- set_color()
+         -- set_background_color()
+   -- "progressbar"
+      -- Functions
+         -- set_height()
+         -- set_width()
+         -- set_border_color()
+         -- set_gradient_colors()
+         -- set_color()
+         -- set_background_color()
+         -- set_vertical()
+   -- all
+      -- Functions
+         -- set_type()
+         -- set_layout()
+         -- set_margin()
+
+-- Global functions
+   -- set_default_margin()
+   -- set_default_layout()

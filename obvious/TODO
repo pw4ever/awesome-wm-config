@@ -1,0 +1,28 @@
+Todo list / informal bug tracker
+
+Clock: alarms file should be created if doesn't exist
+================================================================================
+
+Clock: needs more beautiful theming?
+================================================================================
+
+Clock: raises error on menu
+================================================================================
+W: awesome: luaA_dofunction:317: error running function: /usr/local/share/awesome/lib/awful/menu.lua:48: bad argument #3 to '?' (string expected, got nil)
+
+This causes the menu to stick open.
+
+temp_info: doesn't conform to widget types and it should
+================================================================================
+
+temp_info: very littly flexibility
+================================================================================
+
+temp_info: use beautiful colours, perhaps
+================================================================================
+
+loadavg: doesn't conform to widget types and it should
+================================================================================
+
+loadavg: not in the README overview file at top-level
+================================================================================

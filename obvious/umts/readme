@@ -1,0 +1,8 @@
+UMTS (Ericsson F3705) widget
+
+This widget is a very quick&dirty hack to get data from the Ericsson F3707
+UMTS card found in a number of ThinkPad and Dell notebooks.  It gets the
+operator name and the signal strength.  Possibly, this should be changed to be
+a progressbar rather than a textbox, but ... it works for me.
+
+  - Philip [philip@paeps.cx, 20100216]

@@ -1,0 +1,14 @@
+WLAN widget
+
+This widget monitors your WLAN's signal strength. To set the device it monitors, use
+    obvious.wlan.set_device(dev)
+The default is "wlan0".
+
+To add it to your rc.lua, include
+    require("obvious.wlan")
+in the top of your rc.lua and add obvious.wlan() to your wibox
+
+If you want to use the data gathered by this widget, you can use the function
+obvious.wlan.get_data(). It returns nil on failure, otherwise it returns a table with
+the field 'link' as its only content. That field contains a number the range of which
+depends on the wlan driver and firmware used which describes the signal strength.

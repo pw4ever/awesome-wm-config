@@ -1,0 +1,13 @@
+Temperature Zone widget
+
+This widget is a temperature monitor. It gets its information from ACPI, to
+make it as correct as possible.
+
+Implementation:
+---------------
+To use it, include it into your rc.lua by inserting this line (near the top
+preferably):
+    require("obvious.temp_info")
+
+Then add it to your wibox's widgets list:
+    obvious.temp_info()

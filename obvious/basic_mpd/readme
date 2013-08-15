@@ -1,0 +1,76 @@
+Basic MPD
+=========
+
+This widget's purpose is to provide a simple interface to MPD, the Music Player
+Daemon. The widget will output track/album/artist information, formatted
+according to your wishes.
+
+Note, because Basic MPD runs on top of Obvious' MPD library, you do have access
+to features like pause/next/previous and everything else. However, this is done
+through the library directly rather than through Basic MPD.
+
+Note, because Basic MPD runs on top of Obvious' MPD library, access to advanced
+features is done using calls to the library via Basic MPD's connection to the
+MPD server.
+
+Settings available:
+-------------------
+ - set_format: Takes a string/function to use to format the Basic MPD display
+   output. If a function is given, then a table with keys "artist", "album", and
+   "title" will be given to this function, and whatever string it returns will
+   be displayed. If a string is given to set_format, then it will be displayed
+   with substitutions done on it. The format understands "$artist", "$album" and
+   "$title" to do the replacement. For example, you could have a format string
+   like: "$artist//$album//$title". The slashes are literal slashes, and the
+   special variables will be replaced. If you're using a format string, the
+   length is respected. If you're using a function, handling length is up to
+   you. See set_length documentation about how it handles length.
+ - set_length: Setting length only works for when using a format string for
+   set_format (this is the default if you never call set_format). It would be
+   somewhat silly to have the length just cut off the end of the string. This
+   could land you in a situation where you know the title and album but not the
+   artist, for example. Instead, what happens is that the formatter tries to
+   shorten the longest components of format first and even out the lengths of
+   the fields. So for example, imagine you have the output "Matisse The Cat -
+   Jesse Cook - Frontiers" in your widget, but want this to be cut down to 32
+   characters max. The system would reformat this as "Matisse T - Jesse Coo -
+   Frontiers".
+ - set_unknown: If some metadata is not available, this is the string that
+   should be displayed in that metadata's place. So for example, if you don't
+   know the album, it might be "Matisse The Cat - Jesse Cook - (Unknown)".
+
+To set one of these settings, simply do something like:
+    obvious.basic_mpd.set_format("MPD: $title")
+
+Implementation:
+---------------
+To use it, include it into your rc.lua by inserting this line (near the top
+preferably):
+    require("obvious.basic_mpd")
+
+Then add it to your wibox's widgets list:
+    obvious.basic_mpd()
+
+It's also possible to create binds to control MPD via Obvious' MPD library:
+    -- mod-p to pause/play.
+    awful.key({ modkey }, "p", function()
+        obvious.basic_mpd.connection:toggle_play()
+    end),
+
+    -- mod-plus/minus to decrease and increase volume by increments of 5.
+    awful.key({ modkey, "Shift" }, "=", function ()
+        obvious.basic_mpd.connection:volume_up(5)
+    end),
+    awful.key({ modkey }, "-", function ()
+        obvious.basic_mpd.connection:volume_down(5)
+    end),
+
+    -- mod-> and mod-< to go forward/backward a song.
+    bind({ modkey, "Shift" }, ",", function ()
+        obvious.basic_mpd.connection:previous()
+        obvious.basic_mpd.update()
+    end)
+    bind({ modkey, "Shift" }, ".", function ()
+        obvious.basic_mpd.connection:next()
+        obvious.basic_mpd.update()
+    end)
