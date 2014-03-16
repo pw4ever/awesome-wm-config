@@ -703,8 +703,13 @@ globalkeys = awful.util.table.join(
     awful.key({}, "Print", function ()
         awful.util.spawn("xfce4-screenshooter")
     end),
+    awful.key({}, "XF86Launch1", function ()
+        awful.util.spawn(tools.terminal)
+    end),
 
-    -- hacks for Thinkpad W530 FN mal-function
+
+    --{{ hacks for Thinkpad W530 FN mal-function
+
     awful.key({ modkey }, "F10", function ()
         awful.util.spawn("mpc prev")
     end),
@@ -714,6 +719,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "F12", function ()
         awful.util.spawn("mpc next")
     end),
+
     awful.key({ modkey }, "Home", function ()
         awful.util.spawn("mpc seek -5%")
     end),
@@ -723,9 +729,36 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "Insert", function ()
         awful.util.spawn("mpc seek +5%")
     end),
-    awful.key({}, "Print", function ()
-        awful.util.spawn("xfce4-screenshooter")
+
+    awful.key({ modkey }, "Left", function ()
+        awful.util.spawn("mpc prev")
     end),
+    awful.key({ modkey }, "Down", function ()
+        awful.util.spawn("mpc toggle")
+    end),
+    awful.key({ modkey }, "Right", function ()
+        awful.util.spawn("mpc next")
+    end),
+    awful.key({ modkey }, "Up", function ()
+        awful.util.spawn("mpc stop")
+    end),
+
+    awful.key({ modkey, "Control" }, "Left", function ()
+        awful.util.spawn("mpc seek -1%")
+    end),
+    awful.key({ modkey, "Control" }, "Right", function ()
+        awful.util.spawn("mpc seek +1%")
+    end),
+    awful.key({ modkey, "Control" }, "Down", function ()
+        awful.util.spawn("mpc seek -10%")
+    end),
+    awful.key({ modkey, "Control" }, "Up", function ()
+        awful.util.spawn("mpc seek +10%")
+    end),
+
+    --}}
+
+
     --}}
 
     nil
