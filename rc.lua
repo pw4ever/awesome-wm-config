@@ -662,11 +662,20 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioRaiseVolume", function ()
         awful.util.spawn("amixer sset Master 5%+")
     end),
+    awful.key({ modkey }, "XF86AudioRaiseVolume", function ()
+        awful.util.spawn("amixer sset Mic 5%+")
+    end),
     awful.key({}, "XF86AudioLowerVolume", function ()
         awful.util.spawn("amixer sset Master 5%-")
     end),
+    awful.key({ modkey }, "XF86AudioLowerVolume", function ()
+        awful.util.spawn("amixer sset Mic 5%-")
+    end),
     awful.key({}, "XF86AudioMute", function ()
         awful.util.spawn("amixer sset Master toggle")
+    end),
+    awful.key({}, "XF86AudioMicMute", function ()
+        awful.util.spawn("amixer sset Mic toggle")
     end),
     awful.key({}, "XF86ScreenSaver", function ()
         awful.util.spawn("xscreensaver-command -l")
@@ -678,6 +687,44 @@ globalkeys = awful.util.table.join(
     --]]
     awful.key({}, "XF86WebCam", function ()
         awful.util.spawn("cheese")
+    end),
+    awful.key({}, "XF86MonBrightnessDown", function ()
+        awful.util.spawn("xbacklight -dec 5")
+    end),
+    awful.key({}, "XF86MonBrightnessUp", function ()
+        awful.util.spawn("xbacklight -inc 5")
+    end),
+    awful.key({}, "XF86WLAN", function ()
+        awful.util.spawn("nm-connection-editor")
+    end),
+    awful.key({}, "XF86Display", function ()
+        awful.util.spawn("arandr")
+    end),
+    awful.key({}, "Print", function ()
+        awful.util.spawn("xfce4-screenshooter")
+    end),
+
+    -- hacks for Thinkpad W530 FN mal-function
+    awful.key({ modkey }, "F10", function ()
+        awful.util.spawn("mpc prev")
+    end),
+    awful.key({ modkey }, "F11", function ()
+        awful.util.spawn("mpc toggle")
+    end),
+    awful.key({ modkey }, "F12", function ()
+        awful.util.spawn("mpc next")
+    end),
+    awful.key({ modkey }, "Home", function ()
+        awful.util.spawn("mpc seek -5%")
+    end),
+    awful.key({ modkey }, "End", function ()
+        awful.util.spawn("mpc stop")
+    end),
+    awful.key({ modkey }, "Insert", function ()
+        awful.util.spawn("mpc seek +5%")
+    end),
+    awful.key({}, "Print", function ()
+        awful.util.spawn("xfce4-screenshooter")
     end),
     --}}
 
