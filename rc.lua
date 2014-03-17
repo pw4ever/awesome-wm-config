@@ -681,6 +681,7 @@ globalkeys = awful.util.table.join(
         awful.util.spawn("xscreensaver-command -l")
     end),
     --[[
+    -- let systemd/logind.conf does its job
     awful.key({}, "XF86Sleep", function ()
     awful.util.spawn("sudo pm-suspend")
     end),
@@ -705,6 +706,9 @@ globalkeys = awful.util.table.join(
     end),
     awful.key({}, "XF86Launch1", function ()
         awful.util.spawn(tools.terminal)
+    end),
+    awful.key({ modkey }, "XF86Sleep", function ()
+    awful.util.spawn("sudo systemctl hibernate")
     end),
 
 
@@ -740,7 +744,7 @@ globalkeys = awful.util.table.join(
         awful.util.spawn("mpc next")
     end),
     awful.key({ modkey }, "Up", function ()
-        awful.util.spawn("mpc stop")
+        awful.util.spawn("gnome-alsamixer")
     end),
 
     awful.key({ modkey, "Control" }, "Left", function ()
