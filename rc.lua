@@ -838,3 +838,6 @@ local oldspawn = awful.util.spawn
 awful.util.spawn = function (s)
     oldspawn(s, false)
 end
+
+-- XDG style autostart with "dex"
+awful.util.spawn_with_shell("dex -a -e Awesome")
