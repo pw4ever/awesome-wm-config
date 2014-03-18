@@ -66,7 +66,7 @@ do
     "fi  ) &")
     --]]
     awful.util.spawn_with_shell("pkill my-wallpaper-pick.sh; cd ".. config_path .. "/wallpaper; " ..
-        "./my-wallpaper.pick.sh" .. wallpaper_freq .."; ")
+        "./my-wallpaper-pick.sh" .. wallpaper_freq .."; ")
 end
 --]]
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -739,29 +739,29 @@ awful.key({}, "XF86Sleep", function ()
         awful.util.spawn("mpc seek +5%")
     end),
 
-    awful.key({ modkey }, "Left", function ()
+    awful.key({ modkey, "Control" }, "Left", function ()
         awful.util.spawn("mpc prev")
     end),
-    awful.key({ modkey }, "Down", function ()
+    awful.key({ modkey, "Control" }, "Down", function ()
         awful.util.spawn("mpc toggle")
     end),
-    awful.key({ modkey }, "Right", function ()
+    awful.key({ modkey, "Control" }, "Right", function ()
         awful.util.spawn("mpc next")
     end),
-    awful.key({ modkey }, "Up", function ()
+    awful.key({ modkey, "Control" }, "Up", function ()
         awful.util.spawn("gnome-alsamixer")
     end),
 
-    awful.key({ modkey, "Control" }, "Left", function ()
+    awful.key({ modkey, "Shift" }, "Left", function ()
         awful.util.spawn("mpc seek -1%")
     end),
-    awful.key({ modkey, "Control" }, "Right", function ()
+    awful.key({ modkey, "Shift" }, "Right", function ()
         awful.util.spawn("mpc seek +1%")
     end),
-    awful.key({ modkey, "Control" }, "Down", function ()
+    awful.key({ modkey, "Shift" }, "Down", function ()
         awful.util.spawn("mpc seek -10%")
     end),
-    awful.key({ modkey, "Control" }, "Up", function ()
+    awful.key({ modkey, "Shift" }, "Up", function ()
         awful.util.spawn("mpc seek +10%")
     end),
 
