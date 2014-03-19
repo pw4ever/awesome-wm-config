@@ -43,6 +43,23 @@ do
 end
 -- }}}
 
+-- {{{
+-- HACK! prevent Awesome start autostart items multiple times in a session
+-- cause: in-place restart by awesome.restart, xrandr change
+-- idea: 
+-- * create a file /tmp/awesome-autostart-once when first time "dex" autostart items (at the end of this file)
+-- * only "rm" this file when awesome.quit
+
+local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
+
+local orig_awesome_quit = awesome.quit
+awesome.quit = function ()
+    awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
+    orig_awesome_quit()
+end
+
+-- }}}
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 ---[[
@@ -845,4 +862,5 @@ awful.key({}, "XF86Sleep", function ()
         end
 
         -- XDG style autostart with "dex"
-        awful.util.spawn_with_shell("dex -a -e Awesome")
+        -- HACK continue
+        awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e Awesome; touch " .. awesome_autostart_once_fname .. "; fi")
