@@ -66,7 +66,7 @@ do
     "fi  ) &")
     --]]
     awful.util.spawn_with_shell("pkill my-wallpaper-pick.sh; cd ".. config_path .. "/wallpaper; " ..
-        "./my-wallpaper-pick.sh" .. wallpaper_freq .."; ")
+        "./my-wallpaper-pick.sh " .. wallpaper_freq .."; ")
 end
 --]]
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
