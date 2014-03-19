@@ -16,7 +16,7 @@ local menubar = require("menubar")
 
 local shifty = require("shifty")
 shifty.config.defaults.rel_index = 1
-local obvious_battery = require("obvious.battery")
+-- local obvious_battery = require("obvious.battery")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -357,7 +357,7 @@ menubar.utils.terminal = tools.terminal -- Set the terminal for applications tha
 mytextclock = awful.widget.textclock()
 
 -- create a battery widget
-my_obvious_battery = obvious.battery()
+-- my_obvious_battery = obvious.battery()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -435,7 +435,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(obvious.battery())
+    -- right_layout:add(obvious.battery())
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
