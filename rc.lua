@@ -76,14 +76,10 @@ do
     -- random wallpaper from a gallery
     local wallpaper_freq="30s"
 
-    --[[
     awful.util.spawn_with_shell("( cd ".. config_path .. "/wallpaper; " ..
     "if ! killall -q my-wallpaper-pick.sh; then " ..
     "  ./my-wallpaper-pick.sh " .. wallpaper_freq .."; " ..
     "fi  ) &")
-    --]]
-    awful.util.spawn_with_shell("pkill my-wallpaper-pick.sh; cd ".. config_path .. "/wallpaper; " ..
-        "./my-wallpaper-pick.sh " .. wallpaper_freq .."; ")
 end
 --]]
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
