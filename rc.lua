@@ -366,7 +366,7 @@ mytextclock = wibox.widget.textbox()
 -- http://awesome.naquadah.org/wiki/Vicious#Date_.28textbox.29
 --vicious.register(mytextclock, vicious.widgets.date, "%a, %d %b %Y, %T", 1)
 -- http://awesome.naquadah.org/wiki/Bashets
-bashets.register("date.sh", {widget=mytextclock, update_time=1, format="<small>$1</small> <span fgcolor='red'><i>$3 $2 $6</i></span> <b>$4 $5</b>"})
+bashets.register("date.sh", {widget=mytextclock, update_time=1, format="<small>$1</small> <span fgcolor='red'>$3 $2 $6</span> <b>$4 $5</b>"})
 
 -- create a battery widget
 -- my_obvious_battery = obvious.battery()
