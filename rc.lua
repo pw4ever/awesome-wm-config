@@ -13,6 +13,15 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
+local vicious = require("vicious")
+
+-- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
+local bashets = require("bashets")
+
+do
+    local config_path = awful.util.getdir("config")
+    bashets.set_script_path(config_path .. "/bashets/")
+end
 
 local shifty = require("shifty")
 shifty.config.defaults.rel_index = 1
@@ -55,6 +64,7 @@ local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv
 local orig_awesome_quit = awesome.quit
 awesome.quit = function ()
     awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
+    bashets.stop()
     orig_awesome_quit()
 end
 
@@ -350,7 +360,13 @@ menubar.utils.terminal = tools.terminal -- Set the terminal for applications tha
 
 -- {{{ Wibox
 -- Create a textclock widget
-mytextclock = awful.widget.textclock()
+-- mytextclock = awful.widget.textclock()
+mytextclock = wibox.widget.textbox()
+
+-- http://awesome.naquadah.org/wiki/Vicious#Date_.28textbox.29
+--vicious.register(mytextclock, vicious.widgets.date, "%a, %d %b %Y, %T", 1)
+-- http://awesome.naquadah.org/wiki/Bashets
+bashets.register("date.sh", {widget=mytextclock, update_time=1, format="<small>$1</small> <span fgcolor='red'><i>$3 $2 $6</i></span> <b>$4 $5</b>"})
 
 -- create a battery widget
 -- my_obvious_battery = obvious.battery()
@@ -368,6 +384,7 @@ awful.button({ modkey }, 3, awful.client.toggletag),
 awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
 awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
+
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
 awful.button({ }, 1, function (c)
@@ -402,6 +419,9 @@ awful.button({ }, 5, function ()
     awful.client.focus.byidx(-1)
     if client.focus then client.focus:raise() end
 end))
+
+-- start bashets
+bashets.start()
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -807,56 +827,56 @@ awful.key({}, "XF86Sleep", function ()
     end)
     )
 
-    -- SHIFTY: assign client keys to shifty for use in
-    -- match() function(manage hook)
-        shifty.config.clientkeys = clientkeys
-        shifty.config.modkey = modkey
+-- SHIFTY: assign client keys to shifty for use in
+-- match() function(manage hook)
+shifty.config.clientkeys = clientkeys
+shifty.config.modkey = modkey
 
-        -- Bind all key numbers to tags.
-        -- Be careful: we use keycodes to make it works on any keyboard layout.
-        -- This should map on the top row of your keyboard, usually 1 to 9.
-        for i = 1, (shifty.config.maxtags or 9) do
-            globalkeys = awful.util.table.join(globalkeys,
-            awful.key({ modkey }, "#" .. i + 9,
-            function ()
-                awful.tag.viewonly(shifty.getpos(i))
-            end),
-            awful.key({ modkey, "Control" }, "#" .. i + 9,
-            function ()
-                awful.tag.viewtoggle(shifty.getpos(i))
-            end),
-            awful.key({ modkey, "Shift" }, "#" .. i + 9,
-            function ()
-                if client.focus then
-                    local t = shifty.getpos(i)
-                    awful.client.movetotag(t)
-                    --awful.tag.viewonly(t)
-                end
-            end),
-            awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-            function ()
-                if client.focus then
-                    awful.client.toggletag(shifty.getpos(i))
-                end
-            end))
+-- Bind all key numbers to tags.
+-- Be careful: we use keycodes to make it works on any keyboard layout.
+-- This should map on the top row of your keyboard, usually 1 to 9.
+for i = 1, (shifty.config.maxtags or 9) do
+    globalkeys = awful.util.table.join(globalkeys,
+    awful.key({ modkey }, "#" .. i + 9,
+    function ()
+        awful.tag.viewonly(shifty.getpos(i))
+    end),
+    awful.key({ modkey, "Control" }, "#" .. i + 9,
+    function ()
+        awful.tag.viewtoggle(shifty.getpos(i))
+    end),
+    awful.key({ modkey, "Shift" }, "#" .. i + 9,
+    function ()
+        if client.focus then
+            local t = shifty.getpos(i)
+            awful.client.movetotag(t)
+            --awful.tag.viewonly(t)
         end
-
-        -- Set keys
-        root.keys(globalkeys)
-        -- }}}
-
-        client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-        client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
-        -- }}}
-
-        -- disable startup-notification globally
-        -- prevent unintended mouse cursor change
-        local oldspawn = awful.util.spawn
-        awful.util.spawn = function (s)
-            oldspawn(s, false)
+    end),
+    awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+    function ()
+        if client.focus then
+            awful.client.toggletag(shifty.getpos(i))
         end
+    end))
+end
 
-        -- XDG style autostart with "dex"
-        -- HACK continue
-        awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e Awesome; touch " .. awesome_autostart_once_fname .. "; fi")
+-- Set keys
+root.keys(globalkeys)
+-- }}}
+
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- }}}
+
+-- disable startup-notification globally
+-- prevent unintended mouse cursor change
+local oldspawn = awful.util.spawn
+awful.util.spawn = function (s)
+    oldspawn(s, false)
+end
+
+-- XDG style autostart with "dex"
+-- HACK continue
+awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e Awesome; touch " .. awesome_autostart_once_fname .. "; fi")
