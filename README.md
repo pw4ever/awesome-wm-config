@@ -20,9 +20,13 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 feature
 -----
 
-* dynamic tagging with Swifty
+* *persistent dynamic tagging* across (both regular and randr-induced) restarts
 
-* quick launch for common applications
+* confirmation before quit/restart to minimize data loss accidents
+
+* keyboard optimize for Arch Linux over Thinkpad W530 
+
+* quick launch of common applications
 
 * cycle through only the most sensible layouts
 

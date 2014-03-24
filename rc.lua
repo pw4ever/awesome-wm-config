@@ -444,38 +444,43 @@ do
         local count = {}
 
         local scr_count = math.min(new_scr_count, old_scr_count)
-        for s = 1, scr_count do
-            count[s] = 0
-        end
 
-        shifty.config.tags = {}
-        for s = 1, old_scr_count do
-            local count_index = math.min(s, scr_count)
-            for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
-                shifty.config.tags = awful.util.table.join(shifty.config.tags,
-                {
-                    [tagname] = {
-                        screen = math.min(new_scr_count, s),
-                        position = count[count_index],
-                        layout = shifty.config.defaults.layout, 
-                        mwfact = shifty.config.defaults.mwfact,
-                        init = true,
+        if scr_count>0 then
+            for s = 1, scr_count do
+                count[s] = 0
+            end
+
+            shifty.config.tags = {}
+            for s = 1, old_scr_count do
+                local count_index = math.min(s, scr_count)
+                for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
+                    shifty.config.tags = awful.util.table.join(shifty.config.tags,
+                    {
+                        [tagname] = {
+                            screen = math.min(new_scr_count, s),
+                            position = count[count_index],
+                            layout = shifty.config.defaults.layout, 
+                            mwfact = shifty.config.defaults.mwfact,
+                            init = true,
+                        }
                     }
-                }
-                )
-                count[count_index] = count[count_index]+1
+                    )
+                    count[count_index] = count[count_index]+1
+                end
             end
         end
         -- create the tags
         shifty.init()
 
-        f = io.open(awesome_restart_tags_fname .. "-selected." .. mouse.screen, "r")
-        if f then
-            local tag = f:read("*l")
-            if tag then
-                awful.tag.viewonly(name2tag(tag))
+        for s = 1, screen.count() do
+            f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "r")
+            if f then
+                local tag = f:read("*l")
+                if tag then
+                    awful.tag.viewonly(name2tag(tag))
+                end
+                f:close()
             end
-            f:close()
         end
 
     else
@@ -987,6 +992,11 @@ local function client_manage_tag(c, startup)
             end
             if #tags>0 then
                 c:tags(tags)
+                -- set c's screen to that of its first (often the only) tag
+                -- this prevents client to be placed off screen in case of randr change (on the number of screen)
+                c.screen = awful.tag.getscreen(tags[1])
+                awful.placement.no_overlap(c)
+                awful.placement.no_offscreen(c)
             end
         end
     end
