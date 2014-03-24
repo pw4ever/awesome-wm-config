@@ -90,6 +90,8 @@ do
         function (t)
             if string.lower(t) == 'yes' then
                 -- save current tags
+
+
                 for s = 1, screen.count() do
                     local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
                     if f then
@@ -101,19 +103,28 @@ do
                     end
                     f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
                     if f then
-                        f:write(awful.tag.selected(s) .. "\n")
+                        f:write(awful.tag.selected(s).name .. "\n")
                         f:close()
                     end
                 end
 
                 -- save tags for each client
-                awful.util.mkdir(awesome_restart_tags_fname)
+                awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname)
                 for _, c in ipairs(client.get()) do
                     local f = io.open(awesome_restart_tags_fname .. '/' .. c.pid, 'w+')
                     if f then
                         for _, t in ipairs(c:tags()) do
                             f:write(t.name .. "\n")
                         end
+                        f:close()
+                    end
+                end
+
+                -- save number of screens, used for check proper tag recording
+                do
+                    local f = io.open(awesome_restart_tags_fname .. ".0", "w+")
+                    if f then
+                        f:write(string.format("%d", screen.count()) .. "\n")
                         f:close()
                     end
                 end
@@ -278,61 +289,6 @@ shifty.config.defaults = {
     guess_position = true,
 }
 
-do
-    -- test whether screen 1 tag file exists
-    local f = io.open(awesome_restart_tags_fname .. '.1')
-    if f then
-        f:close()
-        for s = 1, screen.count() do
-            shifty.config.tags = {}
-            local count=0
-            for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
-                shifty.config.tags = awful.util.table.join(shifty.config.tags,
-                {
-                    [tagname] = {
-                        screen = s,
-                        position = count,
-                        layout = shifty.config.defaults.layout, 
-                        mwfact = shifty.config.defaults.mwfact,
-                    }
-                }
-                )
-                count=count+1
-            end
-        end
-        f = io.open(awesome_restart_tags_fname .. "-selected." .. mouse.screen, "r")
-        if f then
-            local tag = f:read("*l")
-            if tag then
-                awful.tag.viewonly(name2tag(tag))
-            end
-            f:close()
-        end
-
-    else
-        shifty.config.tags = {
-            ["genesis"] = {
-                layout    = awful.layout.suit.floating,
-                mwfact    = 0.50,
-                exclusive = false,
-                position  = 0,
-                init      = true,
-                screen    = 1,
-                slave     = true,
-            },
-            ["nil"] = {
-                layout    = awful.layout.suit.floating,
-                mwfact    = 0.50,
-                exclusive = false,
-                position  = 0,
-                init      = true,
-                screen    = 2,
-                slave     = true,
-            },
-        }
-    end
-end
-
 
 
 -- {{{ Menu
@@ -465,7 +421,81 @@ end
 -- the assignment of shifty.taglist must always be after its actually
 -- initialized with awful.widget.taglist.new()
 shifty.taglist = mytaglist
-shifty.init()
+
+do
+    -- test whether screen 1 tag file exists
+    local f = io.open(awesome_restart_tags_fname .. ".0", "r")
+    if f then
+        local old_scr_count = tonumber(f:read("*l"))
+        f:close()
+        awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. ".0")
+
+        local new_scr_count = screen.count()
+
+        local count = {}
+
+        local scr_count = math.min(new_scr_count, old_scr_count)
+        for s = 1, scr_count do
+            count[s] = 0
+        end
+
+        shifty.config.tags = {}
+        for s = 1, old_scr_count do
+            local count_index = math.min(s, scr_count)
+            for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
+                shifty.config.tags = awful.util.table.join(shifty.config.tags,
+                {
+                    [tagname] = {
+                        screen = math.min(new_scr_count, s),
+                        position = count[count_index],
+                        layout = shifty.config.defaults.layout, 
+                        mwfact = shifty.config.defaults.mwfact,
+                        init = true,
+                    }
+                }
+                )
+                count[count_index] = count[count_index]+1
+            end
+        end
+        -- create the tags
+        shifty.init()
+
+        f = io.open(awesome_restart_tags_fname .. "-selected." .. mouse.screen, "r")
+        if f then
+            local tag = f:read("*l")
+            if tag then
+                awful.tag.viewonly(name2tag(tag))
+            end
+            f:close()
+        end
+
+    else
+        shifty.config.tags = {
+            ["genesis"] = {
+                layout    = awful.layout.suit.floating,
+                mwfact    = 0.50,
+                exclusive = false,
+                position  = 0,
+                init      = true,
+                screen    = 1,
+                slave     = true,
+            },
+            ["nil"] = {
+                layout    = awful.layout.suit.floating,
+                mwfact    = 0.50,
+                exclusive = false,
+                position  = 0,
+                init      = true,
+                screen    = 2,
+                slave     = true,
+            },
+        }
+
+        -- create the tags
+        shifty.init()
+    end
+end
+
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
