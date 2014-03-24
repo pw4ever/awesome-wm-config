@@ -69,7 +69,7 @@ do
         function (t)
             if string.lower(t) == 'yes' then
                 awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
-                awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '.*')
+                awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '*')
                 bashets.stop()
                 orig_awesome_quit()
             end
@@ -94,8 +94,20 @@ do
                     local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
                     if f then
                         local tags = awful.tag.gettags(s)
-                        for i, tag in ipairs(tags) do
+                        for _, tag in ipairs(tags) do
                             f:write(tag.name .. "\n")
+                        end
+                        f:close()
+                    end
+                end
+
+                -- save tags for each client
+                awful.util.mkdir(awesome_restart_tags_fname)
+                for _, c in ipairs(client.get()) do
+                    local f = io.open(awesome_restart_tags_fname .. '/' .. c.pid, 'w+')
+                    if f then
+                        for _, t in ipairs(c:tags()) do
+                            f:write(t.name .. "\n")
                         end
                         f:close()
                     end
@@ -226,28 +238,6 @@ end
 -- }}}
 --]]
 
--- Shifty configured tags.
-shifty.config.tags = {
-    genesis = {
-        layout    = awful.layout.suit.floating,
-        mwfact    = 0.50,
-        exclusive = false,
-        position  = 0,
-        init      = true,
-        screen    = 1,
-        slave     = true,
-    },
-    ["nil"] = {
-        layout    = awful.layout.suit.floating,
-        mwfact    = 0.50,
-        exclusive = false,
-        position  = 0,
-        init      = true,
-        screen    = 2,
-        slave     = true,
-    },
-}
-
 -- SHIFTY: application matching rules
 -- order here matters, early rules will be applied first
 shifty.config.apps = {
@@ -288,15 +278,42 @@ do
     local f = io.open(awesome_restart_tags_fname .. '.1')
     if f then
         f:close()
-
-        -- build tags from scrach
-        shifty.config.tags = {}
-
         for s = 1, screen.count() do
+            shifty.config.tags = {}
+            local count=0
             for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
-                shifty.add({name=tagname, screen=s, init=true})
+                shifty.config.tags = awful.util.table.join(shifty.config.tags,
+                {
+                    [tagname] = {
+                        screen    = s,
+                        index  = count,
+                    }
+                }
+                )
+                count=count+1
             end
         end
+    else
+        shifty.config.tags = {
+            genesis = {
+                layout    = awful.layout.suit.floating,
+                mwfact    = 0.50,
+                exclusive = false,
+                position  = 0,
+                init      = true,
+                screen    = 1,
+                slave     = true,
+            },
+            ["nil"] = {
+                layout    = awful.layout.suit.floating,
+                mwfact    = 0.50,
+                exclusive = false,
+                position  = 0,
+                init      = true,
+                screen    = 2,
+                slave     = true,
+            },
+        }
     end
 end
 
@@ -892,6 +909,12 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+local function client_manage_tag(c, startup)
+    if startup then
+    end
+end
+client.connect_signal("manage", client_manage_tag)
 
 -- }}}
 

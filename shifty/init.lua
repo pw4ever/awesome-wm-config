@@ -373,8 +373,8 @@ function set(t, args)
     return t
 end
 
-function shifty.shift_next() set(awful.tag.selected(), {rel_index = 1}) end
-function shifty.shift_prev() set(awful.tag.selected(), {rel_index = -1}) end
+function shift_next() set(awful.tag.selected(), {rel_index = 1}) end
+function shift_prev() set(awful.tag.selected(), {rel_index = -1}) end
 
 --add : adds a tag
 --@param args: table of optional arguments
