@@ -13,7 +13,6 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
-local vicious = require("vicious")
 
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
@@ -24,8 +23,7 @@ do
 end
 
 local shifty = require("shifty")
-shifty.config.defaults.rel_index = 1
--- local obvious_battery = require("obvious.battery")
+--shifty.config.defaults.rel_index = 1
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -60,13 +58,60 @@ end
 -- * only "rm" this file when awesome.quit
 
 local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
+local awesome_restart_tags_fname = "/tmp/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
 
-local orig_awesome_quit = awesome.quit
-awesome.quit = function ()
-    awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
-    bashets.stop()
-    orig_awesome_quit()
+do
+    local orig_awesome_quit = awesome.quit
+    awesome.quit = function ()
+        local scr = mouse.screen
+        awful.prompt.run({prompt = "Quit (type 'yes' to confirm)? "},
+        mypromptbox[scr].widget,
+        function (t)
+            if string.lower(t) == 'yes' then
+                awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
+                awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '.*')
+                bashets.stop()
+                orig_awesome_quit()
+            end
+        end,
+        function (t, p, n)
+            return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+        end,
+        nil)
+    end
 end
+
+do
+    local orig_awesome_restart = awesome.restart
+    awesome.restart = function ()
+        local scr = mouse.screen
+        awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
+        mypromptbox[scr].widget,
+        function (t)
+            if string.lower(t) == 'yes' then
+                -- save current tags
+                for s = 1, screen.count() do
+                    local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
+                    if f then
+                        local tags = awful.tag.gettags(s)
+                        for i, tag in ipairs(tags) do
+                            f:write(tag.name .. "\n")
+                        end
+                        f:close()
+                    end
+                end
+
+                -- restart
+                orig_awesome_restart()
+            end
+        end,
+        function (t, p, n)
+            return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+        end,
+        nil)
+    end
+end
+
 
 -- }}}
 
@@ -201,107 +246,11 @@ shifty.config.tags = {
         screen    = 2,
         slave     = true,
     },
-
-    --[[
-    w1 = {
-    layout    = awful.layout.suit.max,
-    mwfact    = 0.60,
-    exclusive = false,
-    position  = 1,
-    init      = true,
-    screen    = 1,
-    slave     = true,
-    },
-    web = {
-    layout      = awful.layout.suit.tile.bottom,
-    mwfact      = 0.65,
-    exclusive   = true,
-    max_clients = 1,
-    position    = 4,
-    spawn       = browser,
-    },
-    mail = {
-    layout    = awful.layout.suit.tile,
-    mwfact    = 0.55,
-    exclusive = false,
-    position  = 5,
-    spawn     = mail,
-    slave     = true
-    },
-    media = {
-    layout    = awful.layout.suit.float,
-    exclusive = false,
-    position  = 8,
-    },
-    office = {
-    layout   = awful.layout.suit.tile,
-    position = 9,
-    },
-    --]]
 }
 
 -- SHIFTY: application matching rules
 -- order here matters, early rules will be applied first
 shifty.config.apps = {
-    --[[
-    {
-    match = {
-    "Navigator",
-    "Vimperator",
-    "Gran Paradiso",
-    },
-    tag = "web",
-    },
-    {
-    match = {
-    "Shredder.*",
-    "Thunderbird",
-    "mutt",
-    },
-    tag = "mail",
-    },
-    {
-    match = {
-    "pcmanfm",
-    },
-    slave = true
-    },
-    {
-    match = {
-    "OpenOffice.*",
-    "Abiword",
-    "Gnumeric",
-    },
-    tag = "office",
-    },
-    {
-    match = {
-    "Mplayer.*",
-    "Mirage",
-    "gimp",
-    "gtkpod",
-    "Ufraw",
-    "easytag",
-    },
-    tag = "media",
-    nopopup = true,
-    },
-    {
-    match = {
-    "MPlayer",
-    "Gnuplot",
-    "galculator",
-    },
-    float = true,
-    },
-    {
-    match = {
-    terminal,
-    },
-    honorsizehints = false,
-    slave = true,
-    },
-    --]]
     {
         match = {""},
         buttons = awful.util.table.join(
@@ -334,6 +283,25 @@ shifty.config.defaults = {
     guess_position = true,
 }
 
+do
+    -- test whether screen 1 tag file exists
+    local f = io.open(awesome_restart_tags_fname .. '.1')
+    if f then
+        f:close()
+
+        -- build tags from scrach
+        shifty.config.tags = {}
+
+        for s = 1, screen.count() do
+            for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
+                shifty.add({name=tagname, screen=s, init=true})
+            end
+        end
+    end
+end
+
+
+
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
@@ -363,13 +331,8 @@ menubar.utils.terminal = tools.terminal -- Set the terminal for applications tha
 -- mytextclock = awful.widget.textclock()
 mytextclock = wibox.widget.textbox()
 
--- http://awesome.naquadah.org/wiki/Vicious#Date_.28textbox.29
---vicious.register(mytextclock, vicious.widgets.date, "%a, %d %b %Y, %T", 1)
 -- http://awesome.naquadah.org/wiki/Bashets
 bashets.register("date.sh", {widget=mytextclock, update_time=1, format="<small>$1</small> <span fgcolor='red'>$3 $2 $6</span> <b>$4 $5</b>"})
-
--- create a battery widget
--- my_obvious_battery = obvious.battery()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -451,7 +414,6 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    -- right_layout:add(obvious.battery())
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
@@ -501,7 +463,13 @@ t = shifty.tagtoscr(s, t)
 awful.tag.viewonly(t)
 end),
 --]]
-awful.key({modkey, "Shift"}, "d", shifty.del), -- delete a tag
+awful.key({modkey, "Shift"}, "d", function ()
+    local tag = awful.tag.selected(mouse.screen)
+    if tag then
+        shifty.del(tag)
+    end
+end
+),
 
 awful.key({modkey, "Shift"}, "p", shifty.send_prev), -- client to prev tag
 awful.key({modkey, "Shift"}, "n", shifty.send_next), -- client to next tag
@@ -511,15 +479,13 @@ awful.key({modkey,}, "p", awful.tag.viewprev),
 awful.key({modkey,}, "n", awful.tag.viewnext),
 
 awful.key({modkey}, "a", function ()
-    local tags = awful.tag.gettags(mouse.screen)
-    local newindex = awful.tag.getidx() + 1
+    local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
     shifty.add({index = newindex})
 end), -- create a new tag
 awful.key({modkey, "Shift"}, "r", shifty.rename), -- rename a tag
 awful.key({modkey, "Shift"}, "a", -- nopopup new tag
 function()
-    local tags = awful.tag.gettags(mouse.screen)
-    local newindex = awful.tag.getidx() + 1
+    local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
     shifty.add({nopopup = true, index = newindex})
 end),
 
@@ -718,114 +684,103 @@ end),
 awful.key({}, "XF86ScreenSaver", function ()
     awful.util.spawn("xscreensaver-command -l")
 end),
---[[
--- let systemd/logind.conf does its job
-awful.key({}, "XF86Sleep", function ()
-    awful.util.spawn("sudo pm-suspend")
-    end),
-    --]]
-    awful.key({}, "XF86WebCam", function ()
-        awful.util.spawn("cheese")
-    end),
-    awful.key({}, "XF86MonBrightnessDown", function ()
-        awful.util.spawn("xbacklight -dec 5")
-    end),
-    awful.key({}, "XF86MonBrightnessUp", function ()
-        awful.util.spawn("xbacklight -inc 5")
-    end),
-    awful.key({}, "XF86WLAN", function ()
-        awful.util.spawn("nm-connection-editor")
-    end),
-    awful.key({}, "XF86Display", function ()
-        awful.util.spawn("arandr")
-    end),
-    awful.key({}, "Print", function ()
-        awful.util.spawn("xfce4-screenshooter")
-    end),
-    awful.key({}, "XF86Launch1", function ()
-        awful.util.spawn(tools.terminal)
-    end),
-    awful.key({ modkey }, "XF86Sleep", function ()
-        awful.util.spawn("sudo systemctl hibernate")
-    end),
+awful.key({}, "XF86WebCam", function ()
+    awful.util.spawn("cheese")
+end),
+awful.key({}, "XF86MonBrightnessDown", function ()
+    awful.util.spawn("xbacklight -dec 5")
+end),
+awful.key({}, "XF86MonBrightnessUp", function ()
+    awful.util.spawn("xbacklight -inc 5")
+end),
+awful.key({}, "XF86WLAN", function ()
+    awful.util.spawn("nm-connection-editor")
+end),
+awful.key({}, "XF86Display", function ()
+    awful.util.spawn("arandr")
+end),
+awful.key({}, "Print", function ()
+    awful.util.spawn("xfce4-screenshooter")
+end),
+awful.key({}, "XF86Launch1", function ()
+    awful.util.spawn(tools.terminal)
+end),
+awful.key({ modkey }, "XF86Sleep", function ()
+    awful.util.spawn("sudo systemctl hibernate")
+end),
 
+--{{ hacks for Thinkpad W530 FN mal-function
 
-    --{{ hacks for Thinkpad W530 FN mal-function
+awful.key({ modkey }, "F10", function ()
+    awful.util.spawn("mpc prev")
+end),
+awful.key({ modkey }, "F11", function ()
+    awful.util.spawn("mpc toggle")
+end),
+awful.key({ modkey }, "F12", function ()
+    awful.util.spawn("mpc next")
+end),
 
-    awful.key({ modkey }, "F10", function ()
-        awful.util.spawn("mpc prev")
-    end),
-    awful.key({ modkey }, "F11", function ()
-        awful.util.spawn("mpc toggle")
-    end),
-    awful.key({ modkey }, "F12", function ()
-        awful.util.spawn("mpc next")
-    end),
+awful.key({ modkey }, "Home", function ()
+    awful.util.spawn("mpc seek -5%")
+end),
+awful.key({ modkey }, "End", function ()
+    awful.util.spawn("mpc stop")
+end),
+awful.key({ modkey }, "Insert", function ()
+    awful.util.spawn("mpc seek +5%")
+end),
 
-    awful.key({ modkey }, "Home", function ()
-        awful.util.spawn("mpc seek -5%")
-    end),
-    awful.key({ modkey }, "End", function ()
-        awful.util.spawn("mpc stop")
-    end),
-    awful.key({ modkey }, "Insert", function ()
-        awful.util.spawn("mpc seek +5%")
-    end),
+awful.key({ modkey, "Control" }, "Left", function ()
+    awful.util.spawn("mpc prev")
+end),
+awful.key({ modkey, "Control" }, "Down", function ()
+    awful.util.spawn("mpc toggle")
+end),
+awful.key({ modkey, "Control" }, "Right", function ()
+    awful.util.spawn("mpc next")
+end),
+awful.key({ modkey, "Control" }, "Up", function ()
+    awful.util.spawn("gnome-alsamixer")
+end),
 
-    awful.key({ modkey, "Control" }, "Left", function ()
-        awful.util.spawn("mpc prev")
-    end),
-    awful.key({ modkey, "Control" }, "Down", function ()
-        awful.util.spawn("mpc toggle")
-    end),
-    awful.key({ modkey, "Control" }, "Right", function ()
-        awful.util.spawn("mpc next")
-    end),
-    awful.key({ modkey, "Control" }, "Up", function ()
-        awful.util.spawn("gnome-alsamixer")
-    end),
+awful.key({ modkey, "Shift" }, "Left", function ()
+    awful.util.spawn("mpc seek -1%")
+end),
+awful.key({ modkey, "Shift" }, "Right", function ()
+    awful.util.spawn("mpc seek +1%")
+end),
+awful.key({ modkey, "Shift" }, "Down", function ()
+    awful.util.spawn("mpc seek -10%")
+end),
+awful.key({ modkey, "Shift" }, "Up", function ()
+    awful.util.spawn("mpc seek +10%")
+end),
+--}}
+--}}
+nil
+)
 
-    awful.key({ modkey, "Shift" }, "Left", function ()
-        awful.util.spawn("mpc seek -1%")
-    end),
-    awful.key({ modkey, "Shift" }, "Right", function ()
-        awful.util.spawn("mpc seek +1%")
-    end),
-    awful.key({ modkey, "Shift" }, "Down", function ()
-        awful.util.spawn("mpc seek -10%")
-    end),
-    awful.key({ modkey, "Shift" }, "Up", function ()
-        awful.util.spawn("mpc seek +10%")
-    end),
-
-    --}}
-
-
-    --}}
-
-    nil
-    )
-
-    clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
-    awful.key({ modkey, "Shift"   }, "t",      function (c) shifty.create_titlebar(c) awful.titlebar(c) c.border_width = 1 end),
-    awful.key({ modkey, "Shift"   }, "m",
-    function (c)
-        -- The client currently has the input focus, so it cannot be
-        -- minimized, since minimized clients can't have the focus.
-        c.minimized = true
-    end),
-    awful.key({ modkey,           }, "m",
-    function (c)
-        c.maximized_horizontal = not c.maximized_horizontal
-        c.maximized_vertical   = not c.maximized_vertical
-    end)
-    )
+clientkeys = awful.util.table.join(
+awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
+awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
+awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+awful.key({ modkey, "Shift"   }, "t",      function (c) shifty.create_titlebar(c) awful.titlebar(c) c.border_width = 1 end),
+awful.key({ modkey, "Shift"   }, "m",
+function (c)
+    -- The client currently has the input focus, so it cannot be
+    -- minimized, since minimized clients can't have the focus.
+    c.minimized = true
+end),
+awful.key({ modkey,           }, "m",
+function (c)
+    c.maximized_horizontal = not c.maximized_horizontal
+    c.maximized_vertical   = not c.maximized_vertical
+end)
+)
 
 -- SHIFTY: assign client keys to shifty for use in
 -- match() function(manage hook)
@@ -864,6 +819,76 @@ end
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+
+
+-- {{{ Signals
+-- Signal function to execute when a new client appears.
+client.connect_signal("manage", function (c, startup)
+    -- Enable sloppy focus
+    c:connect_signal("mouse::enter", function(c)
+        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            and awful.client.focus.filter(c) then
+            client.focus = c
+        end
+    end)
+
+    if not startup then
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        -- awful.client.setslave(c)
+
+        -- Put windows in a smart way, only if they does not set an initial position.
+        if not c.size_hints.user_position and not c.size_hints.program_position then
+            awful.placement.no_overlap(c)
+            awful.placement.no_offscreen(c)
+        end
+    end
+
+    local titlebars_enabled = false
+    if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
+        -- buttons for the titlebar
+        local buttons = awful.util.table.join(
+                awful.button({ }, 1, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.move(c)
+                end),
+                awful.button({ }, 3, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.resize(c)
+                end)
+                )
+
+        -- Widgets that are aligned to the left
+        local left_layout = wibox.layout.fixed.horizontal()
+        left_layout:add(awful.titlebar.widget.iconwidget(c))
+        left_layout:buttons(buttons)
+
+        -- Widgets that are aligned to the right
+        local right_layout = wibox.layout.fixed.horizontal()
+        right_layout:add(awful.titlebar.widget.floatingbutton(c))
+        right_layout:add(awful.titlebar.widget.maximizedbutton(c))
+        right_layout:add(awful.titlebar.widget.stickybutton(c))
+        right_layout:add(awful.titlebar.widget.ontopbutton(c))
+        right_layout:add(awful.titlebar.widget.closebutton(c))
+
+        -- The title goes in the middle
+        local middle_layout = wibox.layout.flex.horizontal()
+        local title = awful.titlebar.widget.titlewidget(c)
+        title:set_align("center")
+        middle_layout:add(title)
+        middle_layout:buttons(buttons)
+
+        -- Now bring it all together
+        local layout = wibox.layout.align.horizontal()
+        layout:set_left(left_layout)
+        layout:set_right(right_layout)
+        layout:set_middle(middle_layout)
+
+        awful.titlebar(c):set_widget(layout)
+    end
+end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
