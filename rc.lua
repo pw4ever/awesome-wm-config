@@ -61,6 +61,14 @@ local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv
 local awesome_restart_tags_fname = "/tmp/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
 
 do
+    awesome.connect_signal("exit", function (restart)
+        if not restart then
+            awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
+            awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '*')
+            bashets.stop()
+        end
+    end)
+
     local orig_awesome_quit = awesome.quit
     awesome.quit = function ()
         local scr = mouse.screen
@@ -68,9 +76,6 @@ do
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
-                awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '*')
-                bashets.stop()
                 orig_awesome_quit()
             end
         end,
@@ -82,6 +87,51 @@ do
 end
 
 do
+
+    awesome.connect_signal("exit", function (restart)
+        if restart then
+            -- save number of screens, used for check proper tag recording
+            do
+                local f = io.open(awesome_restart_tags_fname .. ".0", "w+")
+                if f then
+                    f:write(string.format("%d", screen.count()) .. "\n")
+                    f:close()
+                end
+            end
+
+            -- save current tags
+            for s = 1, screen.count() do
+                local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
+                if f then
+                    local tags = awful.tag.gettags(s)
+                    for _, tag in ipairs(tags) do
+                        f:write(tag.name .. "\n")
+                    end
+                    f:close()
+                end
+                f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
+                if f then
+                    f:write(awful.tag.selected(s).name .. "\n")
+                    f:close()
+                end
+            end
+
+            -- save tags for each client
+            awful.util.mkdir(awesome_restart_tags_fname)
+            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname) 
+            -- race condition (whether awesome_restart_tags_fname is created) due to asynchrony of "spawn_with_shell"
+            for _, c in ipairs(client.get()) do
+                local f = io.open(awesome_restart_tags_fname .. '/' .. c.pid, 'w+')
+                if f then
+                    for _, t in ipairs(c:tags()) do
+                        f:write(t.name .. "\n")
+                    end
+                    f:close()
+                end
+            end
+        end
+    end)
+
     local orig_awesome_restart = awesome.restart
     awesome.restart = function ()
         local scr = mouse.screen
@@ -89,47 +139,6 @@ do
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                -- save current tags
-
-
-                for s = 1, screen.count() do
-                    local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
-                    if f then
-                        local tags = awful.tag.gettags(s)
-                        for _, tag in ipairs(tags) do
-                            f:write(tag.name .. "\n")
-                        end
-                        f:close()
-                    end
-                    f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
-                    if f then
-                        f:write(awful.tag.selected(s).name .. "\n")
-                        f:close()
-                    end
-                end
-
-                -- save tags for each client
-                awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname)
-                for _, c in ipairs(client.get()) do
-                    local f = io.open(awesome_restart_tags_fname .. '/' .. c.pid, 'w+')
-                    if f then
-                        for _, t in ipairs(c:tags()) do
-                            f:write(t.name .. "\n")
-                        end
-                        f:close()
-                    end
-                end
-
-                -- save number of screens, used for check proper tag recording
-                do
-                    local f = io.open(awesome_restart_tags_fname .. ".0", "w+")
-                    if f then
-                        f:write(string.format("%d", screen.count()) .. "\n")
-                        f:close()
-                    end
-                end
-
-                -- restart
                 orig_awesome_restart()
             end
         end,
