@@ -99,6 +99,11 @@ do
                         end
                         f:close()
                     end
+                    f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
+                    if f then
+                        f:write(awful.tag.selected(s) .. "\n")
+                        f:close()
+                    end
                 end
 
                 -- save tags for each client
@@ -285,17 +290,28 @@ do
                 shifty.config.tags = awful.util.table.join(shifty.config.tags,
                 {
                     [tagname] = {
-                        screen    = s,
-                        index  = count,
+                        screen = s,
+                        position = count,
+                        layout = shifty.config.defaults.layout, 
+                        mwfact = shifty.config.defaults.mwfact,
                     }
                 }
                 )
                 count=count+1
             end
         end
+        f = io.open(awesome_restart_tags_fname .. "-selected." .. mouse.screen, "r")
+        if f then
+            local tag = f:read("*l")
+            if tag then
+                awful.tag.viewonly(name2tag(tag))
+            end
+            f:close()
+        end
+
     else
         shifty.config.tags = {
-            genesis = {
+            ["genesis"] = {
                 layout    = awful.layout.suit.floating,
                 mwfact    = 0.50,
                 exclusive = false,
@@ -912,6 +928,18 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 local function client_manage_tag(c, startup)
     if startup then
+        local fname = awesome_restart_tags_fname .. '/' .. c.pid
+        local f = io.open(fname, 'r')
+
+        if f then
+            local tags = {}
+            for tag in io.lines(fname) do
+                tags = awful.util.table.join(tags, {name2tag(tag)})
+            end
+            if #tags>0 then
+                c:tags(tags)
+            end
+        end
     end
 end
 client.connect_signal("manage", client_manage_tag)
