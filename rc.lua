@@ -23,7 +23,7 @@ do
 end
 
 local shifty = require("shifty")
---shifty.config.defaults.rel_index = 1
+shifty.config.defaults.rel_index = 1
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -504,8 +504,18 @@ awful.key({modkey, "Shift"}, "d", function ()
 end
 ),
 
-awful.key({modkey, "Shift"}, "p", shifty.send_prev), -- client to prev tag
-awful.key({modkey, "Shift"}, "n", shifty.send_next), -- client to next tag
+awful.key({modkey, "Shift"}, "p", function ()
+    local c = client.focus
+    if c then
+        shifty.send_prev()
+    end
+end),
+awful.key({modkey, "Shift"}, "n", function ()
+    local c = client.focus
+    if c then
+        shifty.send_next()
+    end
+end),
 awful.key({modkey, "Control"}, "p", shifty.shift_prev), -- shift tag left
 awful.key({modkey, "Control"}, "n", shifty.shift_next), -- shift tag right
 awful.key({modkey,}, "p", awful.tag.viewprev),
