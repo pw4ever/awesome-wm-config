@@ -432,7 +432,7 @@ end
 shifty.taglist = mytaglist
 
 do
-    -- test whether screen 1 tag file exists
+    -- test whether "old screen counter" tag file exists
     local f = io.open(awesome_restart_tags_fname .. ".0", "r")
     if f then
         local old_scr_count = tonumber(f:read("*l"))
