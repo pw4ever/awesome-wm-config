@@ -24,6 +24,8 @@ end
 
 local shifty = require("shifty")
 shifty.config.defaults.rel_index = 1
+shifty.config.remember_index = false
+shifty.config.guess_position = false
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -447,7 +449,7 @@ do
 
         if scr_count>0 then
             for s = 1, scr_count do
-                count[s] = 0
+                count[s] = 1
             end
 
             shifty.config.tags = {}
@@ -890,7 +892,9 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.getpos(i)
+            tag = shifty.add({
+                index = #tags+1
+            })
         end
         if tag then
             awful.tag.viewonly(tag)
@@ -904,7 +908,9 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.getpos(i)
+            tag = shifty.add({
+                index = #tags+1
+            })
         end
         if tag then
             awful.tag.viewtoggle(tag)
@@ -918,7 +924,9 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.getpos(i)
+            tag = shifty.add({
+                index = #tags+1
+            })
         end
         if client.focus and tag then
             awful.client.movetotag(tag)
@@ -932,7 +940,9 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.getpos(i)
+            tag = shifty.add({
+                index = #tags+1
+            })
         end
         if client.focus and tag then
             awful.client.toggletag(tag)
