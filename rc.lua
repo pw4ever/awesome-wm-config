@@ -568,19 +568,47 @@ awful.key({modkey, "Control"}, "p", shifty.shift_prev), -- shift tag left
 awful.key({modkey, "Control"}, "n", shifty.shift_next), -- shift tag right
 awful.key({modkey,}, "p", awful.tag.viewprev),
 awful.key({modkey,}, "n", awful.tag.viewnext),
-
+-- create a new tag
 awful.key({modkey}, "a", function ()
     local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
     shifty.add({index = newindex})
-end), -- create a new tag
-awful.key({modkey, "Shift"}, "r", shifty.rename), -- rename a tag
-awful.key({modkey, "Shift"}, "a", -- nopopup new tag
+end),
+-- rename a tag
+awful.key({modkey, "Shift"}, "r", shifty.rename),
+-- toggle tag persistence ("sticky" tag)
+awful.key({modkey, }, "s", function ()
+    local scr = mouse.screen
+    local selectedlist = awful.tag.selectedlist(scr)
+    if #selectedlist>0 then
+        for _, sel in ipairs(selectedlist) do
+            local sticky = not awful.tag.getproperty(sel, "persist")
+            awful.tag.setproperty(sel, "persist", sticky)
+
+            -- sticky tags have name suffixed
+            local sticky_label_suffix = '*'
+            local name = sel.name
+            if sticky then
+                -- if sticky and no suffix, add suffix
+                if name:sub(-1)~=sticky_label_suffix then
+                    sel.name = name .. sticky_label_suffix
+                end
+            else
+                -- if not sticky and has suffix, remove suffix
+                if name:sub(-1)==sticky_label_suffix and name:len()>1 then
+                    sel.name = name:sub(1, -2)
+                end
+            end
+        end
+    end
+end), 
+-- nopopup new tag
+awful.key({modkey, "Shift"}, "a",
 function()
     local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
     shifty.add({nopopup = true, index = newindex})
 end),
-
-awful.key({modkey,}, "g",  -- find a tag and view it
+-- find a tag and view it
+awful.key({modkey,}, "g",
 function () 
     local keywords = {}
     local scr = mouse.screen
@@ -597,7 +625,8 @@ function ()
     end,
     nil)
 end),
-awful.key({modkey, "Shift"}, "g",  -- find a tag and move the client to it
+-- find a tag and move the client to it
+awful.key({modkey, "Shift"}, "g",
 function () 
     local keywords = {}
     local scr = mouse.screen
