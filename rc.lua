@@ -17,6 +17,8 @@ local menubar = require("menubar")
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
 
+awesome.orig = {}
+
 do
     local config_path = awful.util.getdir("config")
     bashets.set_script_path(config_path .. "/bashets/")
@@ -71,14 +73,14 @@ do
         end
     end)
 
-    local orig_awesome_quit = awesome.quit
+    awesome.orig.quit = awesome.quit
     awesome.quit = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Quit (type 'yes' to confirm)? "},
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                orig_awesome_quit()
+                awesome.orig.quit()
             end
         end,
         function (t, p, n)
@@ -134,14 +136,14 @@ do
         end
     end)
 
-    local orig_awesome_restart = awesome.restart
+    awesome.orig.restart = awesome.restart
     awesome.restart = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                orig_awesome_restart()
+                awesome.orig.restart()
             end
         end,
         function (t, p, n)
@@ -1057,9 +1059,9 @@ client.connect_signal("manage", client_manage_tag)
 
 -- disable startup-notification globally
 -- prevent unintended mouse cursor change
-local oldspawn = awful.util.spawn
+awesome.orig.awful_util_spawn = awful.util.spawn
 awful.util.spawn = function (s)
-    oldspawn(s, false)
+    awesome.orig.awful_util_spawn(s, false)
 end
 
 -- XDG style autostart with "dex"
