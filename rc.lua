@@ -432,7 +432,7 @@ end
 shifty.taglist = mytaglist
 
 do
-    -- test whether "old screen counter" tag file exists
+    -- test whether screen 1 tag file exists
     local f = io.open(awesome_restart_tags_fname .. ".0", "r")
     if f then
         local old_scr_count = tonumber(f:read("*l"))
@@ -876,31 +876,71 @@ shifty.config.modkey = modkey
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, (shifty.config.maxtags or 9) do
+-- This should map on the top row of your keyboard, usually 1 to 9, plus 0.
+
+for i = 1, 10 do
+    local keycode = "#" .. i+9
+
     globalkeys = awful.util.table.join(globalkeys,
-    awful.key({ modkey }, "#" .. i + 9,
+
+    awful.key({ modkey }, keycode,
     function ()
-        awful.tag.viewonly(shifty.getpos(i))
-    end),
-    awful.key({ modkey, "Control" }, "#" .. i + 9,
-    function ()
-        awful.tag.viewtoggle(shifty.getpos(i))
-    end),
-    awful.key({ modkey, "Shift" }, "#" .. i + 9,
-    function ()
-        if client.focus then
-            local t = shifty.getpos(i)
-            awful.client.movetotag(t)
-            --awful.tag.viewonly(t)
+        local tag
+        local tags = awful.tag.gettags(mouse.screen)
+        if i <= #tags then
+            tag = tags[i]
+        else
+            tag = shifty.getpos(i)
+        end
+        if tag then
+            awful.tag.viewonly(tag)
         end
     end),
-    awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+
+    awful.key({ modkey, "Control" }, keycode,
     function ()
-        if client.focus then
-            awful.client.toggletag(shifty.getpos(i))
+        local tag
+        local tags = awful.tag.gettags(mouse.screen)
+        if i <= #tags then
+            tag = tags[i]
+        else
+            tag = shifty.getpos(i)
         end
-    end))
+        if tag then
+            awful.tag.viewtoggle(tag)
+        end
+    end),
+
+    awful.key({ modkey, "Shift" }, keycode,
+    function ()
+        local tag
+        local tags = awful.tag.gettags(client.focus.screen)
+        if i <= #tags then
+            tag = tags[i]
+        else
+            tag = shifty.getpos(i)
+        end
+        if client.focus and tag then
+            awful.client.movetotag(tag)
+        end
+    end),
+
+    awful.key({ modkey, "Control", "Shift" }, keycode,
+    function ()
+        local tag
+        local tags = awful.tag.gettags(client.focus.screen)
+        if i <= #tags then
+            tag = tags[i]
+        else
+            tag = shifty.getpos(i)
+        end
+        if client.focus and tag then
+            awful.client.toggletag(tag)
+        end
+    end),
+
+    nil
+    )
 end
 
 -- Set keys
