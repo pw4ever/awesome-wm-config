@@ -756,7 +756,7 @@ end),
 awful.key({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("putty")
 end),
-awful.key({ modkey }, "l", function ()
+awful.key({ modkey }, "'", function ()
     awful.util.spawn("xfce4-appfinder")
 end),
 awful.key({ modkey, "Mod1", }, "v", function ()
