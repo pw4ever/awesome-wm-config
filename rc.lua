@@ -17,7 +17,10 @@ local menubar = require("menubar")
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
 
+-- customization
 awesome.orig = {}
+awesome.customization = {}
+awesome.customization.func = {}
 
 do
     local config_path = awful.util.getdir("config")
@@ -575,30 +578,16 @@ awful.key({modkey}, "a", function ()
 end),
 -- rename a tag
 awful.key({modkey, "Shift"}, "r", shifty.rename),
--- toggle tag persistence ("sticky" tag)
+-- toggle tag's "persist" property
 awful.key({modkey, }, "s", function ()
     local scr = mouse.screen
     local selectedlist = awful.tag.selectedlist(scr)
     if #selectedlist>0 then
         for _, sel in ipairs(selectedlist) do
-            local sticky = not awful.tag.getproperty(sel, "persist")
-            awful.tag.setproperty(sel, "persist", sticky)
-
-            -- sticky tags have name suffixed
-            local sticky_label_suffix = '*'
-            local name = sel.name
-            if sticky then
-                -- if sticky and no suffix, add suffix
-                if name:sub(-1)~=sticky_label_suffix then
-                    sel.name = name .. sticky_label_suffix
-                end
-            else
-                -- if not sticky and has suffix, remove suffix
-                if name:sub(-1)==sticky_label_suffix and name:len()>1 then
-                    sel.name = name:sub(1, -2)
-                end
-            end
+            local persist = awful.tag.getproperty(sel, "persist")
+            awful.tag.setproperty(sel, "persist", not persist)
         end
+        awesome.customization.func.tag_relabel_persist()
     end
 end), 
 -- nopopup new tag
@@ -1061,7 +1050,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
-local function client_manage_tag(c, startup)
+awesome.customization.func.client_manage_tag = function (c, startup)
     if startup then
         local fname = awesome_restart_tags_fname .. '/' .. c.pid
         local f = io.open(fname, 'r')
@@ -1082,7 +1071,7 @@ local function client_manage_tag(c, startup)
         end
     end
 end
-client.connect_signal("manage", client_manage_tag)
+client.connect_signal("manage", awesome.customization.func.client_manage_tag)
 
 -- }}}
 
@@ -1092,6 +1081,31 @@ awesome.orig.awful_util_spawn = awful.util.spawn
 awful.util.spawn = function (s)
     awesome.orig.awful_util_spawn(s, false)
 end
+
+-- persist tags rename with suffix
+awesome.customization.persist_label_suffix = "$"
+awesome.customization.func.tag_relabel_persist = function ()
+    for s=1, screen.count() do
+        for _, t in ipairs(awful.tag.gettags(s)) do
+            local persist_label_suffix = awesome.customization.persist_label_suffix
+            local name = t.name
+            local persist = awful.tag.getproperty(t, "persist")
+            if persist then
+                -- if persist and no suffix, add suffix
+                if name:sub(-1)~=persist_label_suffix then
+                    t.name = name .. persist_label_suffix
+                end
+            else
+                -- if not persist and has suffix (and also ensure name is not empty), remove suffix
+                if name:sub(-1)==persist_label_suffix and name:len()>1 then
+                    t.name = name:sub(1, -2)
+                end
+            end
+
+        end 
+    end
+end
+awesome.customization.func.tag_relabel_persist()
 
 -- XDG style autostart with "dex"
 -- HACK continue
