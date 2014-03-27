@@ -17,6 +17,10 @@ local menubar = require("menubar")
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
 
+local capi = {
+    tag = tag,
+}
+
 -- customization
 awesome.orig = {}
 awesome.customization = {}
@@ -1105,6 +1109,9 @@ awesome.customization.func.tag_relabel_persist = function ()
         end 
     end
 end
+
+capi.tag.connect_signal("property::name", awesome.customization.func.tag_relabel_persist)
+
 awesome.customization.func.tag_relabel_persist()
 
 -- XDG style autostart with "dex"
