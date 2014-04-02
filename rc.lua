@@ -22,9 +22,10 @@ local capi = {
 }
 
 -- customization
-awesome.orig = {}
-awesome.customization = {}
-awesome.customization.func = {}
+customization = {}
+customization.orig = {}
+customization.constant = {}
+customization.func = {}
 
 do
     local config_path = awful.util.getdir("config")
@@ -80,14 +81,14 @@ do
         end
     end)
 
-    awesome.orig.quit = awesome.quit
+    customization.orig.quit = awesome.quit
     awesome.quit = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Quit (type 'yes' to confirm)? "},
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                awesome.orig.quit()
+                customization.orig.quit()
             end
         end,
         function (t, p, n)
@@ -143,14 +144,14 @@ do
         end
     end)
 
-    awesome.orig.restart = awesome.restart
+    customization.orig.restart = awesome.restart
     awesome.restart = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
         mypromptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
-                awesome.orig.restart()
+                customization.orig.restart()
             end
         end,
         function (t, p, n)
@@ -237,7 +238,7 @@ end
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
+local layouts =
 {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
@@ -340,8 +341,17 @@ menubar.utils.terminal = tools.terminal -- Set the terminal for applications tha
 -- mytextclock = awful.widget.textclock()
 mytextclock = wibox.widget.textbox()
 
+--[[
+do
+    local mytimer = timer({timeout=1})
+    mytimer:connect_signal("timeout", function() mytextclock:set_text(awful.util.pread("date")) end)
+    mytimer:start() 
+end
+--]]
+
 -- http://awesome.naquadah.org/wiki/Bashets
-bashets.register("date.sh", {widget=mytextclock, update_time=1, format="<small>$1</small> <span fgcolor='red'>$3 $2 $6</span> <b>$4 $5</b>"})
+bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
+
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -592,7 +602,7 @@ awful.key({modkey, }, "s", function ()
             local persist = awful.tag.getproperty(sel, "persist")
             awful.tag.setproperty(sel, "persist", not persist)
         end
-        awesome.customization.func.tag_relabel_persist()
+        customization.func.tag_relabel_persist()
     end
 end), 
 -- nopopup new tag
@@ -1055,7 +1065,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
-awesome.customization.func.client_manage_tag = function (c, startup)
+customization.func.client_manage_tag = function (c, startup)
     if startup then
         local fname = awesome_restart_tags_fname .. '/' .. c.pid
         local f = io.open(fname, 'r')
@@ -1076,23 +1086,23 @@ awesome.customization.func.client_manage_tag = function (c, startup)
         end
     end
 end
-client.connect_signal("manage", awesome.customization.func.client_manage_tag)
+client.connect_signal("manage", customization.func.client_manage_tag)
 
 -- }}}
 
 -- disable startup-notification globally
 -- prevent unintended mouse cursor change
-awesome.orig.awful_util_spawn = awful.util.spawn
+customization.orig.awful_util_spawn = awful.util.spawn
 awful.util.spawn = function (s)
-    awesome.orig.awful_util_spawn(s, false)
+    customization.orig.awful_util_spawn(s, false)
 end
 
 -- persist tags rename with suffix
-awesome.customization.persist_label_suffix = "$"
-awesome.customization.func.tag_relabel_persist = function ()
+customization.constant.persist_label_suffix = "$"
+customization.func.tag_relabel_persist = function ()
     for s=1, screen.count() do
         for _, t in ipairs(awful.tag.gettags(s)) do
-            local persist_label_suffix = awesome.customization.persist_label_suffix
+            local persist_label_suffix = customization.constant.persist_label_suffix
             local name = t.name
             local persist = awful.tag.getproperty(t, "persist")
             if persist then
@@ -1111,10 +1121,10 @@ awesome.customization.func.tag_relabel_persist = function ()
     end
 end
 
-capi.tag.connect_signal("property::name", awesome.customization.func.tag_relabel_persist)
+capi.tag.connect_signal("property::name", customization.func.tag_relabel_persist)
 
-awesome.customization.func.tag_relabel_persist()
+customization.func.tag_relabel_persist()
 
 -- XDG style autostart with "dex"
 -- HACK continue
-awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e Awesome; touch " .. awesome_autostart_once_fname .. "; fi")
+awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e awesome; touch " .. awesome_autostart_once_fname .. "; fi")

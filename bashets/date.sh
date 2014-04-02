@@ -1,2 +1,2 @@
 #! /bin/sh
-perl -le '$d=`date`; chomp $d; printf $d'
+date +"%a %d-%b-%Y %z %Z %I:%M:%S %p"
