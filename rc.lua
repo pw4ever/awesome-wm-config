@@ -420,7 +420,7 @@ do
     if f then
         local old_scr_count = tonumber(f:read("*l"))
         f:close()
-        awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. ".0")
+        os.remove(awesome_restart_tags_fname .. ".0")
 
         local new_scr_count = screen.count()
 
@@ -435,7 +435,8 @@ do
 
             for s = 1, old_scr_count do
                 local count_index = math.min(s, scr_count)
-                for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
+                local fname = awesome_restart_tags_fname .. "." .. s
+                for tagname in io.lines(fname) do
                     local tag = awful.tag.add(tagname,
                     {
                         screen = s,
@@ -449,11 +450,13 @@ do
 
                     count[count_index] = count[count_index]+1
                 end
+                os.remove(fname)
             end
         end
 
         for s = 1, screen.count() do
-            f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "r")
+            local fname = awesome_restart_tags_fname .. "-selected." .. s 
+            f = io.open(fname, "r")
             if f then
                 local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
                 if tag then
@@ -461,6 +464,7 @@ do
                 end
                 f:close()
             end
+            os.remove(fname)
         end
 
     else
@@ -1095,6 +1099,9 @@ customization.func.client_manage_tag = function (c, startup)
             for tag in io.lines(fname) do
                 tags = awful.util.table.join(tags, {util.tag.name2tag(tag)})
             end
+            -- remove the file after using it to reduce clutter
+            os.remove(fname)
+
             if #tags>0 then
                 c:tags(tags)
                 -- set c's screen to that of its first (often the only) tag
