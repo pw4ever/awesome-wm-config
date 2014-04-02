@@ -1,12 +1,14 @@
 awesome-wm-config
 =================
 
-My customized, self-contained config for awesome window manager.
+My customized, self-contained configuration for awesome window manager.
 
 overview
 -----
 
 [awesome][] is awesome. But customize it to taste takes time. This is to save the time.
+
+Known to work well with *awesome v3.5.2 (The Fox).*
 
 usage
 -----

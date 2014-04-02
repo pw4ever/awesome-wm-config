@@ -1,14 +1,12 @@
--- default rc.lua for shifty
---
--- Standard awesome library
--- to find local libraries
 package.path = package.path .. ";./?/init.lua;"
 
 local gears = require("gears")
 local awful = require("awful")
+awful.rules = require("awful.rules")
 require("awful.autofocus")
 require("awful.dbus")
 require("awful.remote")
+awful.ewmh = require("awful.ewmh")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
@@ -16,6 +14,9 @@ local menubar = require("menubar")
 
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
+
+-- utilities
+local util = require("util")
 
 local capi = {
     tag = tag,
@@ -26,16 +27,20 @@ customization = {}
 customization.orig = {}
 customization.constant = {}
 customization.func = {}
+customization.defaults = {}
+
+customization.defaults.property = {
+    layout = awful.layout.suit.floating,
+    mwfact = 0.5,
+    nmaster = 1,
+    ncol = 2,
+}
+
 
 do
     local config_path = awful.util.getdir("config")
     bashets.set_script_path(config_path .. "/bashets/")
 end
-
-local shifty = require("shifty")
-shifty.config.defaults.rel_index = 1
-shifty.config.remember_index = false
-shifty.config.guess_position = false
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -93,13 +98,11 @@ do
         end,
         function (t, p, n)
             return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-        end,
-        nil)
+        end)
     end
 end
 
 do
-
     awesome.connect_signal("exit", function (restart)
         if restart then
             -- save number of screens, used for check proper tag recording
@@ -123,7 +126,7 @@ do
                 end
                 f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
                 if f then
-                    f:write(awful.tag.selected(s).name .. "\n")
+                    f:write(awful.tag.getidx() .. "\n")
                     f:close()
                 end
             end
@@ -156,8 +159,7 @@ do
         end,
         function (t, p, n)
             return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-        end,
-        nil)
+        end)
     end
 end
 
@@ -274,42 +276,6 @@ end
 end
 -- }}}
 --]]
-
--- SHIFTY: application matching rules
--- order here matters, early rules will be applied first
-shifty.config.apps = {
-    {
-        match = {""},
-        buttons = awful.util.table.join(
-        awful.button({}, 1, function (c) client.focus = c; c:raise() end),
-        awful.button({modkey}, 1, function(c)
-            client.focus = c
-            c:raise()
-            awful.mouse.client.move(c)
-        end),
-        awful.button({modkey}, 3, awful.mouse.client.resize)
-        )
-    },
-}
-
--- SHIFTY: default tag creation rules
--- parameter description
---  * floatBars : if floating clients should always have a titlebar
---  * guess_name : should shifty try and guess tag names when creating
---                 new (unconfigured) tags?
---  * guess_position: as above, but for position parameter
---  * run : function to exec when shifty creates a new tag
---  * all other parameters (e.g. layout, mwfact) follow awesome's tag API
-shifty.config.defaults = {
-    --layout = awful.layout.suit.tile.bottom,
-    layout = awful.layout.suit.floating,
-    ncol = 1,
-    mwfact = 0.50,
-    floatBars = true,
-    guess_name = true,
-    guess_position = true,
-}
-
 
 
 -- {{{ Menu
@@ -447,11 +413,6 @@ for s = 1, screen.count() do
 end
 -- }}}
 
--- SHIFTY: initialize shifty
--- the assignment of shifty.taglist must always be after its actually
--- initialized with awful.widget.taglist.new()
-shifty.taglist = mytaglist
-
 do
     -- test whether screen 1 tag file exists
     local f = io.open(awesome_restart_tags_fname .. ".0", "r")
@@ -471,63 +432,59 @@ do
                 count[s] = 1
             end
 
-            shifty.config.tags = {}
             for s = 1, old_scr_count do
                 local count_index = math.min(s, scr_count)
                 for tagname in io.lines(awesome_restart_tags_fname .. "." .. s) do
-                    shifty.config.tags = awful.util.table.join(shifty.config.tags,
+                    local tag = awful.tag.add(tagname,
                     {
-                        [tagname] = {
-                            screen = math.min(new_scr_count, s),
-                            position = count[count_index],
-                            layout = shifty.config.defaults.layout, 
-                            mwfact = shifty.config.defaults.mwfact,
-                            init = true,
-                        }
+                        screen = s,
+                        layout = customization.defaults.property.layout,
+                        mwfact = customization.defaults.property.mwfact,
+                        nmaster = customization.defaults.property.nmaster,
+                        ncol = customization.defaults.property.ncol,
                     }
                     )
+                    awful.tag.move(count[count_index], tag)
+
                     count[count_index] = count[count_index]+1
                 end
             end
         end
-        -- create the tags
-        shifty.init()
 
         for s = 1, screen.count() do
             f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "r")
             if f then
-                local tag = f:read("*l")
+                local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
                 if tag then
-                    awful.tag.viewonly(name2tag(tag))
+                    awful.tag.viewonly(tag)
                 end
                 f:close()
             end
         end
 
     else
-        shifty.config.tags = {
-            ["genesis"] = {
-                layout    = awful.layout.suit.floating,
-                mwfact    = 0.50,
-                exclusive = false,
-                position  = 0,
-                init      = true,
-                screen    = 1,
-                slave     = true,
-            },
-            ["nil"] = {
-                layout    = awful.layout.suit.floating,
-                mwfact    = 0.50,
-                exclusive = false,
-                position  = 0,
-                init      = true,
-                screen    = 2,
-                slave     = true,
-            },
-        }
 
-        -- create the tags
-        shifty.init()
+        local tag = awful.tag.add("genesis",
+        {
+            screen = 1,
+            layout = customization.defaults.property.layout,
+            mwfact = customization.defaults.property.mwfact,
+            nmaster = customization.defaults.property.nmaster,
+            ncol = customization.defaults.property.ncol, 
+        } 
+        )
+        awful.tag.viewonly(tag)
+
+        awful.tag.add("nil",
+        {
+            screen = 2,
+            layout = customization.defaults.property.layout,
+            mwfact = customization.defaults.property.mwfact,
+            nmaster = customization.defaults.property.nmaster,
+            ncol = customization.defaults.property.ncol, 
+        } 
+        ) 
+
     end
 end
 
@@ -546,101 +503,98 @@ awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
 awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 awful.key({ modkey,           }, "z", awful.tag.history.restore),
-
--- Shifty: keybindings specific to shifty
---[[
-awful.key({modkey, "Shift"}, "d", shifty.del), -- delete a tag
-awful.key({modkey, "Shift"}, "n", shifty.send_prev), -- client to prev tag
-awful.key({modkey}, "n", shifty.send_next), -- client to next tag
-awful.key({modkey, "Control"},
-"n",
-function()
-local t = awful.tag.selected()
-local s = awful.util.cycle(screen.count(), awful.tag.getscreen(t) + 1)
-awful.tag.history.restore()
-t = shifty.tagtoscr(s, t)
-awful.tag.viewonly(t)
-end),
---]]
-awful.key({modkey, "Shift"}, "d", function ()
-    local tag = awful.tag.selected(mouse.screen)
-    if tag then
-        shifty.del(tag)
-    end
-end
-),
-
-awful.key({modkey, "Shift"}, "p", function ()
-    local c = client.focus
-    if c then
-        shifty.send_prev()
-    end
-end),
-awful.key({modkey, "Shift"}, "n", function ()
-    local c = client.focus
-    if c then
-        shifty.send_next()
-    end
-end),
-awful.key({modkey, "Control"}, "p", shifty.shift_prev), -- shift tag left
-awful.key({modkey, "Control"}, "n", shifty.shift_next), -- shift tag right
+awful.key({modkey, "Shift"}, "d", awful.tag.delete),
 awful.key({modkey,}, "p", awful.tag.viewprev),
 awful.key({modkey,}, "n", awful.tag.viewnext),
--- create a new tag
-awful.key({modkey}, "a", function ()
-    local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
-    shifty.add({index = newindex})
+awful.key({modkey, "Shift"}, "p", function () util.client.rel_send(-1) end),
+awful.key({modkey, "Shift"}, "n", function () util.client.rel_send(1) end),
+awful.key({modkey, "Control"}, "p", function () util.tag.rel_move(awful.tag.selected(), -1) end), 
+awful.key({modkey, "Control"}, "n", function () util.tag.rel_move(awful.tag.selected(), 1) end), 
+-- add tag *after* selected
+awful.key({modkey}, "a",
+function ()
+    local scr = mouse.screen
+    local sel_idx = awful.tag.getidx()
+
+    awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+    mypromptbox[scr].widget,
+    function (text)
+        if #text>0 then
+            local tag = awful.tag.add(text)
+            awful.tag.setscreen(tag, scr)
+            awful.tag.move(sel_idx and sel_idx+1 or 1, tag)
+            awful.tag.viewonly(tag)
+        end
+    end,
+    nil)
 end),
 -- rename a tag
-awful.key({modkey, "Shift"}, "r", shifty.rename),
--- toggle tag's "persist" property
-awful.key({modkey, }, "s", function ()
+awful.key({modkey, "Shift"}, "r",
+function ()
     local scr = mouse.screen
-    local selectedlist = awful.tag.selectedlist(scr)
-    if #selectedlist>0 then
-        for _, sel in ipairs(selectedlist) do
-            local persist = awful.tag.getproperty(sel, "persist")
-            awful.tag.setproperty(sel, "persist", not persist)
-        end
-        customization.func.tag_relabel_persist()
+    local sel = awful.tag.selected(scr)
+    if sel then
+        name = sel.name
+
+        awful.prompt.run({prompt = "<span fgcolor='red'>" .. (name and name or "") .. "-></span>"},
+        mypromptbox[scr].widget,
+        function (text)
+            if #text>0 and text~=name then
+                sel.name = text
+                sel:emit_signal("property::name")
+            end
+        end,
+        function (t, p, n)
+            return awful.completion.generic(t, p, n, {name})
+        end)
     end
-end), 
--- nopopup new tag
+end),
+-- add tag *before* selected
 awful.key({modkey, "Shift"}, "a",
 function()
-    local newindex = awful.tag.getidx() and (awful.tag.getidx() + 1) or 1
-    shifty.add({nopopup = true, index = newindex})
+    local scr = mouse.screen
+    local sel_idx = awful.tag.getidx()
+
+    awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+    mypromptbox[scr].widget,
+    function (text)
+        if #text>0 then
+            local tag = awful.tag.add(text)
+            awful.tag.setscreen(tag, scr)
+            awful.tag.move(sel_idx and sel_idx+1 or 1, tag)
+            awful.tag.viewonly(tag)
+        end
+    end,
+    nil)
 end),
--- find a tag and view it
 awful.key({modkey,}, "g",
 function () 
     local keywords = {}
     local scr = mouse.screen
-    for i, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
         table.insert(keywords, t.name)
     end
     awful.prompt.run({prompt = "Find tag: "},
     mypromptbox[scr].widget,
     function (t)
-        awful.tag.viewonly(name2tag(t))
+        awful.tag.viewonly(util.tag.name2tag(t))
     end,
     function (t, p, n)
         return awful.completion.generic(t, p, n, keywords)
-    end,
-    nil)
+    end)
 end),
 -- find a tag and move the client to it
 awful.key({modkey, "Shift"}, "g",
 function () 
     local keywords = {}
     local scr = mouse.screen
-    for i, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
         table.insert(keywords, t.name)
     end
     awful.prompt.run({prompt = "Move client to tag: "},
     mypromptbox[scr].widget,
     function (t)
-        awful.client.movetotag(name2tag(t))
+        awful.client.movetotag(util.tag.name2tag(t))
     end,
     function (t, p, n)
         return awful.completion.generic(t, p, n, keywords)
@@ -892,7 +846,6 @@ awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle         
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
 awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
 awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
-awful.key({ modkey, "Shift"   }, "t",      function (c) shifty.create_titlebar(c) awful.titlebar(c) c.border_width = 1 end),
 awful.key({ modkey, "Shift"   }, "m",
 function (c)
     -- The client currently has the input focus, so it cannot be
@@ -905,11 +858,6 @@ function (c)
     c.maximized_vertical   = not c.maximized_vertical
 end)
 )
-
--- SHIFTY: assign client keys to shifty for use in
--- match() function(manage hook)
-shifty.config.clientkeys = clientkeys
-shifty.config.modkey = modkey
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
@@ -927,9 +875,18 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.add({
-                index = #tags+1
-            })
+            local scr = mouse.screen
+            awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+            mypromptbox[scr].widget,
+            function (text)
+                if #text>0 then
+                    tag = awful.tag.add(text)
+                    awful.tag.setscreen(tag, scr)
+                    awful.tag.move(#tags+1, tag)
+                    awful.tag.viewonly(tag)
+                end
+            end,
+            nil)
         end
         if tag then
             awful.tag.viewonly(tag)
@@ -943,9 +900,18 @@ for i = 1, 10 do
         if i <= #tags then
             tag = tags[i]
         else
-            tag = shifty.add({
-                index = #tags+1
-            })
+            local scr = mouse.screen
+            awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+            mypromptbox[scr].widget,
+            function (text)
+                if #text>0 then
+                    tag = awful.tag.add(text)
+                    awful.tag.setscreen(tag, scr)
+                    awful.tag.move(#tags+1, tag)
+                    awful.tag.viewonly(tag)
+                end
+            end,
+            nil)
         end
         if tag then
             awful.tag.viewtoggle(tag)
@@ -954,33 +920,59 @@ for i = 1, 10 do
 
     awful.key({ modkey, "Shift" }, keycode,
     function ()
-        local tag
-        local tags = awful.tag.gettags(client.focus.screen)
-        if i <= #tags then
-            tag = tags[i]
-        else
-            tag = shifty.add({
-                index = #tags+1
-            })
-        end
-        if client.focus and tag then
-            awful.client.movetotag(tag)
+        local focus = client.focus
+
+        if focus then
+            local tag
+            local tags = awful.tag.gettags(focus.screen)
+            if i <= #tags then
+                tag = tags[i]
+            else
+                local scr = mouse.screen
+                awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+                mypromptbox[scr].widget,
+                function (text)
+                    if #text>0 then
+                        tag = awful.tag.add(text)
+                        awful.tag.setscreen(tag, scr)
+                        awful.tag.move(#tags+1, tag)
+                        awful.tag.viewonly(tag)
+                    end
+                end,
+                nil)
+            end
+            if tag then
+                awful.client.movetotag(tag)
+            end
         end
     end),
 
     awful.key({ modkey, "Control", "Shift" }, keycode,
     function ()
-        local tag
-        local tags = awful.tag.gettags(client.focus.screen)
-        if i <= #tags then
-            tag = tags[i]
-        else
-            tag = shifty.add({
-                index = #tags+1
-            })
-        end
-        if client.focus and tag then
-            awful.client.toggletag(tag)
+        local focus = client.focus
+
+        if focus then
+            local tag
+            local tags = awful.tag.gettags(client.focus.screen)
+            if i <= #tags then
+                tag = tags[i]
+            else
+                local scr = mouse.screen
+                awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
+                mypromptbox[scr].widget,
+                function (text)
+                    if #text>0 then
+                        tag = awful.tag.add(text)
+                        awful.tag.setscreen(tag, scr)
+                        awful.tag.move(#tags+1, tag)
+                        awful.tag.viewonly(tag)
+                    end
+                end,
+                nil)
+            end
+            if tag then
+                awful.client.toggletag(tag)
+            end
         end
     end),
 
@@ -988,10 +980,35 @@ for i = 1, 10 do
     )
 end
 
+clientbuttons = awful.util.table.join(
+awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+awful.button({ modkey }, 1, awful.mouse.client.move),
+awful.button({ modkey }, 3, awful.mouse.client.resize))
+
 -- Set keys
 root.keys(globalkeys)
 -- }}}
 
+-- {{{ Rules
+-- Rules to apply to new clients (through the "manage" signal).
+awful.rules.rules = {
+    -- All clients will match this rule.
+    { rule = { },
+    properties = { border_width = beautiful.border_width,
+    border_color = beautiful.border_normal,
+    focus = awful.client.focus.filter,
+    raise = true,
+    keys = clientkeys,
+    buttons = clientbuttons } },
+    { rule = { class = "MPlayer" },
+    properties = { floating = true } },
+    { rule = { class = "gimp" },
+    properties = { floating = true } },
+    -- Set Firefox to always map on tags number 2 of screen 1.
+    -- { rule = { class = "Firefox" },
+    --   properties = { tag = tags[1][2] } },
+}
+-- }}}
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -1020,17 +1037,17 @@ client.connect_signal("manage", function (c, startup)
     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
         -- buttons for the titlebar
         local buttons = awful.util.table.join(
-                awful.button({ }, 1, function()
-                    client.focus = c
-                    c:raise()
-                    awful.mouse.client.move(c)
-                end),
-                awful.button({ }, 3, function()
-                    client.focus = c
-                    c:raise()
-                    awful.mouse.client.resize(c)
-                end)
-                )
+        awful.button({ }, 1, function()
+            client.focus = c
+            c:raise()
+            awful.mouse.client.move(c)
+        end),
+        awful.button({ }, 3, function()
+            client.focus = c
+            c:raise()
+            awful.mouse.client.resize(c)
+        end)
+        )
 
         -- Widgets that are aligned to the left
         local left_layout = wibox.layout.fixed.horizontal()
@@ -1073,7 +1090,7 @@ customization.func.client_manage_tag = function (c, startup)
         if f then
             local tags = {}
             for tag in io.lines(fname) do
-                tags = awful.util.table.join(tags, {name2tag(tag)})
+                tags = awful.util.table.join(tags, {util.tag.name2tag(tag)})
             end
             if #tags>0 then
                 c:tags(tags)
@@ -1096,34 +1113,6 @@ customization.orig.awful_util_spawn = awful.util.spawn
 awful.util.spawn = function (s)
     customization.orig.awful_util_spawn(s, false)
 end
-
--- persist tags rename with suffix
-customization.constant.persist_label_suffix = "$"
-customization.func.tag_relabel_persist = function ()
-    for s=1, screen.count() do
-        for _, t in ipairs(awful.tag.gettags(s)) do
-            local persist_label_suffix = customization.constant.persist_label_suffix
-            local name = t.name
-            local persist = awful.tag.getproperty(t, "persist")
-            if persist then
-                -- if persist and no suffix, add suffix
-                if name:sub(-1)~=persist_label_suffix then
-                    t.name = name .. persist_label_suffix
-                end
-            else
-                -- if not persist and has suffix (and also ensure name is not empty), remove suffix
-                if name:sub(-1)==persist_label_suffix and name:len()>1 then
-                    t.name = name:sub(1, -2)
-                end
-            end
-
-        end 
-    end
-end
-
-capi.tag.connect_signal("property::name", customization.func.tag_relabel_persist)
-
-customization.func.tag_relabel_persist()
 
 -- XDG style autostart with "dex"
 -- HACK continue
