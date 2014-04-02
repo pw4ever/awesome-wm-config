@@ -566,7 +566,7 @@ function()
         if #text>0 then
             local tag = awful.tag.add(text)
             awful.tag.setscreen(tag, scr)
-            awful.tag.move(sel_idx and sel_idx+1 or 1, tag)
+            awful.tag.move(sel_idx and sel_idx or 1, tag)
             awful.tag.viewonly(tag)
         end
     end,
