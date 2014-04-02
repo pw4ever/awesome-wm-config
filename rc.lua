@@ -33,7 +33,7 @@ customization.defaults.property = {
     layout = awful.layout.suit.floating,
     mwfact = 0.5,
     nmaster = 1,
-    ncol = 2,
+    ncol = 1,
 }
 
 
