@@ -136,7 +136,8 @@ do
             -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname) 
             -- race condition (whether awesome_restart_tags_fname is created) due to asynchrony of "spawn_with_shell"
             for _, c in ipairs(client.get()) do
-                local f = io.open(awesome_restart_tags_fname .. '/' .. c.pid, 'w+')
+                local client_id = c.pid .. '-' .. c.window
+                local f = io.open(awesome_restart_tags_fname .. '/' .. client_id, 'w+')
                 if f then
                     for _, t in ipairs(c:tags()) do
                         f:write(t.name .. "\n")
@@ -1084,7 +1085,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 customization.func.client_manage_tag = function (c, startup)
     if startup then
-        local fname = awesome_restart_tags_fname .. '/' .. c.pid
+        local client_id = c.pid .. '-' .. c.window
+
+        local fname = awesome_restart_tags_fname .. '/' .. client_id
         local f = io.open(fname, 'r')
 
         if f then
