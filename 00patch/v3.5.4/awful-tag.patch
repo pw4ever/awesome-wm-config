@@ -1,0 +1,27 @@
+From 6d311a4f0afac9b39ec9bb93702112502d5997eb Mon Sep 17 00:00:00 2001
+From: Wei Peng <write.to.peng.wei@gmail.com>
+Date: Thu, 3 Apr 2014 18:17:29 -0400
+Subject: [PATCH] revert 9c69e8: set index to nil after setscreen break
+ awful.tag.move etc.
+
+---
+ lib/awful/tag.lua.in | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
+index e3399e5..a9c9da8 100644
+--- a/lib/awful/tag.lua.in
++++ b/lib/awful/tag.lua.in
+@@ -272,9 +272,6 @@ end
+ function tag.setscreen(t, s)
+     local s = s or capi.mouse.screen
+ 
+-    -- Keeping the old index make very little sense when changing screen
+-    tag.setproperty(t, "index", nil)
+-
+     local old_screen = tag.getproperty(t,"screen")
+ 
+     -- Change the screen
+-- 
+1.9.1
+

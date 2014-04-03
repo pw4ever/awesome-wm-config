@@ -8,7 +8,14 @@ overview
 
 [awesome][] is awesome. But customize it to taste takes time. This is to save the time.
 
-Known to work well with *awesome v3.5.2 (The Fox).*
+patch
+-----
+
+Known to work with *awesome v3.5.2 (The Fox).*
+
+An [upstream bug report][] is filed to address dynamic tagging regression in v3.5.3 and v3.5.4.
+
+patch against v3.5.4 (and Arch Linux PKGBUILD) can be found in this repo under 00patch/v3.5.4/
 
 usage
 -----
@@ -33,3 +40,4 @@ feature
 * cycle through only the most sensible layouts
 
 [awesome]: http://awesome.naquadah.org/wiki/Main_Page "awesome wm wiki"
+[upstream bug report]: https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249&project=1&order=dateopened&sort=desc
