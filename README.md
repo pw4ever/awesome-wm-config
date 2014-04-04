@@ -36,18 +36,7 @@
 
 # [awesome Window Manager][awesome] configuration
 
-<<<<<<< HEAD
 ## intro
-=======
-patch
------
-
-Known to work with *awesome v3.5.2 (The Fox).*
-
-An [upstream bug report][] is filed to address dynamic tagging regression in v3.5.3 and v3.5.4.
-
-patch against v3.5.4 (and Arch Linux PKGBUILD) can be found in this repo under 00patch/v3.5.4/
->>>>>>> cd53bd1cb9a129c86ccab408c71b400cdf06bc39
 
 [awesome][awesome] is awesome. I use it on all [Arch Linux][archlinux] desktop/laptop machines that I have control over (admittedly, it is not designed for handheld smartphones/tablets).
 
@@ -76,9 +65,9 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 
 ### patching
 
-This configuration is known to work with awesomeWM/awesome@v3.5.2
+This configuration is known to work with [awesome v3.5.2][]
 
-[awesome][awesome] releases from awesomeWM/awesome@v3.5.3 to (at least) awesomeWM/awesome@v3.5.4 has a commit (awesomeWM/awesome@9c69e8) that obliterates the order of dynamic tags. I have [filed an upstream bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249) and released a patch against it.
+[awesome][awesome] releases from [awesome v3.5.3][] to (at least) [awesome v3.5.4][] has [a commit that obliterates the order of dynamic tags][awesome dynamic tag regression]. I have [filed an upstream bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249) and released a patch against it.
 
 Options for patching:
 * [the raw patch](https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/00patch/v3.5.4/awful-tag.patch).
@@ -307,11 +296,10 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 - [ ] improve persistent dynamic tagging: preserve tag configuration (e.g., layout style and client positions)
 
-<<<<<<< HEAD
 [awesome]: http://awesome.naquadah.org/
 [archlinux]: https://www.archlinux.org/
 [lua]: http://www.lua.org/
-=======
-[awesome]: http://awesome.naquadah.org/wiki/Main_Page "awesome wm wiki"
-[upstream bug report]: https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249&project=1&order=dateopened&sort=desc
->>>>>>> cd53bd1cb9a129c86ccab408c71b400cdf06bc39
+[awesome dynamic tag regression]: https://github.com/awesomeWM/awesome/commit/9c69e857edb6690fe5a496e82ec57a0bbae36702
+[awesome v3.5.2]: https://github.com/awesomeWM/awesome/commit/8125cda2a858708ec98642b30cf59a26d6b39831
+[awesome v3.5.3]: https://github.com/awesomeWM/awesome/commit/2321b0b6c56fff2f6ac019820770fb952e1d1dc1
+[awesome v3.5.4]: https://github.com/awesomeWM/awesome/commit/2f7d58afceb4e68005bdf3c1fbaad52686581dd7
