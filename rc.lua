@@ -729,7 +729,7 @@ awful.key({ modkey }, "'", function ()
     awful.util.spawn("xfce4-appfinder")
 end),
 awful.key({ modkey, "Mod1", }, "v", function ()
-    awful.util.spawn("VirtualBox")
+    awful.util.spawn("virtualbox")
 end),
 
 -- awful.key({                    }, "XF86AudioPrev", function () awful.util.spawn("mpc seek -5%") end),
