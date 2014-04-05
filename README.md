@@ -278,14 +278,14 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|[modkey]+l | file manager | thunar |
-|[modkey]+[enter] | user terminal | sakura |
-|[modkey]+p | remote terminal | putty |
-|[modkey]+i | primary editor | gvim |
-|[modkey]+[shift]+i | secondary editor | emacs |
-|[modkey]+c | primary browser | chromium |
-|[modkey]+[shift]+c | secondary browser | firefox |
-|[modkey]+[alt]+v | secondary browser | virtualbox |
+|[modkey]+[alt]+l| file manager | thunar |
+|[modkey]+[enter]| user terminal | sakura |
+|[modkey]+[alt]+p| remote terminal | putty |
+|[modkey]+i| primary editor | gvim |
+|[modkey]+u| secondary editor | emacs |
+|[modkey]+b| primary browser | chromium |
+|[modkey]+[shift]+b| secondary browser | firefox |
+|[modkey]+[alt]+v| secondary browser | virtualbox |
 
 #### rest
 
