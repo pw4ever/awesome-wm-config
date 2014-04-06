@@ -210,6 +210,7 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+[shift]+m|minimize|minimized client need mouse click on tasklist to restore|
 |[modkey]+[ctrl]+[space]|toggle floating status||
 |[modkey]+t|toggle ontop status||
+|[modkey]+s|toggle sticky status||
 |[modkey]+,|toggle horizontal maximized status||
 |[modkey]+.|toggle vertical maximized status||
 |[modkey]+[|**decrease opacity by 10%**|need composite manager, e.g., xcompmgr|

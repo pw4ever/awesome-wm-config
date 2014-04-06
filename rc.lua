@@ -187,9 +187,9 @@ do
 
     init_theme("zenburn")
 
-    -- randomly select a background picture
     awful.util.spawn_with_shell("hsetroot -solid '#000000'")
-    awful.util.spawn_with_shell("wallpaper/my-wallpaper-pick.sh")
+    -- randomly select a background picture
+    awful.util.spawn_with_shell("cd " .. config_path .. "/wallpaper/; ./my-wallpaper-pick.sh")
 
 end
 --]]
@@ -961,7 +961,9 @@ end),
 awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
 
 
-awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontopbutton end),
+
+awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky end),
 
 awful.key({ modkey,           }, ",",
 function (c)
@@ -1138,21 +1140,41 @@ root.keys(globalkeys)
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
+
     -- All clients will match this rule.
-    { rule = { },
-    properties = { border_width = beautiful.border_width,
-    border_color = beautiful.border_normal,
-    focus = awful.client.focus.filter,
-    raise = true,
-    keys = clientkeys,
-    buttons = clientbuttons } },
+    { 
+        rule = { },
+        properties = {
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_normal,
+            focus = awful.client.focus.filter,
+            raise = true,
+            keys = clientkeys,
+            buttons = clientbuttons,
+            opacity = 0.8,
+        }
+    },
+
     { rule = { class = "MPlayer" },
     properties = { floating = true } },
+
     { rule = { class = "gimp" },
     properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+
+    --[[
+    Set Firefox to always map on tags number 2 of screen 1.
+    { rule = { class = "Firefox" },
+      properties = { tag = tags[1][2] } },
+    --]]
+
+    {
+        rule = { class = "Conky" },
+        properties = {
+            sticky = true,
+            opacity = 0.4,
+        }
+    }
+
 }
 -- }}}
 
@@ -1179,7 +1201,7 @@ client.connect_signal("manage", function (c, startup)
         end
     end
 
-    local titlebars_enabled = false
+    local titlebars_enabled = true
     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
         -- buttons for the titlebar
         local buttons = awful.util.table.join(
