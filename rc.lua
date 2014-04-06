@@ -961,7 +961,7 @@ end),
 awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
 
 
-awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontopbutton end),
+awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop end),
 
 awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky end),
 
