@@ -244,8 +244,9 @@ all these keys work on the single **currently focused client**
 |[modkey]+[shift]+p|send client to previous tag|"p" for previous|
 |[modkey]+[shift]+n|send client to next tag and|"n" for next|
 |[modkey]+[shift]+g|**prompted for a tag to move client to**|with tag name completion with [tab]|
+|[modkey]+[ctrl]+[shift]+g|**prompted for a tag to copy client to**|with tag name completion with [tab]|
 |[modkey]+[shift]+[1-9,0]|**move client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
-|[modkey]+[shift]+[ctrl]+[1-9,0]|**copy client also the {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
+|[modkey]+[ctrl]+[shift]+[1-9,0]|**copy client also the {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
 
 #### change space allocation in **tile** layout
 

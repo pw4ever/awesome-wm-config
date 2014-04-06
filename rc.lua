@@ -734,7 +734,31 @@ function ()
     awful.prompt.run({prompt = "Move client to tag: "},
     mypromptbox[scr].widget,
     function (t)
-        awful.client.movetotag(util.tag.name2tag(t))
+        local tag = util.tag.name2tag(t)
+        if tag then
+            awful.client.movetotag(tag)
+        end
+    end,
+    function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+    end,
+    nil)
+end),
+
+awful.key({modkey, "Control", "Shift"}, "g",
+function () 
+    local keywords = {}
+    local scr = mouse.screen
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+        table.insert(keywords, t.name)
+    end
+    awful.prompt.run({prompt = "Copy client to tag: "},
+    mypromptbox[scr].widget,
+    function (t)
+        local tag = util.tag.name2tag(t)
+        if tag then
+            awful.client.toggletag(tag)
+        end
     end,
     function (t, p, n)
         return awful.completion.generic(t, p, n, keywords)
