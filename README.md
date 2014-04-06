@@ -92,7 +92,7 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm \
-         feh dex \
+         feh dex screenfetch scrot \
          alsa-utils xorg-xbacklight cheese mpd mpc \
          xscreensaver networkmanager network-manager-applet sakura arandr \
          xfce4-goodies gksu \
