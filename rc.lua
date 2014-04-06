@@ -34,8 +34,15 @@ customization.defaults.property = {
     mwfact = 0.5,
     nmaster = 1,
     ncol = 1,
+    min_opacity = 0.4,
+    max_opacity = 1,
+    default_naughty_opacity = 0.8,
+    compmgr = 'xcompmgr',
 }
 
+naughty.config.presets.low.opacity = customization.defaults.property.default_naughty_opacity
+naughty.config.presets.normal.opacity = customization.defaults.property.default_naughty_opacity
+naughty.config.presets.critical.opacity = customization.defaults.property.default_naughty_opacity
 
 do
     local config_path = awful.util.getdir("config")
@@ -180,13 +187,10 @@ do
 
     init_theme("zenburn")
 
-    -- random wallpaper from a gallery
-    local wallpaper_freq="30s"
+    -- randomly select a background picture
+    awful.util.spawn_with_shell("hsetroot -solid '#000000'")
+    awful.util.spawn_with_shell("wallpaper/my-wallpaper-pick.sh")
 
-    awful.util.spawn_with_shell("( cd ".. config_path .. "/wallpaper; " ..
-    "if ! killall -q my-wallpaper-pick.sh; then " ..
-    "  ./my-wallpaper-pick.sh " .. wallpaper_freq .."; " ..
-    "fi  ) &")
 end
 --]]
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -547,12 +551,12 @@ awful.key({modkey}, "F4", function()
     )
 end),
 
-awful.key({ modkey }, "`", function () 
+awful.key({ modkey }, "\\", function () 
     local info = "Version: " .. awesome.version ..
         "\n" .. "Release: " .. awesome.release ..
         "\n" .. "Config: " .. awesome.conffile
     if awesome.composite_manager_running then
-        info = info .. "\n" .. "<bold>a composite manager is running</bold>"
+        info = info .. "\n" .. "<span fgcolor='red'>a composite manager is running</span>"
     end
     local uname = awful.util.pread("uname -a")
     if string.gsub(uname, "%s", "") ~= "" then
@@ -564,12 +568,16 @@ awful.key({ modkey }, "`", function ()
         info = info .. "\n\n<span face='monospace'>" .. archey .. "</span>"
     end
     info = string.gsub(info, "(%u[%a ]*:)%f[ ]", "<span color='red'>%1</span>")
+    local tmp = awesome.composite_manager_running
+    awesome.composite_manager_running = false
     naughty.notify({
+        preset = naughty.config.presets.normal,
         title="awesome info",
         text=info,
-        timeout = 7,
+        timeout = 10,
         screen = mouse.screen,
     })
+    awesome.composite_manager_running = tmp
 end),
 
 awful.key({ modkey }, "c", function () 
@@ -754,7 +762,7 @@ awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end)
 
 --- admin
 
-awful.key({ modkey, }, "\\", function ()
+awful.key({ modkey, }, "`", function ()
     awful.util.spawn("xscreensaver-command -l")
 end),
 
@@ -963,6 +971,32 @@ end),
 awful.key({ modkey,           }, ".",
 function (c)
     c.maximized_vertical   = not c.maximized_vertical
+end),
+
+awful.key({ modkey,           }, "[",
+function (c)
+    local opacity = c.opacity - 0.1
+    if opacity and opacity >= customization.defaults.property.min_opacity then
+        c.opacity = opacity
+    end
+end),
+
+awful.key({ modkey,           }, "]",
+function (c)
+    local opacity = c.opacity + 0.1
+    if opacity and opacity <= customization.defaults.property.max_opacity then
+        c.opacity = opacity
+    end
+end),
+
+awful.key({ modkey, 'Shift'   }, "[",
+function (c)
+    awful.util.spawn_with_shell("pkill " .. customization.defaults.property.compmgr)
+end),
+
+awful.key({ modkey, 'Shift'   }, "]",
+function (c)
+    awful.util.spawn_with_shell(customization.defaults.property.compmgr)
 end),
 
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),

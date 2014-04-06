@@ -92,7 +92,7 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm \
-         feh dex screenfetch scrot \
+         feh dex screenfetch scrot xcompmgr hsetroot \
          alsa-utils xorg-xbacklight cheese mpd mpc \
          xscreensaver networkmanager network-manager-applet sakura arandr \
          xfce4-goodies gksu \
@@ -121,7 +121,7 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 | --- | --- | --- |
 |[modkey]+[ctrl]+r|restart|"r" for restart; used for apply updated "rc.lua" config file|
 |[modkey]+[shift]+q|quit|"q" for quit; used for apply updated "rc.lua" config file|
-|[modkey]+`|system info popup||
+|[modkey]+\|system info popup||
 
 #### **layout**
 
@@ -165,7 +165,7 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+c|edit "rc.lua" with the primary editor|"c" for configuration file|
 |[modkey]+/|show main menu||
 |[modkey]+[shift]+/|show main menu||
-|[modkey]+\|launch screen saver/locker||
+|[modkey]+`|launch screen saver/locker||
 |[modkey]+[enter]|launch user terminal||
 |[modkey]+[alt]+[enter]|launch root terminal||
 
@@ -212,6 +212,10 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+t|toggle ontop status||
 |[modkey]+,|toggle horizontal maximized status||
 |[modkey]+.|toggle vertical maximized status||
+|[modkey]+[|**decrease opacity by 10%**|need composite manager, e.g., xcompmgr|
+|[modkey]+]|**increase opacity by 10%**|need composite manager, e.g., xcompmgr|
+|[modkey]+[shift]+[|**disable composite manager**||
+|[modkey]+[shift]+]|**enable composite manager**||
 
 #### change focus
 
@@ -263,7 +267,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | key combo | app | my choice |
 | --- | --- | --- |
 |[modkey]+[alt]+[enter] | root terminal | gksudo sakura |
-|[modkey]+\ | screen saver/locker | xscreensaver |
+|[modkey]+` | screen saver/locker | xscreensaver |
 |[modkey]+' | GUI appfinder | xfce4-appfinder |
 
 #### everyday
@@ -282,7 +286,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 #### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L753) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L761) for details.
 
 ## todo
 
