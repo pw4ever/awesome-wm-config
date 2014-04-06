@@ -568,7 +568,7 @@ awful.key({modkey,}, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
 awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
 
@@ -694,8 +694,6 @@ awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
 
 --- swap order/select master
 
-awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-
 awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
 
 awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end),
@@ -744,8 +742,6 @@ awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end)
 
 --- admin
 
-awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
-
 awful.key({ modkey, }, "\\", function ()
     awful.util.spawn("xscreensaver-command -l")
 end),
@@ -759,8 +755,6 @@ end),
 awful.key({ modkey, "Mod1", }, "l", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
-
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
 
 awful.key({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("putty")
@@ -958,6 +952,8 @@ awful.key({ modkey,           }, ".",
 function (c)
     c.maximized_vertical   = not c.maximized_vertical
 end),
+
+awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
 
 nil
 
