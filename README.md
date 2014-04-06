@@ -23,13 +23,12 @@
 			- [operation](#operation)
 			- [change focus](#change-focus)
 			- [swap order/select master](#swap-orderselect-master)
-			- [reorder client on current tag](#reorder-client-on-current-tag)
 			- [move/copy to tag](#movecopy-to-tag)
 			- [change space allocation in **tile** layout](#change-space-allocation-in-tile-layout)
 		- [app bindings](#app-bindings)
 			- [admin](#admin)
 			- [everyday](#everyday)
-			- [rest](#rest)
+			- [the rest](#the-rest)
 	- [todo](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -122,6 +121,7 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 | --- | --- | --- |
 |[modkey]+[ctrl]+r|restart|"r" for restart; used for apply updated "rc.lua" config file|
 |[modkey]+[shift]+q|quit|"q" for quit; used for apply updated "rc.lua" config file|
+|[modkey]+`|show info about awesome||
 
 #### **layout**
 
@@ -184,11 +184,8 @@ in the floating mode, the following mouse actions are enabled
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[left]|view previous tag||
-|[modkey]+[right]|view next tag||
 |[modkey]+p|view previous tag|"p" for previous|
 |[modkey]+n|view next tag|"n" for next|
-|[modkey]+[esc]|view last tag||
 |[modkey]+z|view last tag||
 |[modkey]+g|**prompted for a tag to view**|with tag name completion with [tab]|
 |[modkey]+[1-9,0]|**view the first-ninth, tenth tag**|prompt for "add a new tag" if not already existed|
@@ -213,6 +210,8 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+[shift]+m|minimize|minimized client need mouse click on tasklist to restore|
 |[modkey]+[ctrl]+[space]|toggle floating status||
 |[modkey]+t|toggle ontop status||
+|[modkey]+,|toggle horizontal maximized status||
+|[modkey]+.|toggle vertical maximized status||
 
 #### change focus
 
@@ -221,7 +220,7 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+j|focus on the next client in current tag|"j" is easy to reach|
 |[modkey]+k|focus on the prev client in current tag|"k" is easy to reach|
 |[modkey]+[tab]|focus on the last-focus client in current tag||
-|[modkey]+[tab]|focus on the last-focus client in current tag||
+|[modkey]+u|jump to the urgent client|"u" for urgent|
 
 #### swap order/select master
 
@@ -230,13 +229,6 @@ in the floating mode, the following mouse actions are enabled
 |[modkey]+[ctrl]+[enter]|select current client as the master|master is featured on the screen|
 |[modkey]+[shift]+j|swap current client with the next one|"j" is easy to reach|
 |[modkey]+[shift]+k|swap current client with the prev one|"k" is easy to reach|
-
-#### reorder client on current tag
-
-| key combo | function | comment |
-| --- | --- | --- |
-|[modkey]+[shift]+j|focus on the next client in current tag|"j" is easy to reach|
-|[modkey]+k|focus on the prev client in current tag|"k" is easy to reach|
 
 #### move/copy to tag
 
@@ -282,15 +274,15 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |[modkey]+[enter]| user terminal | sakura |
 |[modkey]+[alt]+p| remote terminal | putty |
 |[modkey]+i| primary editor | gvim |
-|[modkey]+u| secondary editor | emacs |
+|[modkey]+[shift]+i| secondary editor | emacs |
 |[modkey]+b| primary browser | chromium |
 |[modkey]+[shift]+b| secondary browser | firefox |
 |[modkey]+[alt]+v| secondary browser | virtualbox |
 
-#### rest
+#### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L693) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L730) for details.
 
 ## todo
 
