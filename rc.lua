@@ -548,16 +548,28 @@ awful.key({modkey}, "F4", function()
 end),
 
 awful.key({ modkey }, "`", function () 
-    local info = "<small>version:</small> " .. awesome.version ..
-        "\n" .. "<small>release name:</small> " .. awesome.release ..
-        "\n" .. "<small>config file:</small> " .. awesome.conffile
+    local info = "Version: " .. awesome.version ..
+        "\n" .. "Release: " .. awesome.release ..
+        "\n" .. "Config: " .. awesome.conffile
     if awesome.composite_manager_running then
         info = info .. "\n" .. "<bold>a composite manager is running</bold>"
     end
-    info = info .. "\n" .. "<small>os:</small> " .. string.gsub(awful.util.pread("uname -a"), "%s+$", "")
-    naughty.notify({ preset = naughty.config.presets.normal,
-                     title="awesome info",
-                     text=info,})
+    local uname = awful.util.pread("uname -a")
+    if string.gsub(uname, "%s", "") ~= "" then
+        info = info .. "\n" .. "OS: " .. string.gsub(uname, "%s+$", "")
+    end
+    -- remove color code from screenfetch output
+    local archey = awful.util.pread("screenfetch -N")
+    if string.gsub(archey, "%s", "") ~= "" then
+        info = info .. "\n\n<span face='monospace'>" .. archey .. "</span>"
+    end
+    info = string.gsub(info, "(%u[%a ]*:)%f[ ]", "<span color='red'>%1</span>")
+    naughty.notify({
+        title="awesome info",
+        text=info,
+        timeout = 7,
+        screen = mouse.screen,
+    })
 end),
 
 awful.key({ modkey }, "c", function () 

@@ -121,7 +121,7 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 | --- | --- | --- |
 |[modkey]+[ctrl]+r|restart|"r" for restart; used for apply updated "rc.lua" config file|
 |[modkey]+[shift]+q|quit|"q" for quit; used for apply updated "rc.lua" config file|
-|[modkey]+`|show info about awesome||
+|[modkey]+`|system info popup||
 
 #### **layout**
 
@@ -282,7 +282,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 #### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L730) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L753) for details.
 
 ## todo
 

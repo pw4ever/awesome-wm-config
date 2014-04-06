@@ -548,16 +548,28 @@ awful.key({modkey}, "F4", function()
 end),
 
 awful.key({ modkey }, "`", function () 
-    local info = "<small>version:</small> " .. awesome.version ..
-        "\n" .. "<small>release name:</small> " .. awesome.release ..
-        "\n" .. "<small>config file:</small> " .. awesome.conffile
+    local info = "Version: " .. awesome.version ..
+        "\n" .. "Release: " .. awesome.release ..
+        "\n" .. "Config: " .. awesome.conffile
     if awesome.composite_manager_running then
         info = info .. "\n" .. "<bold>a composite manager is running</bold>"
     end
-    info = info .. "\n" .. "<small>os:</small> " .. string.gsub(awful.util.pread("uname -a"), "%s+$", "")
-    naughty.notify({ preset = naughty.config.presets.normal,
-                     title="awesome info",
-                     text=info,})
+    local uname = awful.util.pread("uname -a")
+    if string.gsub(uname, "%s", "") ~= "" then
+        info = info .. "\n" .. "OS: " .. string.gsub(uname, "%s+$", "")
+    end
+    -- remove color code from screenfetch output
+    local archey = awful.util.pread("screenfetch -N")
+    if string.gsub(archey, "%s", "") ~= "" then
+        info = info .. "\n\n<span face='monospace'>" .. archey .. "</span>"
+    end
+    info = string.gsub(info, "(%u[%a ]*:)%f[ ]", "<span color='red'>%1</span>")
+    naughty.notify({
+        title="awesome info",
+        text=info,
+        timeout = 7,
+        screen = mouse.screen,
+    })
 end),
 
 awful.key({ modkey }, "c", function () 
@@ -568,7 +580,7 @@ awful.key({modkey,}, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
 awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
 
@@ -694,8 +706,6 @@ awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
 
 --- swap order/select master
 
-awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-
 awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
 
 awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end),
@@ -744,8 +754,6 @@ awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end)
 
 --- admin
 
-awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
-
 awful.key({ modkey, }, "\\", function ()
     awful.util.spawn("xscreensaver-command -l")
 end),
@@ -759,8 +767,6 @@ end),
 awful.key({ modkey, "Mod1", }, "l", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
-
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
 
 awful.key({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("putty")
@@ -958,6 +964,8 @@ awful.key({ modkey,           }, ".",
 function (c)
     c.maximized_vertical   = not c.maximized_vertical
 end),
+
+awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
 
 nil
 
