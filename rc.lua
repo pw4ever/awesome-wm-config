@@ -431,6 +431,8 @@ for s = 1, screen.count() do
 
     mywibox[s]:set_widget(layout)
 end
+
+util.taglist.set_taglist(mytaglist)
 -- }}}
 
 do
@@ -615,36 +617,30 @@ awful.key({modkey}, "a",
 function ()
     local scr = mouse.screen
     local sel_idx = awful.tag.getidx()
-
-    awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-    mypromptbox[scr].widget,
-    function (text)
-        if #text>0 then
-            local tag = awful.tag.add(text)
-            awful.tag.setscreen(tag, scr)
-            awful.tag.move(sel_idx and sel_idx+1 or 1, tag)
-            awful.tag.viewonly(tag)
-        end
-    end,
-    nil)
+    local t = util.tag.add(nil, 
+    {
+        screen = scr,
+        index = sel_idx+1,
+        layout = customization.default.property.layout,
+        mwfact = customization.default.property.mwfact,
+        nmaster = customization.default.property.nmaster,
+        ncol = customization.default.property.ncol,
+    })
 end),
 
 awful.key({modkey, "Shift"}, "a",
-function()
+function ()
     local scr = mouse.screen
     local sel_idx = awful.tag.getidx()
-
-    awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-    mypromptbox[scr].widget,
-    function (text)
-        if #text>0 then
-            local tag = awful.tag.add(text)
-            awful.tag.setscreen(tag, scr)
-            awful.tag.move(sel_idx and sel_idx or 1, tag)
-            awful.tag.viewonly(tag)
-        end
-    end,
-    nil)
+    local t = util.tag.add(nil, 
+    {
+        screen = scr,
+        index = sel_idx,
+        layout = customization.default.property.layout,
+        mwfact = customization.default.property.mwfact,
+        nmaster = customization.default.property.nmaster,
+        ncol = customization.default.property.ncol,
+    })
 end),
 
 awful.key({modkey, "Shift"}, "d", awful.tag.delete),
@@ -653,21 +649,7 @@ awful.key({modkey, "Shift"}, "r",
 function ()
     local scr = mouse.screen
     local sel = awful.tag.selected(scr)
-    if sel then
-        name = sel.name
-
-        awful.prompt.run({prompt = "<span fgcolor='red'>" .. (name and name or "") .. "-></span>"},
-        mypromptbox[scr].widget,
-        function (text)
-            if #text>0 and text~=name then
-                sel.name = text
-                sel:emit_signal("property::name")
-            end
-        end,
-        function (t, p, n)
-            return awful.completion.generic(t, p, n, {name})
-        end)
-    end
+    util.tag.rename(sel)
 end),
 
 --- view
