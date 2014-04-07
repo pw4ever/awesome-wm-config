@@ -33,6 +33,7 @@
 		- [task list](#task-list)
 		- [root window/"the desktop"](#root-windowthe-desktop)
 		- [window/task/client title bar](#windowtaskclient-title-bar)
+	- [customization](#customization)
 	- [todo](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -344,6 +345,19 @@ the five buttons on the upper right corner
 |3| toggle sticky/show-in-all-tags status |
 |4| toggle always-on-top status |
 |5| close window |
+
+## customization
+
+The items can be changed with `awesome-client`. Example:
+
+```lua
+customization.timer.change_wallpaper.timeout=3
+```
+
+| value | type | meaning |
+| --- | --- | --- |
+|customization.option.wallpaper_change_p|boolean|random wallpaper refresh enabled?|
+|customization.timer.change_wallpaper.timeout|number|randomly choose a wallpaper from the "wallpaper" directory after every *this number of* seconds|
 
 ## todo
 

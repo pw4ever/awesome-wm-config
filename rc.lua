@@ -27,9 +27,11 @@ customization = {}
 customization.orig = {}
 customization.constant = {}
 customization.func = {}
-customization.defaults = {}
+customization.default = {}
+customization.option = {}
+customization.timer = {}
 
-customization.defaults.property = {
+customization.default.property = {
     layout = awful.layout.suit.floating,
     mwfact = 0.5,
     nmaster = 1,
@@ -37,12 +39,16 @@ customization.defaults.property = {
     min_opacity = 0.4,
     max_opacity = 1,
     default_naughty_opacity = 0.8,
-    compmgr = 'xcompmgr',
 }
 
-naughty.config.presets.low.opacity = customization.defaults.property.default_naughty_opacity
-naughty.config.presets.normal.opacity = customization.defaults.property.default_naughty_opacity
-naughty.config.presets.critical.opacity = customization.defaults.property.default_naughty_opacity
+customization.default.compmgr = 'xcompmgr'
+customization.default.wallpaper_change_interval = 15
+
+customization.option.wallpaper_change_p = true
+
+naughty.config.presets.low.opacity = customization.default.property.default_naughty_opacity
+naughty.config.presets.normal.opacity = customization.default.property.default_naughty_opacity
+naughty.config.presets.critical.opacity = customization.default.property.default_naughty_opacity
 
 do
     local config_path = awful.util.getdir("config")
@@ -188,12 +194,32 @@ do
     init_theme("zenburn")
 
     awful.util.spawn_with_shell("hsetroot -solid '#000000'")
-    -- randomly select a background picture
-    awful.util.spawn_with_shell("cd " .. config_path .. "/wallpaper/; ./my-wallpaper-pick.sh")
 
+    -- randomly select a background picture
+    --{{
+    function customization.func.change_wallpaper()
+        if customization.option.wallpaper_change_p then
+            awful.util.spawn_with_shell("cd " .. config_path .. "/wallpaper/; ./my-wallpaper-pick.sh")
+        end
+    end
+
+    customization.timer.change_wallpaper= timer({timeout = customization.default.wallpaper_change_interval})
+
+    customization.timer.change_wallpaper:connect_signal("timeout", customization.func.change_wallpaper)
+
+    customization.timer.change_wallpaper:connect_signal("property::timeout", 
+    function ()
+        customization.timer.change_wallpaper:stop()
+        customization.timer.change_wallpaper:start()
+    end
+    )
+
+    customization.timer.change_wallpaper:start()
+    -- first trigger
+    customization.func.change_wallpaper()
+    --}}
 end
 --]]
---beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 
@@ -303,26 +329,13 @@ mymainmenu = awful.menu({
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menu = mymainmenu })
 
--- Menubar configuration
-menubar.utils.terminal = tools.terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
--- mytextclock = awful.widget.textclock()
 mytextclock = wibox.widget.textbox()
-
---[[
-do
-    local mytimer = timer({timeout=1})
-    mytimer:connect_signal("timeout", function() mytextclock:set_text(awful.util.pread("date")) end)
-    mytimer:start() 
-end
---]]
 
 -- http://awesome.naquadah.org/wiki/Bashets
 bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
-
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -446,10 +459,10 @@ do
                     local tag = awful.tag.add(tagname,
                     {
                         screen = s,
-                        layout = customization.defaults.property.layout,
-                        mwfact = customization.defaults.property.mwfact,
-                        nmaster = customization.defaults.property.nmaster,
-                        ncol = customization.defaults.property.ncol,
+                        layout = customization.default.property.layout,
+                        mwfact = customization.default.property.mwfact,
+                        nmaster = customization.default.property.nmaster,
+                        ncol = customization.default.property.ncol,
                     }
                     )
                     awful.tag.move(count[count_index], tag)
@@ -478,10 +491,10 @@ do
         local tag = awful.tag.add("genesis",
         {
             screen = 1,
-            layout = customization.defaults.property.layout,
-            mwfact = customization.defaults.property.mwfact,
-            nmaster = customization.defaults.property.nmaster,
-            ncol = customization.defaults.property.ncol, 
+            layout = customization.default.property.layout,
+            mwfact = customization.default.property.mwfact,
+            nmaster = customization.default.property.nmaster,
+            ncol = customization.default.property.ncol, 
         } 
         )
         awful.tag.viewonly(tag)
@@ -489,10 +502,10 @@ do
         awful.tag.add("nil",
         {
             screen = 2,
-            layout = customization.defaults.property.layout,
-            mwfact = customization.defaults.property.mwfact,
-            nmaster = customization.defaults.property.nmaster,
-            ncol = customization.defaults.property.ncol, 
+            layout = customization.default.property.layout,
+            mwfact = customization.default.property.mwfact,
+            nmaster = customization.default.property.nmaster,
+            ncol = customization.default.property.ncol, 
         } 
         ) 
 
@@ -1005,7 +1018,7 @@ end),
 awful.key({ modkey,           }, "[",
 function (c)
     local opacity = c.opacity - 0.1
-    if opacity and opacity >= customization.defaults.property.min_opacity then
+    if opacity and opacity >= customization.default.property.min_opacity then
         c.opacity = opacity
     end
 end),
@@ -1013,19 +1026,19 @@ end),
 awful.key({ modkey,           }, "]",
 function (c)
     local opacity = c.opacity + 0.1
-    if opacity and opacity <= customization.defaults.property.max_opacity then
+    if opacity and opacity <= customization.default.property.max_opacity then
         c.opacity = opacity
     end
 end),
 
 awful.key({ modkey, 'Shift'   }, "[",
 function (c)
-    awful.util.spawn_with_shell("pkill " .. customization.defaults.property.compmgr)
+    awful.util.spawn_with_shell("pkill " .. customization.default.compmgr)
 end),
 
 awful.key({ modkey, 'Shift'   }, "]",
 function (c)
-    awful.util.spawn_with_shell(customization.defaults.property.compmgr)
+    awful.util.spawn_with_shell(customization.default.compmgr)
 end),
 
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
