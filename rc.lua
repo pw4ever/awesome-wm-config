@@ -1195,7 +1195,7 @@ awful.rules.rules = {
             raise = true,
             keys = clientkeys,
             buttons = clientbuttons,
-            opacity = 0.8,
+            opacity = customization.default.property.default_naughty_opacity,
         }
     },
 
