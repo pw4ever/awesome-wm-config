@@ -120,13 +120,14 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 
 ### window management
 
-#### restart/quit
+#### restart/quit/info
 
 | key combo | function | comment |
 | --- | --- | --- |
 |[modkey]+[ctrl]+r|restart|"r" for restart; used for apply updated "rc.lua" config file|
 |[modkey]+[shift]+q|quit|"q" for quit; used for apply updated "rc.lua" config file|
 |[modkey]+\|system info popup||
+|[modkey]+[f1]|open help in browser||
 
 #### **layout**
 
@@ -171,7 +172,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[f1]|prompt a program to launch|inherited from awesome defaults|
+|[modkey]+[f2]|prompt a program to launch|inherited from awesome defaults|
 |[modkey]+[f4]|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
 |[modkey]+c|edit "rc.lua" with the primary editor|"c" for configuration file|
 |[modkey]+/|show main menu||
@@ -299,7 +300,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 #### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L801) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L805) for details.
 
 ### tag list
 

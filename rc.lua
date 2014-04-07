@@ -24,12 +24,15 @@ local capi = {
 
 -- customization
 customization = {}
+customization.config = {}
 customization.orig = {}
-customization.constant = {}
 customization.func = {}
 customization.default = {}
 customization.option = {}
 customization.timer = {}
+
+customization.config.version = "1.5.1"
+customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
     layout = awful.layout.suit.floating,
@@ -38,7 +41,7 @@ customization.default.property = {
     ncol = 1,
     min_opacity = 0.4,
     max_opacity = 1,
-    default_naughty_opacity = 0.8,
+    default_naughty_opacity = 0.9,
 }
 
 customization.default.compmgr = 'xcompmgr'
@@ -528,50 +531,18 @@ globalkeys = awful.util.table.join(
 
 -- window management
 
---- restart/quit
+--- restart/quit/info
 
 awful.key({ modkey, "Control" }, "r", awesome.restart),
 
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
---- Layout
-
-awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-
-awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-
---- multiple screens/multi-head/RANDR
-
-awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-
-awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
-
-awful.key({ modkey,           }, "o", awful.client.movetoscreen),
-
---- misc
-
-awful.key({modkey}, "F1", function()
-    awful.prompt.run(
-    {prompt = "Run: "},
-    mypromptbox[mouse.screen].widget,
-    awful.util.spawn, awful.completion.shell,
-    awful.util.getdir("cache") .. "/history"
-    )
-end),
-
-awful.key({modkey}, "F4", function()
-    awful.prompt.run(
-    {prompt = "Run Lua code: "},
-    mypromptbox[mouse.screen].widget,
-    awful.util.eval, nil,
-    awful.util.getdir("cache") .. "/history_eval"
-    )
-end),
-
 awful.key({ modkey }, "\\", function () 
-    local info = "Version: " .. awesome.version ..
-        "\n" .. "Release: " .. awesome.release ..
-        "\n" .. "Config: " .. awesome.conffile
+    local info = "Version: " .. awesome.version 
+    info = info ..  "\n" .. "Release: " .. awesome.release
+    info = info ..  "\n" .. "Config: " .. awesome.conffile
+    info = info ..  "\n" .. "Config Version: " .. customization.config.version 
+    info = info ..  "\n" .. "Config Help: " .. customization.config.help_url
     if awesome.composite_manager_running then
         info = info .. "\n" .. "<span fgcolor='red'>a composite manager is running</span>"
     end
@@ -595,6 +566,57 @@ awful.key({ modkey }, "\\", function ()
         screen = mouse.screen,
     })
     awesome.composite_manager_running = tmp
+end),
+
+awful.key({modkey}, "F1",
+function ()
+    local text = ""
+    text = text .. "You are running awesome <span fgcolor='red'>" .. awesome.version .. "</span> (<span fgcolor='red'>" .. awesome.release .. "</span>)"
+    text = text .. "\n" .. "with config version <span fgcolor='red'>" .. customization.config.version .. "</span>"
+    text = text .. "\n\n" .. "help can be found at the URL: <u>" .. customization.config.help_url .. "</u>"
+    text = text .. "\n\n\n\n" .. "opening in <b>" .. tools.browser.primary .. "</b>..."
+    naughty.notify({
+        preset = naughty.config.presets.normal,
+        title="help about configuration",
+        text=text,
+        timeout = 20,
+        screen = mouse.screen,
+    })
+    awful.util.spawn_with_shell(tools.browser.primary .. " '" .. customization.config.help_url .. "'")
+end),
+
+--- Layout
+
+awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+
+awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+
+--- multiple screens/multi-head/RANDR
+
+awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
+
+awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+
+awful.key({ modkey,           }, "o", awful.client.movetoscreen),
+
+--- misc
+
+awful.key({modkey}, "F2", function()
+    awful.prompt.run(
+    {prompt = "Run: "},
+    mypromptbox[mouse.screen].widget,
+    awful.util.spawn, awful.completion.shell,
+    awful.util.getdir("cache") .. "/history"
+    )
+end),
+
+awful.key({modkey}, "F4", function()
+    awful.prompt.run(
+    {prompt = "Run Lua code: "},
+    mypromptbox[mouse.screen].widget,
+    awful.util.eval, nil,
+    awful.util.getdir("cache") .. "/history_eval"
+    )
 end),
 
 awful.key({ modkey }, "c", function () 
