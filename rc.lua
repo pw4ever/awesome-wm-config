@@ -334,8 +334,8 @@ awful.button({ }, 1, awful.tag.viewonly),
 awful.button({ modkey }, 1, awful.client.movetotag),
 awful.button({ }, 3, awful.tag.viewtoggle),
 awful.button({ modkey }, 3, awful.client.toggletag),
-awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),
+awful.button({ }, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end)
 )
 
 mytasklist = {}
@@ -365,11 +365,11 @@ awful.button({ }, 3, function ()
     end
 end),
 awful.button({ }, 4, function ()
-    awful.client.focus.byidx(1)
+    awful.client.focus.byidx(-1)
     if client.focus then client.focus:raise() end
 end),
 awful.button({ }, 5, function ()
-    awful.client.focus.byidx(-1)
+    awful.client.focus.byidx(1)
     if client.focus then client.focus:raise() end
 end))
 
@@ -385,8 +385,10 @@ for s = 1, screen.count() do
     mylayoutbox[s]:buttons(awful.util.table.join(
     awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
     awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-    awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-    awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+    awful.button({ }, 4, function () awful.layout.inc(layouts, -1) end),
+    awful.button({ }, 5, function () awful.layout.inc(layouts, 1) end),
+    nil
+    ))
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
@@ -501,7 +503,7 @@ end
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
 awful.button({ }, 3, function () mymainmenu:toggle() end),
-awful.button({ }, 4, awful.tag.viewnext),
+awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
@@ -752,7 +754,8 @@ function ()
     for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
         table.insert(keywords, t.name)
     end
-    awful.prompt.run({prompt = "Copy client to tag: "},
+    local c = client.focus
+    awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
     mypromptbox[scr].widget,
     function (t)
         local tag = util.tag.name2tag(t)
@@ -1272,6 +1275,7 @@ client.connect_signal("manage", function (c, startup)
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 customization.func.client_manage_tag = function (c, startup)
@@ -1300,6 +1304,7 @@ customization.func.client_manage_tag = function (c, startup)
         end
     end
 end
+
 client.connect_signal("manage", customization.func.client_manage_tag)
 
 -- }}}

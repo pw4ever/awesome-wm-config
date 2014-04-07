@@ -29,6 +29,10 @@
 			- [admin](#admin)
 			- [everyday](#everyday)
 			- [the rest](#the-rest)
+		- [tag list](#tag-list)
+		- [task list](#task-list)
+		- [root window/"the desktop"](#root-windowthe-desktop)
+		- [window/task/client title bar](#windowtaskclient-title-bar)
 	- [todo](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -130,6 +134,12 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 |[modkey]+[space]|change to next layout||
 |[modkey]+[shift]+[space]|change to prev layout||
 
+| mouse action | function |
+| --- | --- |
+|[left button]]|change to next layout|
+|[right button]|change to prev layout|
+|[scroll up]|change to prev layout|
+|[scroll down]|change to next layout|
 
 only the following layouts are enabled
 
@@ -141,12 +151,12 @@ only the following layouts are enabled
 | fullscreen | the focused client fullscreened |
 | magnifier | the focused client centered but not fullscreened |
 
-in the floating mode, the following mouse actions are enabled
+in the floating mode, the following mouse actions *on client window* are enabled
 
-| mouse action | comment |
+| mouse action | function |
 | --- | --- |
-|[modkey]+[left mouse button/button 1]| move client |
-|[modkey]+[right mouse button/button 3]| resize client |
+|[modkey]+[left button]| move client |
+|[modkey]+[right button]| resize client |
 
 #### multiple screens/multi-head/[RANDR](https://en.wikipedia.org/wiki/RandR)
 
@@ -241,12 +251,12 @@ all these keys work on the single **currently focused client**
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[shift]+p|send client to previous tag|"p" for previous|
-|[modkey]+[shift]+n|send client to next tag and|"n" for next|
-|[modkey]+[shift]+g|**prompted for a tag to move client to**|with tag name completion with [tab]|
-|[modkey]+[ctrl]+[shift]+g|**prompted for a tag to copy client to**|with tag name completion with [tab]|
-|[modkey]+[shift]+[1-9,0]|**move client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
-|[modkey]+[ctrl]+[shift]+[1-9,0]|**copy client also the {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
+|[modkey]+[shift]+p|send the client to the previous tag|"p" for previous|
+|[modkey]+[shift]+n|send the client to the next tag|"n" for next|
+|[modkey]+[shift]+g|**move the client to the named tag**|with tag name completion by [tab]|
+|[modkey]+[ctrl]+[shift]+g|**toggle the named tag for the client**|with tag name completion by [tab]|
+|[modkey]+[shift]+[1-9,0]|**move the client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
+|[modkey]+[ctrl]+[shift]+[1-9,0]|**toggle the {first-ninth, tenth} tag for the client**|prompt for "add a new tag" if not already existed|
 
 #### change space allocation in **tile** layout
 
@@ -288,7 +298,52 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 #### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L761) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L788) for details.
+
+### tag list
+
+| mouse action | function |
+| --- | --- |
+|[left button]|view the tag|
+|[modkey]+[left button]|move current client to the tag|
+|[right button]|toggle whether to view the tag|
+|[modkey]+[right button]|toggle the tag for current client|
+|[scroll up]|view the prev tag|
+|[scroll down]|view the next tag|
+
+### task list
+
+| mouse action | function |
+| --- | --- |
+|[left button]|toggle task minimize status|
+|[right button]|menu of all tasks across tags|
+|[scroll up]|focus on prev task|
+|[scroll down]|focus on next task|
+
+### root window/"the desktop"
+
+| mouse action | function |
+| --- | --- |
+|[right button]|show main menu|
+|[scroll up]|view the prev tag|
+|[scroll down]|view the next tag|
+
+### window/task/client title bar
+
+| mouse action | function |
+| --- | --- |
+|[left button]|move the window|
+|[right button]|resize the window|
+
+the five buttons on the upper right corner
+
+| button (fromt left to right) | function | 
+| --- | --- |
+|1| toggle floating status |
+|2| toggle maximized status |
+|3| toggle sticky/show-in-all-tags status |
+|4| toggle always-on-top status |
+|5| close window |
 
 ## todo
 
