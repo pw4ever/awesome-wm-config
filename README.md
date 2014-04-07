@@ -299,7 +299,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 #### the rest
 
 * currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
-* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L788) for details.
+* take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua#L801) for details.
 
 ### tag list
 
@@ -351,13 +351,14 @@ the five buttons on the upper right corner
 The items can be changed with `awesome-client`. Example:
 
 ```lua
-customization.timer.change_wallpaper.timeout=3
+customization.option.wallpaper_change_p=true -- enable random wallpaper choosing
+customization.timer.change_wallpaper.timeout=7.5 -- choose a wallpaper every 7.5 seconds
 ```
 
-| value | type | meaning |
-| --- | --- | --- |
-|customization.option.wallpaper_change_p|boolean|random wallpaper refresh enabled?|
-|customization.timer.change_wallpaper.timeout|number|randomly choose a wallpaper from the "wallpaper" directory after every *this number of* seconds|
+| value | type | meaning | default value |
+| --- | --- | --- | --- |
+|customization.option.wallpaper_change_p|boolean|random wallpaper choosing enabled?|true|
+|customization.timer.change_wallpaper.timeout|number|randomly choose a wallpaper from the "wallpaper" directory after every *this number of* seconds|15|
 
 ## todo
 
