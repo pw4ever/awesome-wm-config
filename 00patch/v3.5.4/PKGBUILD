@@ -29,7 +29,7 @@ source=(
         )
 md5sums=(
         '9d52a26bfbc142ace5427bfb55010359'
-        'ff4d3e1be0b82946c0073521c346098c'
+        'e81a0adba125ce39494650e93c75f711'
         )
 
 prepare() {

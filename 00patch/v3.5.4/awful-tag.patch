@@ -1,14 +1,42 @@
 diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
-index e3399e5..ec57991 100644
+index e3399e5..3aa4eee 100644
 --- a/lib/awful/tag.lua.in
 +++ b/lib/awful/tag.lua.in
-@@ -56,8 +56,8 @@ function tag.move(new_index, target_tag)
-     table.insert(tmp_tags, new_index, target_tag)
+@@ -270,22 +270,26 @@ end
+ -- @param t tag object
+ -- @param s Screen number
+ function tag.setscreen(t, s)
+-    local s = s or capi.mouse.screen
++    if t then
++        local s = s or capi.mouse.screen
++        local old_screen = tag.getproperty(t, "screen")
  
-     for i, tmp_tag in ipairs(tmp_tags) do
--        tag.setproperty(tmp_tag, "index", i)
-         tag.setscreen(tmp_tag, scr)
-+        tag.setproperty(tmp_tag, "index", i)
+-    -- Keeping the old index make very little sense when changing screen
+-    tag.setproperty(t, "index", nil)
++        if old_screen and old_screen ~= s then
++            -- Keeping the old index make very little sense when changing screen
++            tag.setproperty(t, "index", nil)
+ 
+-    local old_screen = tag.getproperty(t,"screen")
++            -- Change the screen
++            tag.setproperty(t, "screen", s)
+ 
+-    -- Change the screen
+-    tag.setproperty(t, "screen", s)
++            -- Make sure the client's screen matches its tags
++            for _, c in ipairs(t:clients()) do
++                c.screen = s --Move all clients
++                c:tags({t})
++            end
+ 
+-    -- Make sure the client's screen matches its tags
+-    for k,c in ipairs(t:clients()) do
+-        c.screen = s --Move all clients
+-        c:tags({t})
++            tag.history.restore(old_screen, 1)
++        end
      end
+-    tag.history.restore(old_screen,1)
  end
  
+ --- Get a tag's screen
