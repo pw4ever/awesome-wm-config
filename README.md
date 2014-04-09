@@ -100,7 +100,7 @@ sudo pacman -S --needed --noconfirm \
          feh dex screenfetch scrot xcompmgr hsetroot \
          alsa-utils xorg-xbacklight cheese mpd mpc \
          xscreensaver networkmanager network-manager-applet arandr \
-         xfce4-goodies gksu \
+         xfce4-goodies xfce4-terminal gksu \
          gvim emacs firefox chromium
 ```
 
