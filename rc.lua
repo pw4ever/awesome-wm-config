@@ -228,7 +228,6 @@ end
 
 --{{
 local tools = {
-    -- sakura does not interfere with readline function with menu
     terminal = "xfce4-terminal",
     system = {
         filemanager = "thunar",
