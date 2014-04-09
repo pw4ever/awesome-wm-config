@@ -69,6 +69,15 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 
 ### patching
 
+#### __news__
+The discussions on [the bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249)) result in upstream commits [27f483a](https://github.com/awesomeWM/awesome/commit/27f483a601b00366b6e87f929fd942b148e1812a) and [ec8db18](https://github.com/awesomeWM/awesome/commit/ec8db18289073be8e327262b4615f379cf2b3221). The patches fix this problem.
+
+Therefore, this problem will be fixed in the upcoming (as of 9 Apr 2014) v3.5.5.
+
+Before then, the following still apply.
+
+#### ... soon-to-be history 
+
 This configuration is known to work with [awesome v3.5.2][]
 
 [awesome][awesome] releases from [awesome v3.5.3][] to (at least) [awesome v3.5.4][] has [a commit that obliterates the order of dynamic tags][awesome dynamic tag regression]. I have [filed an upstream bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249) and released a patch against it.
