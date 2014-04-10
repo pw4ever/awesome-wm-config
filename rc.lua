@@ -31,7 +31,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.2"
+customization.config.version = "1.5.3"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1199,7 +1199,10 @@ awful.rules.rules = {
     },
 
     { rule = { class = "MPlayer" },
-    properties = { floating = true } },
+    properties = { 
+        floating = true,
+        opacity = 1,
+    } },
 
     { rule = { class = "gimp" },
     properties = { floating = true } },
