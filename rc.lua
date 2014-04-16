@@ -41,7 +41,7 @@ customization.default.property = {
     ncol = 1,
     min_opacity = 0.4,
     max_opacity = 1,
-    default_naughty_opacity = 0.9,
+    default_naughty_opacity = 1,
 }
 
 customization.default.compmgr = 'xcompmgr'
