@@ -624,8 +624,6 @@ end),
 
 awful.key({modkey,}, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
-
 awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
 awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
@@ -841,6 +839,10 @@ end),
 
 awful.key({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
+end),
+
+awful.key({modkey, "Shift" }, "/", function() 
+    awful.util.spawn("kmag")
 end),
 
 --- the rest
@@ -1212,6 +1214,16 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
     --]]
+
+    {
+        rule = { class = "Kmag" },
+        properties = {
+            ontop = true,
+            floating = true,
+            opacity = 0.8,
+        }
+    },
+
 
     {
         rule = { class = "Conky" },

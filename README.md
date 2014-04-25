@@ -106,7 +106,7 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm \
-         feh dex screenfetch scrot xcompmgr hsetroot \
+         feh dex screenfetch scrot xcompmgr hsetroot kdeaccessibility \
          alsa-utils xorg-xbacklight cheese mpd mpc \
          xscreensaver networkmanager network-manager-applet arandr \
          xfce4-goodies xfce4-terminal gksu \
@@ -185,7 +185,6 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |[modkey]+[f4]|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
 |[modkey]+c|edit "rc.lua" with the primary editor|"c" for configuration file|
 |[modkey]+/|show main menu||
-|[modkey]+[shift]+/|show main menu||
 |[modkey]+`|launch screen saver/locker||
 |[modkey]+[enter]|launch user terminal||
 |[modkey]+[alt]+[enter]|launch root terminal||
@@ -305,6 +304,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |[modkey]+b| primary browser | chromium |
 |[modkey]+[shift]+b| secondary browser | firefox |
 |[modkey]+[alt]+v| secondary browser | virtualbox |
+|[modkey]+[shift]+/| screen magnifier | kmag |
 
 #### the rest
 
