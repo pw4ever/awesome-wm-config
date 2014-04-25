@@ -799,6 +799,12 @@ awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol( 1) end)
 
 awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end),
 
+--- misc
+
+awful.key({ modkey, "Shift" }, "`",     function ()  
+    awful.titlebar.toggle(client.focus)
+end),
+
 -- app bindings
 
 --- admin
@@ -1200,14 +1206,20 @@ awful.rules.rules = {
         }
     },
 
-    { rule = { class = "MPlayer" },
-    properties = { 
-        floating = true,
-        opacity = 1,
-    } },
+    { 
+        rule = { class = "MPlayer" },
+        properties = { 
+            floating = true,
+            opacity = 1,
+        } 
+    },
 
-    { rule = { class = "gimp" },
-    properties = { floating = true } },
+    { 
+        rule = { class = "gimp" },
+        properties = { 
+            floating = true, 
+        }, 
+    },
 
     --[[
     Set Firefox to always map on tags number 2 of screen 1.
@@ -1221,7 +1233,10 @@ awful.rules.rules = {
             ontop = true,
             floating = true,
             opacity = 0.8,
-        }
+            sticky = true,
+        },
+        callback = function (c)
+        end,
     },
 
 
@@ -1230,7 +1245,7 @@ awful.rules.rules = {
         properties = {
             sticky = true,
             opacity = 0.4,
-        }
+        },
     }
 
 }
@@ -1303,6 +1318,7 @@ client.connect_signal("manage", function (c, startup)
 
         awful.titlebar(c):set_widget(layout)
     end
+
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)

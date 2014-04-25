@@ -280,6 +280,12 @@ all these keys work on the single **currently focused client**
 |[modkey]+[ctrl]+l|increase number of columns by 1|"l" towards right on keyboard|
 |[modkey]+[ctrl]+h|decrease number of columns by 1|"h" towards left on keyboard|
 
+#### misc
+
+| key combo | function | comment |
+| --- | --- | --- |
+|[modkey]+[shift]+`| toggle the visibility of current client's titlebar | |
+
 ### app bindings
 
 shortcut keys are bound for most common apps; the keybinding is designed to be balanced between the left (pressing the [modkey]) and the right hand (an additional easy to reach key).
