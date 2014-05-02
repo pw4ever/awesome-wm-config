@@ -922,7 +922,7 @@ awful.key({}, "XF86Launch1", function ()
 end),
 
 awful.key({ modkey }, "XF86Sleep", function ()
-    awful.util.spawn("systemctl suspend")
+    awful.util.spawn("systemctl hibernate")
 end),
 
 --- hacks for Thinkpad W530 FN mal-function
