@@ -921,6 +921,11 @@ awful.key({}, "XF86Launch1", function ()
     awful.util.spawn(tools.terminal)
 end),
 
+awful.key({ }, "XF86Sleep", function ()
+    awful.util.spawn("systemctl suspend")
+end),
+
+
 awful.key({ modkey }, "XF86Sleep", function ()
     awful.util.spawn("systemctl hibernate")
 end),
