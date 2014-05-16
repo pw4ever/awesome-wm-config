@@ -462,7 +462,7 @@ do
                 for tagname in io.lines(fname) do
                     local tag = awful.tag.add(tagname,
                     {
-                        screen = s,
+                        screen = count_index,
                         layout = customization.default.property.layout,
                         mwfact = customization.default.property.mwfact,
                         nmaster = customization.default.property.nmaster,
