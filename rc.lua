@@ -898,11 +898,13 @@ awful.key({}, "XF86WebCam", function ()
 end),
 
 awful.key({}, "XF86MonBrightnessUp", function ()
-    awful.util.spawn("xbacklight -inc 5")
+    --awful.util.spawn("xbacklight -inc 5")
+    awful.util.spawn(awful.util.getdir("config") .. "/hacks/set-backlight.sh 2 nv_backlight")
 end),
 
 awful.key({}, "XF86MonBrightnessDown", function ()
-    awful.util.spawn("xbacklight -dec 5")
+    --awful.util.spawn("xbacklight -dec 5")
+    awful.util.spawn(awful.util.getdir("config") .. "/hacks/set-backlight.sh -2 nv_backlight")
 end),
 
 awful.key({}, "XF86WLAN", function ()
