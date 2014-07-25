@@ -827,6 +827,10 @@ awful.key({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("putty")
 end),
 
+awful.key({ modkey, "Mod1", }, "r", function ()
+    awful.util.spawn("remmina")
+end),
+
 awful.key({ modkey, }, "i", function ()
     awful.util.spawn(tools.editor.primary)
 end),
