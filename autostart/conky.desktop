@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Conky
+TryExec=conky
+Exec=conky
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome

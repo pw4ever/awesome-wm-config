@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=MATE power manager
+TryExec=mate-power-manager
+Exec=mate-power-manager
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome

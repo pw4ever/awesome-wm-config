@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=sogou
+TryExec=sogou-autostart
+Exec=sogou-autostart
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome

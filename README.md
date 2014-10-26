@@ -106,11 +106,12 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm \
-         feh dex screenfetch scrot xcompmgr hsetroot kdeaccessibility \
+         feh dex screenfetch scrot xcompmgr kdeaccessibility wmname \
          alsa-utils xorg-xbacklight cheese mpd mpc \
-         xscreensaver networkmanager network-manager-applet arandr \
-         xfce4-goodies xfce4-terminal gksu \
-         gvim emacs firefox chromium
+         xscreensaver networkmanager network-manager-applet mate-power-manager arandr \
+         thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
+         xfce4-terminal udiskie conky udiskie gksu \
+         gvim emacs firefox chromium putty remmina qsynergy
 ```
 
 ### miscellaneous
@@ -305,6 +306,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |[modkey]+[alt]+l| file manager | thunar |
 |[modkey]+[enter]| user terminal | xfce4-terminal |
 |[modkey]+[alt]+p| remote terminal | putty |
+|[modkey]+[alt]+r| remote terminal | remmina |
 |[modkey]+i| primary editor | gvim |
 |[modkey]+[shift]+i| secondary editor | emacs |
 |[modkey]+b| primary browser | chromium |

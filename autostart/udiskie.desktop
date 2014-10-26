@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=udiskie
+TryExec=udiskie
+Exec=udiskie --tray -2
+Terminal=false
+Type=Application
+StartupNotify=false
+Hidden=false
+OnlyShowIn=awesome

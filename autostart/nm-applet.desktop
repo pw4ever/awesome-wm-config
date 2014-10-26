@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=network manager applet
+TryExec=nm-applet
+Exec=nm-applet
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome

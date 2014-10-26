@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=xscreensaver
+TryExec=xscreensaver
+Exec=xscreensaver -no-splash
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome
