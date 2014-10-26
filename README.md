@@ -106,11 +106,12 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm \
-         feh dex screenfetch scrot xcompmgr hsetroot kdeaccessibility \
+         feh dex screenfetch scrot xcompmgr kdeaccessibility wmname \
          alsa-utils xorg-xbacklight cheese mpd mpc \
-         xscreensaver networkmanager network-manager-applet arandr \
-         xfce4-goodies xfce4-terminal gksu \
-         gvim emacs firefox chromium putty remmina
+         xscreensaver networkmanager network-manager-applet mate-power-manager arandr \
+         thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
+         xfce4-terminal udiskie conky udiskie gksu \
+         gvim emacs firefox chromium putty remmina qsynergy
 ```
 
 ### miscellaneous

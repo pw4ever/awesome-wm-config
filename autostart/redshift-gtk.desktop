@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=redshift gtk
+TryExec=redshift-gtk
+Exec=redshift-gtk
+StartupNotify=false
+Terminal=false
+Hidden=false
+X-GNOME-Autostart-enabled=false
+OnlyShowIn=awesome

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=a simple X composite manager
+TryExec=xcompmgr
+Exec=xcompmgr
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome
