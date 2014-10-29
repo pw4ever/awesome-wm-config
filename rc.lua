@@ -230,7 +230,7 @@ end
 local tools = {
     terminal = "xfce4-terminal",
     system = {
-        filemanager = "thunar",
+        filemanager = "pcmanfm",
     },
     browser = {
     },

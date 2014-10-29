@@ -110,7 +110,8 @@ sudo pacman -S --needed --noconfirm \
          alsa-utils xorg-xbacklight cheese mpd mpc \
          xscreensaver networkmanager network-manager-applet mate-power-manager arandr \
          thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
-         xfce4-terminal udiskie conky udiskie gksu \
+         pcmanfm spacefm gvfs udisks udiskie xarchiver \
+         xfce4-terminal conky gksu \
          gvim emacs firefox chromium putty remmina qsynergy
 ```
 
