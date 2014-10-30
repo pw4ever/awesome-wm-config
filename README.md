@@ -304,7 +304,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|[modkey]+[alt]+l| file manager | thunar |
+|[modkey]+[alt]+l| file manager | pcmanfm |
 |[modkey]+[enter]| user terminal | xfce4-terminal |
 |[modkey]+[alt]+p| remote terminal | putty |
 |[modkey]+[alt]+r| remote terminal | remmina |
