@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=udiskie
 TryExec=udiskie
-Exec=udiskie --tray -2
+Exec=udiskie --no-automount --notify --smart-tray
 Terminal=false
 Type=Application
 StartupNotify=false
