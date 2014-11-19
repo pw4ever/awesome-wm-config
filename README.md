@@ -105,14 +105,13 @@ These dependencies are mostly derived from the application keybindings. Some are
 On [Arch Linux][archlinux]:
 
 ```bash
-sudo pacman -S --needed --noconfirm \
-         feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname \
-         alsa-utils xorg-xbacklight cheese mpd mpc \
-         xscreensaver networkmanager network-manager-applet mate-power-manager arandr \
-         thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
-         pcmanfm gvfs udisks udiskie lxsession xarchiver \
-         xfce4-terminal conky gksu \
-         gvim emacs firefox chromium putty remmina qsynergy
+sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname
+sudo pacman -S --needed --noconfirm alsa-utils xorg-xbacklight cheese mpd mpc 
+sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr
+sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession xarchiver 
+sudo pacman -S --needed --noconfirm xfce4-terminal conky gksu
+sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina qsynergy
+sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin
 ```
 
 ### miscellaneous
