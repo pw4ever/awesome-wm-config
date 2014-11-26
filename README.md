@@ -100,7 +100,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`xfce4-terminal`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), and screen setup (`arandr`), etc..
 
 On [Arch Linux][archlinux]:
 
@@ -109,7 +109,7 @@ sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr
 sudo pacman -S --needed --noconfirm alsa-utils xorg-xbacklight cheese mpd mpc 
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession xarchiver 
-sudo pacman -S --needed --noconfirm xfce4-terminal conky gksu
+sudo pacman -S --needed --noconfirm sakura conky gksu
 sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina qsynergy
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin
 ```
@@ -295,7 +295,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|[modkey]+[alt]+[enter] | root terminal | gksudo xfce4-terminal |
+|[modkey]+[alt]+[enter] | root terminal | gksudo sakura |
 |[modkey]+` | screen saver/locker | xscreensaver |
 |[modkey]+' | GUI appfinder | xfce4-appfinder |
 
@@ -304,7 +304,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | key combo | app | my choice |
 | --- | --- | --- |
 |[modkey]+[alt]+l| file manager | pcmanfm |
-|[modkey]+[enter]| user terminal | xfce4-terminal |
+|[modkey]+[enter]| user terminal | sakura |
 |[modkey]+[alt]+p| remote terminal | putty |
 |[modkey]+[alt]+r| remote terminal | remmina |
 |[modkey]+i| primary editor | gvim |

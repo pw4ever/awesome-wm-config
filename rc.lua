@@ -228,7 +228,7 @@ end
 
 --{{
 local tools = {
-    terminal = "xfce4-terminal",
+    terminal = "sakura",
     system = {
         filemanager = "pcmanfm",
     },
