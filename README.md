@@ -108,10 +108,10 @@ On [Arch Linux][archlinux]:
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname
 sudo pacman -S --needed --noconfirm alsa-utils xorg-xbacklight cheese mpd mpc 
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr
-sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession xarchiver 
+sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession lxappearance xarchiver 
 sudo pacman -S --needed --noconfirm sakura conky gksu
 sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina qsynergy
-sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin
+sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 ```
 
 ### miscellaneous
