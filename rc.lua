@@ -31,7 +31,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.5"
+customization.config.version = "1.5.6"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -609,6 +609,11 @@ awful.key({modkey}, "F2", function()
     )
 end),
 
+awful.key({modkey}, "F3", function()
+    local config_path = awful.util.getdir("config")
+    awful.util.spawn_with_shell(config_path .. "/bin/trackpad-toggle.sh")
+end),
+
 awful.key({modkey}, "F4", function()
     awful.prompt.run(
     {prompt = "Run Lua code: "},
@@ -902,11 +907,11 @@ awful.key({}, "XF86WebCam", function ()
 end),
 
 awful.key({}, "XF86MonBrightnessUp", function ()
-    awful.util.spawn("xbacklight -inc 5")
+    awful.util.spawn("xbacklight -inc 10")
 end),
 
 awful.key({}, "XF86MonBrightnessDown", function ()
-    awful.util.spawn("xbacklight -dec 5")
+    awful.util.spawn("xbacklight -dec 10")
 end),
 
 awful.key({}, "XF86WLAN", function ()

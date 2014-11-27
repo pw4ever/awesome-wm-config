@@ -183,6 +183,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 | key combo | function | comment |
 | --- | --- | --- |
 |[modkey]+[f2]|prompt a program to launch|inherited from awesome defaults|
+|[modkey]+[f3]|toggle touchpad|depend on `synclient` from `xf86-input-synaptics`|
 |[modkey]+[f4]|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
 |[modkey]+c|edit "rc.lua" with the primary editor|"c" for configuration file|
 |[modkey]+/|show main menu||
