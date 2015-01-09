@@ -3,38 +3,40 @@
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [[awesome Window Manager][awesome] configuration](#awesome-window-managerawesome-configuration)
-	- [intro](#intro)
-	- [setup](#setup)
-		- [patching](#patching)
-		- [install on Linux](#install-on-linux)
-		- [dependencies](#dependencies)
-		- [miscellaneous](#miscellaneous)
-	- [usage](#usage)
-		- [window management](#window-management)
-			- [restart/quit](#restartquit)
-			- [**layout**](#layout)
-			- [multiple screens/multi-head/[RANDR](https://en.wikipedia.org/wiki/RandR)](#multiple-screensmulti-headrandrhttpsenwikipediaorgwikirandr)
-			- [misc](#misc)
-		- [**dynamic tagging**](#dynamic-tagging)
-			- [**add/delete/rename**](#adddeleterename)
-			- [view](#view)
-			- [move](#move)
-		- [client management](#client-management)
-			- [operation](#operation)
-			- [change focus](#change-focus)
-			- [swap order/select master](#swap-orderselect-master)
-			- [move/copy to tag](#movecopy-to-tag)
-			- [change space allocation in **tile** layout](#change-space-allocation-in-tile-layout)
-		- [app bindings](#app-bindings)
-			- [admin](#admin)
-			- [everyday](#everyday)
-			- [the rest](#the-rest)
-		- [tag list](#tag-list)
-		- [task list](#task-list)
-		- [root window/"the desktop"](#root-windowthe-desktop)
-		- [window/task/client title bar](#windowtaskclient-title-bar)
-	- [customization](#customization)
-	- [todo](#todo)
+  - [intro](#intro)
+  - [setup](#setup)
+    - [install on Linux](#install-on-linux)
+    - [dependencies](#dependencies)
+    - [miscellaneous](#miscellaneous)
+    - [patching](#patching)
+      - [old note](#old-note)
+  - [usage](#usage)
+    - [window management](#window-management)
+      - [restart/quit/info](#restartquitinfo)
+      - [**layout**](#layout)
+      - [multiple screens/multi-head/RANDR](#multiple-screensmulti-headrandr)
+      - [misc](#misc)
+    - [**dynamic tagging**](#dynamic-tagging)
+      - [**add/delete/rename**](#adddeleterename)
+      - [view](#view)
+      - [move](#move)
+    - [client management](#client-management)
+      - [operation](#operation)
+      - [change focus](#change-focus)
+      - [swap order/select master](#swap-orderselect-master)
+      - [move/copy to tag](#movecopy-to-tag)
+      - [change space allocation in **tile** layout](#change-space-allocation-in-tile-layout)
+      - [misc](#misc-1)
+    - [app bindings](#app-bindings)
+      - [admin](#admin)
+      - [everyday](#everyday)
+      - [the rest](#the-rest)
+    - [tag list](#tag-list)
+    - [task list](#task-list)
+    - [root window/"the desktop"](#root-windowthe-desktop)
+    - [window/task/client title bar](#windowtaskclient-title-bar)
+  - [customization](#customization)
+  - [todo](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -67,26 +69,6 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 
 ## setup
 
-### patching
-
-#### __news__
-The discussions on [the bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249)) result in upstream commits [27f483a](https://github.com/awesomeWM/awesome/commit/27f483a601b00366b6e87f929fd942b148e1812a) and [ec8db18](https://github.com/awesomeWM/awesome/commit/ec8db18289073be8e327262b4615f379cf2b3221). The patches fix this problem.
-
-Therefore, this problem will be fixed in the upcoming (as of 9 Apr 2014) v3.5.5.
-
-Before then, the following still apply.
-
-#### ... soon-to-be history 
-
-This configuration is known to work with [awesome v3.5.2][]
-
-[awesome][awesome] releases from [awesome v3.5.3][] to (at least) [awesome v3.5.4][] has [a commit that obliterates the order of dynamic tags][awesome dynamic tag regression]. I have [filed an upstream bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249) and released a patch against it.
-
-Options for patching:
-* [the raw patch](https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/00patch/v3.5.4/awful-tag.patch).
-* [Arch Linux PKGBUILD](https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/00patch/v3.5.4/PKGBUILD).
-* [my patched awesome repo](https://github.com/pw4ever/awesome) forked from upstream.
-
 ### install on Linux
 
 * install [awesome][awesome] with either:
@@ -118,7 +100,24 @@ sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 
 * make sure that you can write to `/tmp` (for dynamic tagging), e.g., through `tmpfs`
 * populate your `$HOME/.config/autostart` with [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart files (optionally with `OnlyShowIn=awesome` if you only want them to auto-start in [awesome][awesome]).
-* [my autostart setup can be found here](https://github.com/pw4ever/dev-env/tree/master/.config/autostart/awesome).
+* [my autostart setup can be found here](https://github.com/pw4ever/awesome-wm-config/tree/master/autostart).
+
+### patching
+
+#### old note
+
+The discussions on [the bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249)) result in upstream commits [27f483a](https://github.com/awesomeWM/awesome/commit/27f483a601b00366b6e87f929fd942b148e1812a) and [ec8db18](https://github.com/awesomeWM/awesome/commit/ec8db18289073be8e327262b4615f379cf2b3221). The patches fix this problem.
+
+Therefore, this problem will be fixed in v3.5.5.
+
+This configuration is known to work with [awesome v3.5.2][]
+
+[awesome][awesome] releases from [awesome v3.5.3][] to (at least) [awesome v3.5.4][] has [a commit that obliterates the order of dynamic tags][awesome dynamic tag regression]. I have [filed an upstream bug report](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=1249) and released a patch against it.
+
+Options for patching:
+* [the raw patch](https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/00patch/v3.5.4/awful-tag.patch).
+* [Arch Linux PKGBUILD](https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/00patch/v3.5.4/PKGBUILD).
+* [my patched awesome repo](https://github.com/pw4ever/awesome) forked from upstream.
 
 ## usage
 
@@ -170,7 +169,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |[modkey]+[left button]| move client |
 |[modkey]+[right button]| resize client |
 
-#### multiple screens/multi-head/[RANDR](https://en.wikipedia.org/wiki/RandR)
+#### multiple screens/multi-head/RANDR
 
 | key combo | function | comment |
 | --- | --- | --- |
