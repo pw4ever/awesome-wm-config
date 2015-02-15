@@ -42,9 +42,13 @@
 
 # [awesome Window Manager][awesome] configuration
 
+<img alt="a screenshot of it in action" src="https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/screenshot/pengw-awesome-screenshot-20150215.png" width="960px" />
+
 ## intro
 
 [awesome][awesome] is awesome. I use it on all [Arch Linux][archlinux] desktop/laptop machines that I have control over (admittedly, it is not designed for handheld smartphones/tablets).
+
+[Me using it](https://www.youtube.com/watch?v=tu8nyU_vWh0) to demo [Figurehead](https://github.com/pw4ever/tbnl).
 
 [Search YouTube for "awesome wm"](https://www.youtube.com/results?search_query=awesome+wm) to see [awesome][awesome] in action.
 
@@ -55,7 +59,7 @@ Among my favorites features:
 * *the ability* to do dynamic tagging (meaning it is **not** enabled by the default configuration---at least up to v3.5.4 (Brown Paper Bag) released on 2 April 2014).
 
 This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightlights:
-* *persistent dynamic tagging* across (both regular and randr-induced) restarts.
+* **persistent dynamic tagging across (both regular and randr-induced) restarts**.
   * dynamic tagging means tags can be created/moved/renamed/deleted on the fly without touching the configuration.
   * persistent means tags and the clients/programs associated with each tag is preserved across [awesome][awesome] restart.
     * [apparently, I am not the only one who desire this](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=687)
@@ -63,6 +67,8 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 * confirmation before quit/restart to minimize data loss accidents.
   * you have to type "yes" (case insensitive) before quitting/restarting.
   * this minimizes the chance that you lose your work by accidents.
+* keybindings for tuning transparency (using `xcompmgr`), stay-on-top, sticky.
+  * these features combined, along with tiling and floating layouts, allow you to type in one window while seeing the content of others.
 * keybindings to *my* preferred applications.
 * only cycle through the most sensible (IMHO) layouts.
 * keybinding optimized for [Arch Linux][archlinux] over Thinkpad W530 (my current workhorse).
