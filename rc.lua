@@ -31,7 +31,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.8"
+customization.config.version = "1.5.9"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -845,13 +845,13 @@ awful.key({ modkey, "Shift" }, "i", function ()
 end),
 
 awful.key({ modkey, }, "b", function ()
-    --awful.util.spawn(tools.browser.primary)
-    awful.util.spawn('google-chrome-stable')
+    awful.util.spawn(tools.browser.primary)
+    --awful.util.spawn('google-chrome-stable')
 end),
 
 awful.key({ modkey, "Shift" }, "b", function ()
-    --awful.util.spawn(tools.browser.secondary)
-    awful.util.spawn('firefox')
+    awful.util.spawn(tools.browser.secondary)
+    --awful.util.spawn('firefox')
 end),
 
 awful.key({ modkey, "Mod1", }, "v", function ()
