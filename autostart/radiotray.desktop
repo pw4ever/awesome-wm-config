@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=radiotray
+TryExec=radiotray
+Exec=radiotray
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome
