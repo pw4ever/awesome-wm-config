@@ -86,10 +86,12 @@ function util.tag.add(name, props)
         index = 1,
     }
 
+    local index=props.index
+
     local t = awful.tag.add(name or " ", props)
     if t then
+        awful.tag.move(index or 1, t)
         awful.tag.setscreen(t, props.screen)
-        awful.tag.move(props.index or 1, t)
         awful.tag.viewonly(t)
     end
 
