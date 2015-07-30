@@ -31,7 +31,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.11"
+customization.config.version = "1.5.12"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -824,6 +824,34 @@ end),
 
 awful.key({ modkey, }, "End", function ()
     awful.util.spawn("systemctl suspend")
+end),
+
+awful.key({ modkey, }, "Insert", function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Reboot (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl reboot")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end),
+
+awful.key({ modkey, }, "Delete", function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Power Off (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl poweroff")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
 end),
 
 awful.key({ modkey }, "'", function ()
