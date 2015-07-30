@@ -127,7 +127,7 @@ Options for patching:
 
 ## usage
 
-Take a look at the "rc.lua" configuration file (`$HOME/.config/awesome/rc.lua`; perhaps by pressing the keybinding `[modkey]+c` which will open `rc.lua` with the primary editor---for me, Vim).
+Take a look at the "rc.lua" configuration file (`$HOME/.config/awesome/rc.lua`; perhaps by pressing the keybinding `<kbd>Modkey</kbd>+c` which will open `rc.lua` with the primary editor---for me, Vim).
 
 Most keybindings are prefixed with the "Modkey." This config associates "Modkey" to X Window's "mod4" . On many machines, this associates the "Super_L" (tip: use `xmodmap` in terminal emulator to verify/change this), which usually translate to the (intuitively) "Windows" key.
 
@@ -139,24 +139,24 @@ Some keybinding requires further input (e.g., rename a tag), which will "grab" t
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[ctrl]+r|restart|"r" for restart; used for apply updated "rc.lua" config file|
-|[modkey]+[shift]+q|quit|"q" for quit; used for apply updated "rc.lua" config file|
-|[modkey]+\|system info popup||
-|[modkey]+[f1]|open help in browser||
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>r</kbd>|restart|"r" for restart; used for apply updated "rc.lua" config file|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>q</kbd>|quit|"q" for quit; used for apply updated "rc.lua" config file|
+|<kbd>Modkey</kbd>+<kbd>\</kbd>|system info popup||
+|<kbd>Modkey</kbd>+<kbd>f1</kbd>|open help in browser||
 
 #### **layout**
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[space]|change to next layout||
-|[modkey]+[shift]+[space]|change to prev layout||
+|<kbd>Modkey</kbd>+<kbd>Space</kbd>|change to next layout||
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd>|change to prev layout||
 
 | mouse action | function |
 | --- | --- |
-|[left button]]|change to next layout|
-|[right button]|change to prev layout|
-|[scroll up]|change to prev layout|
-|[scroll down]|change to next layout|
+|<kbd>left button</kbd>|change to next layout|
+|<kbd>right button</kbd>|change to prev layout|
+|<kbd>scroll up</kbd>|change to prev layout|
+|<kbd>scroll down</kbd>|change to next layout|
 
 only the following layouts are enabled
 
@@ -172,29 +172,29 @@ in the floating mode, the following mouse actions *on client window* are enabled
 
 | mouse action | function |
 | --- | --- |
-|[modkey]+[left button]| move client |
-|[modkey]+[right button]| resize client |
+|<kbd>Modkey</kbd>+<kbd>left button</kbd>| move client |
+|<kbd>Modkey</kbd>+<kbd>right button</kbd>| resize client |
 
 #### multiple screens/multi-head/RANDR
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[ctrl]+j|focus on the next screen|"j" is easy to reach|
-|[modkey]+[ctrl]+j|focus on the prev screen|"k" is easy to reach|
-|[modkey]+o|send client to the other screen||
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>j</kbd>|focus on the next screen|"j" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>k</kbd>|focus on the prev screen|"k" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>o</kbd>|send client to the other screen||
 
 #### misc
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[f2]|prompt a program to launch|inherited from awesome defaults|
-|[modkey]+[f3]|toggle touchpad|depend on `synclient` from `xf86-input-synaptics`|
-|[modkey]+[f4]|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
-|[modkey]+c|edit "rc.lua" with the primary editor|"c" for configuration file|
-|[modkey]+/|show main menu||
-|[modkey]+`|launch screen saver/locker||
-|[modkey]+[enter]|launch user terminal||
-|[modkey]+[alt]+[enter]|launch root terminal||
+|<kbd>Modkey</kbd>+<kbd>f2</kbd>|prompt a program to launch|inherited from awesome defaults|
+|<kbd>Modkey</kbd>+<kbd>f3</kbd>|toggle touchpad|depend on `synclient` from `xf86-input-synaptics`|
+|<kbd>Modkey</kbd>+<kbd>f4</kbd>|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
+|<kbd>Modkey</kbd>+<kbd>c</kbd>|edit "rc.lua" with the primary editor|"c" for configuration file|
+|<kbd>Modkey</kbd>+<kbd>/</kbd>|show main menu||
+|<kbd>Modkey</kbd>+<kbd>`</kbd>|launch screen saver/locker||
+|<kbd>Modkey</kbd>+<kbd>Enter</kbd>|launch user terminal||
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Enter</kbd>|launch root terminal||
 
 ### **dynamic tagging**
 
@@ -202,28 +202,28 @@ in the floating mode, the following mouse actions *on client window* are enabled
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+a|create a new tag after the current one and view it|"a" for add|
-|[modkey]+[shift]+a|create a new tag before the current one and view it|"a" for add|
-|[modkey]+[shift]+d|delte the current tag *if there is no client on it*|"d" for delete|
-|[modkey]+[shift]+r|rename the current tag|"r" for rename|
+|<kbd>Modkey</kbd>+<kbd>a</kbd>|create a new tag after the current one and view it|"a" for add|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>a</kbd>|create a new tag before the current one and view it|"a" for add|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>d</kbd>|delte the current tag *if there is no client on it*|"d" for delete|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>r</kbd>|rename the current tag|"r" for rename|
 
 #### view
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+p|view previous tag|"p" for previous|
-|[modkey]+n|view next tag|"n" for next|
-|[modkey]+z|view last tag||
-|[modkey]+g|**prompted for a tag to view**|with tag name completion with [tab]|
-|[modkey]+[1-9,0]|**view the first-ninth, tenth tag**|prompt for "add a new tag" if not already existed|
-|[modkey]+[ctrl]+[1-9,0]|**view also the first-ninth, tenth tag**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd>+<kbd>p</kbd>|view previous tag|"p" for previous|
+|<kbd>Modkey</kbd>+<kbd>n</kbd>|view next tag|"n" for next|
+|<kbd>Modkey</kbd>+<kbd>z</kbd>|view last tag||
+|<kbd>Modkey</kbd>+<kbd>g</kbd>|**prompted for a tag to view**|with tag name completion with <kbd>Tab</kbd>|
+|<kbd>Modkey</kbd>+[1-9,0]|**view the first-ninth, tenth tag**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+[1-9,0]|**view also the first-ninth, tenth tag**|prompt for "add a new tag" if not already existed|
 
 #### move
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[ctrl]+p|move the current tag backward by 1 position||
-|[modkey]+[ctrl]+n|move the current tag forward by 1 position||
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>p</kbd>|move the current tag backward by 1 position||
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>n</kbd>|move the current tag forward by 1 position||
 
 ### client management
 
@@ -231,36 +231,36 @@ in the floating mode, the following mouse actions *on client window* are enabled
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[shift]+c|kill focused client||
-|[modkey]+f|toggle fullscreen status|"fullscreen" hides statusbar|
-|[modkey]+m|toggle maximized status|"maximized" leaves statusbar visible|
-|[modkey]+[shift]+m|minimize|minimized client need mouse click on tasklist to restore|
-|[modkey]+[ctrl]+[space]|toggle floating status||
-|[modkey]+t|toggle ontop status||
-|[modkey]+s|toggle sticky status||
-|[modkey]+,|toggle horizontal maximized status||
-|[modkey]+.|toggle vertical maximized status||
-|[modkey]+[|**decrease opacity by 10%**|need composite manager, e.g., xcompmgr|
-|[modkey]+]|**increase opacity by 10%**|need composite manager, e.g., xcompmgr|
-|[modkey]+[shift]+[|**disable composite manager**||
-|[modkey]+[shift]+]|**enable composite manager**||
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>|kill focused client||
+|<kbd>Modkey</kbd>+<kbd>f</kbd>|toggle fullscreen status|"fullscreen" hides statusbar|
+|<kbd>Modkey</kbd>+<kbd>m</kbd>|toggle maximized status|"maximized" leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>m</kbd>|minimize|minimized client need mouse click on tasklist to restore|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Space</kbd>|toggle floating status||
+|<kbd>Modkey</kbd>+<kbd>t</kbd>|toggle ontop status||
+|<kbd>Modkey</kbd>+<kbd>s</kbd>|toggle sticky status||
+|<kbd>Modkey</kbd>+<kbd>,</kbd>|toggle horizontal maximized status||
+|<kbd>Modkey</kbd>+<kbd>.</kbd>|toggle vertical maximized status||
+|<kbd>Modkey</kbd>+<kbd>[</kbd>|**decrease opacity by 10%**|need composite manager, e.g., xcompmgr|
+|<kbd>Modkey</kbd>+<kbd>]</kbd>|**increase opacity by 10%**|need composite manager, e.g., xcompmgr|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>[</kbd>|**disable composite manager**||
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>]</kbd>|**enable composite manager**||
 
 #### change focus
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+j|focus on the next client in current tag|"j" is easy to reach|
-|[modkey]+k|focus on the prev client in current tag|"k" is easy to reach|
-|[modkey]+[tab]|focus on the last-focus client in current tag||
-|[modkey]+u|jump to the urgent client|"u" for urgent|
+|<kbd>Modkey</kbd>+<kbd>j</kbd>|focus on the next client in current tag|"j" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>k</kbd>|focus on the prev client in current tag|"k" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>Tab</kbd>|focus on the last-focus client in current tag||
+|<kbd>Modkey</kbd>+<kbd>u</kbd>|jump to the urgent client|"u" for urgent|
 
 #### swap order/select master
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[ctrl]+[enter]|select current client as the master|master is featured on the screen|
-|[modkey]+[shift]+j|swap current client with the next one|"j" is easy to reach|
-|[modkey]+[shift]+k|swap current client with the prev one|"k" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Enter</kbd>|select current client as the master|master is featured on the screen|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>j</kbd>|swap current client with the next one|"j" is easy to reach|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>k</kbd>|swap current client with the prev one|"k" is easy to reach|
 
 #### move/copy to tag
 
@@ -268,58 +268,61 @@ all these keys work on the single **currently focused client**
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[shift]+p|send the client to the previous tag|"p" for previous|
-|[modkey]+[shift]+n|send the client to the next tag|"n" for next|
-|[modkey]+[shift]+g|**move the client to the named tag**|with tag name completion by [tab]|
-|[modkey]+[ctrl]+[shift]+g|**toggle the named tag for the client**|with tag name completion by [tab]|
-|[modkey]+[shift]+[1-9,0]|**move the client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
-|[modkey]+[ctrl]+[shift]+[1-9,0]|**toggle the {first-ninth, tenth} tag for the client**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>|send the client to the previous tag|"p" for previous|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>n</kbd>|send the client to the next tag|"n" for next|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd>|**move the client to the named tag**|with tag name completion by <kbd>Tab</kbd>|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+g|**toggle the named tag for the client**|with tag name completion by <kbd>Tab</kbd>|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+[1-9,0]|**move the client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+[1-9,0]|**toggle the {first-ninth, tenth} tag for the client**|prompt for "add a new tag" if not already existed|
 
 #### change space allocation in **tile** layout
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+=|reset master width to 50%|"=" for equal partition of screen|
-|[modkey]+l|increase master width by 5%|"l" towards right on keyboard|
-|[modkey]+h|decrease master width by 5%|"h" towards left on keyboard|
-|[modkey]+[shift]+l|increase number of masters by 1|"l" towards right on keyboard|
-|[modkey]+[shift]+h|decrease number of masters by 1|"h" towards left on keyboard|
-|[modkey]+[ctrl]+l|increase number of columns by 1|"l" towards right on keyboard|
-|[modkey]+[ctrl]+h|decrease number of columns by 1|"h" towards left on keyboard|
+|<kbd>Modkey</kbd>+<kbd>=</kbd>|reset master width to 50%|"=" for equal partition of screen|
+|<kbd>Modkey</kbd>+<kbd>l</kbd>|increase master width by 5%|"l" towards right on keyboard|
+|<kbd>Modkey</kbd>+<kbd>h</kbd>|decrease master width by 5%|"h" towards left on keyboard|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>l</kbd>|increase number of masters by 1|"l" towards right on keyboard|
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>h</kbd>|decrease number of masters by 1|"h" towards left on keyboard|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>l</kbd>|increase number of columns by 1|"l" towards right on keyboard|
+|<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>h</kbd>|decrease number of columns by 1|"h" towards left on keyboard|
 
 #### misc
 
 | key combo | function | comment |
 | --- | --- | --- |
-|[modkey]+[shift]+`| toggle the visibility of current client's titlebar | |
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>`</kbd>| toggle the visibility of current client's titlebar | |
 
 ### app bindings
 
-shortcut keys are bound for most common apps; the keybinding is designed to be balanced between the left (pressing the [modkey]) and the right hand (an additional easy to reach key).
+shortcut keys are bound for most common apps; the keybinding is designed to be balanced between the left (pressing the <kbd>Modkey</kbd>) and the right hand (an additional easy to reach key).
 
 #### admin
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|[modkey]+[alt]+[enter] | root terminal | gksudo sakura |
-|[modkey]+` | screen saver/locker | xscreensaver |
-|[modkey]+' | GUI appfinder | xfce4-appfinder |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Enter</kbd> | root terminal | gksudo sakura |
+|<kbd>Modkey</kbd>+<kbd>`</kbd> | screen saver/locker | xscreensaver |
+|<kbd>Modkey</kbd>+<kbd>Home</kbd> | screen saver/locker | xscreensaver |
+|<kbd>Modkey</kbd>+<kbd>End</kbd> | suspend | systemctl suspend |
+|<kbd>Modkey</kbd>+<kbd>'</kbd> | GUI appfinder | xfce4-appfinder |
+|<kbd>Modkey</kbd>+<kbd>F3</kbd> | GUI appfinder | xfce4-appfinder |
 
 #### everyday
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|[modkey]+[alt]+l| file manager | pcmanfm |
-|[modkey]+[enter]| user terminal | sakura |
-|[modkey]+[alt]+p| remote terminal | putty |
-|[modkey]+[alt]+r| remote terminal | remmina |
-|[modkey]+i| primary editor | gvim |
-|[modkey]+[shift]+i| secondary editor | emacs |
-|[modkey]+b| primary browser | chromium |
-|[modkey]+[shift]+b| secondary browser | firefox |
-|[modkey]+[alt]+v| secondary browser | virtualbox |
-|[modkey]+[shift]+/| screen magnifier | kmag |
-|PrintScreen| screen shooter | xfce4-screenshooter |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>l</kbd>| file manager | pcmanfm |
+|<kbd>Modkey</kbd>+<kbd>Enter</kbd>| user terminal | sakura |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>p</kbd>| remote terminal | putty |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>r</kbd>| remote terminal | remmina |
+|<kbd>Modkey</kbd>+<kbd>i</kbd>| primary editor | gvim |
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd>| secondary editor | emacs |
+|<kbd>Modkey</kbd>+<kbd>b</kbd>| primary browser | chromium |
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>b</kbd>| secondary browser | firefox |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>v</kbd>| secondary browser | virtualbox |
+|<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>/|</kbd> screen magnifier | kmag |
+|<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 
 #### the rest
 
@@ -330,36 +333,36 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | mouse action | function |
 | --- | --- |
-|[left button]|view the tag|
-|[modkey]+[left button]|move current client to the tag|
-|[right button]|toggle whether to view the tag|
-|[modkey]+[right button]|toggle the tag for current client|
-|[scroll up]|view the prev tag|
-|[scroll down]|view the next tag|
+|<kbd>left button</kbd>|view the tag|
+|<kbd>Modkey</kbd>+<kbd>left button</kbd>|move current client to the tag|
+|<kbd>right button</kbd>|toggle whether to view the tag|
+|<kbd>Modkey</kbd>+<kbd>right button</kbd>|toggle the tag for current client|
+|<kbd>scroll up</kbd>|view the prev tag|
+|<kbd>scroll down</kbd>|view the next tag|
 
 ### task list
 
 | mouse action | function |
 | --- | --- |
-|[left button]|toggle task minimize status|
-|[right button]|menu of all tasks across tags|
-|[scroll up]|focus on prev task|
-|[scroll down]|focus on next task|
+|<kbd>left button</kbd>|toggle task minimize status|
+|<kbd>right button</kbd>|menu of all tasks across tags|
+|<kbd>scroll up</kbd>|focus on prev task|
+|<kbd>scroll down</kbd>|focus on next task|
 
 ### root window/"the desktop"
 
 | mouse action | function |
 | --- | --- |
-|[right button]|show main menu|
-|[scroll up]|view the prev tag|
-|[scroll down]|view the next tag|
+|<kbd>right button</kbd>|show main menu|
+|<kbd>scroll up</kbd>|view the prev tag|
+|<kbd>scroll down</kbd>|view the next tag|
 
 ### window/task/client title bar
 
 | mouse action | function |
 | --- | --- |
-|[left button]|move the window|
-|[right button]|resize the window|
+|<kbd>left button</kbd>|move the window|
+|<kbd>right button</kbd>|resize the window|
 
 the five buttons on the upper right corner
 

@@ -31,7 +31,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.10"
+customization.config.version = "1.5.11"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -818,9 +818,22 @@ awful.key({ modkey, }, "`", function ()
     awful.util.spawn("xscreensaver-command -l")
 end),
 
+awful.key({ modkey, }, "Home", function ()
+    awful.util.spawn("xscreensaver-command -l")
+end),
+
+awful.key({ modkey, }, "End", function ()
+    awful.util.spawn("systemctl suspend")
+end),
+
 awful.key({ modkey }, "'", function ()
     awful.util.spawn("xfce4-appfinder")
 end),
+
+awful.key({ modkey }, "F3", function ()
+    awful.util.spawn("xfce4-appfinder")
+end),
+
 
 --- everyday
 
