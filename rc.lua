@@ -858,11 +858,6 @@ awful.key({ modkey }, "'", function ()
     awful.util.spawn("xfce4-appfinder")
 end),
 
-awful.key({ modkey }, "F3", function ()
-    awful.util.spawn("xfce4-appfinder")
-end),
-
-
 --- everyday
 
 awful.key({ modkey, "Mod1", }, "l", function ()
