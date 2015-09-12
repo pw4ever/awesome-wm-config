@@ -20,6 +20,8 @@ local util = require("util")
 
 local capi = {
     tag = tag,
+    screen = screen,
+    client = client,
 }
 
 -- customization
@@ -31,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.13"
+customization.config.version = "1.5.14"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1050,9 +1052,83 @@ awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.ful
 
 awful.key({ modkey,           }, "m",
 function (c)
+    if not c.sidelined then
+      c.right = true
+    end
+    if c.orig_geometry then
+    end
     c.maximized_horizontal = not c.maximized_horizontal
     c.maximized_vertical   = not c.maximized_vertical
 end),
+
+awful.key({ modkey,           }, "Right",
+function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if c.sidelined then
+      if c.orig_geometry then
+        c:geometry(c.orig_geometry)
+      end
+    else
+      c.orig_geometry = c:geometry()
+      workarea.x = workarea.x + math.floor(workarea.width/2)
+      workarea.width = math.floor(workarea.width/2)
+      c:geometry(workarea)
+    end
+    c.sidelined = not c.sidelined
+end),
+
+awful.key({ modkey,           }, "Left",
+function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if c.sidelined then
+      if c.orig_geometry then
+        c:geometry(c.orig_geometry)
+      end
+    else
+      c.orig_geometry = c:geometry()
+      workarea.width = math.floor(workarea.width/2)
+      c:geometry(workarea)
+    end
+    c.sidelined = not c.sidelined
+end),
+
+awful.key({ modkey,           }, "Up",
+function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if c.sidelined then
+      if c.orig_geometry then
+        c:geometry(c.orig_geometry)
+      end
+    else
+      c.orig_geometry = c:geometry()
+      workarea.height = math.floor(workarea.height/2)
+      c:geometry(workarea)
+    end
+    c.sidelined = not c.sidelined
+end),
+
+awful.key({ modkey,           }, "Down",
+function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if c.sidelined then
+      if c.orig_geometry then
+        c:geometry(c.orig_geometry)
+      end
+    else
+      c.orig_geometry = c:geometry()
+      workarea.y = workarea.y + math.floor(workarea.height/2)
+      workarea.height = math.floor(workarea.height/2)
+      c:geometry(workarea)
+    end
+    c.sidelined = not c.sidelined
+end),
+
+
+
 
 awful.key({ modkey, "Shift"   }, "m",
 function (c)

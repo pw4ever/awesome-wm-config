@@ -94,7 +94,7 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname
-sudo pacman -S --needed --noconfirm alsa-utils xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
+sudo pacman -S --needed --noconfirm alsa-utils gnome-alsamixer xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession lxappearance xarchiver 
 sudo pacman -S --needed --noconfirm sakura conky gksu
@@ -232,8 +232,12 @@ in the floating mode, the following mouse actions *on client window* are enabled
 | key combo | function | comment |
 | --- | --- | --- |
 |<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>|kill focused client||
-|<kbd>Modkey</kbd>+<kbd>f</kbd>|toggle fullscreen status|"fullscreen" hides statusbar|
-|<kbd>Modkey</kbd>+<kbd>m</kbd>|toggle maximized status|"maximized" leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>f</kbd>|toggle fullscreen status|hides statusbar|
+|<kbd>Modkey</kbd>+<kbd>m</kbd>|toggle maximized status|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Right</kbd>|move window to right half screen|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Left</kbd>|move window to left half screen|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Up</kbd>|move window to top half screen|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Down</kbd>|move window to bottom half screen|leaves statusbar visible|
 |<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>m</kbd>|minimize|minimized client need mouse click on tasklist to restore|
 |<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Space</kbd>|toggle floating status||
 |<kbd>Modkey</kbd>+<kbd>t</kbd>|toggle ontop status||
