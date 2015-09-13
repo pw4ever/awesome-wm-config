@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.14"
+customization.config.version = "1.5.15"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1043,6 +1043,9 @@ nil
 
 -- client management
 
+-- client_status[client] = {sidelined = <boolean>, geometry= <client geometry>}
+local client_status = {}
+
 --- operation
 clientkeys = awful.util.table.join(
 
@@ -1065,70 +1068,79 @@ awful.key({ modkey,           }, "Right",
 function (c)
     local scr = screen[mouse.screen]
     local workarea = scr.workarea
-    if c.sidelined then
-      if c.orig_geometry then
-        c:geometry(c.orig_geometry)
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
       end
     else
-      c.orig_geometry = c:geometry()
+      client_status[c].geometry = c:geometry()
       workarea.x = workarea.x + math.floor(workarea.width/2)
       workarea.width = math.floor(workarea.width/2)
       c:geometry(workarea)
     end
-    c.sidelined = not c.sidelined
+    client_status[c].sidelined = not client_status[c].sidelined
 end),
 
 awful.key({ modkey,           }, "Left",
 function (c)
     local scr = screen[mouse.screen]
     local workarea = scr.workarea
-    if c.sidelined then
-      if c.orig_geometry then
-        c:geometry(c.orig_geometry)
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
       end
     else
-      c.orig_geometry = c:geometry()
+      client_status[c].geometry = c:geometry()
       workarea.width = math.floor(workarea.width/2)
       c:geometry(workarea)
     end
-    c.sidelined = not c.sidelined
+    client_status[c].sidelined = not client_status[c].sidelined
 end),
 
 awful.key({ modkey,           }, "Up",
 function (c)
     local scr = screen[mouse.screen]
     local workarea = scr.workarea
-    if c.sidelined then
-      if c.orig_geometry then
-        c:geometry(c.orig_geometry)
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
       end
     else
-      c.orig_geometry = c:geometry()
+      client_status[c].geometry = c:geometry()
       workarea.height = math.floor(workarea.height/2)
       c:geometry(workarea)
     end
-    c.sidelined = not c.sidelined
+    client_status[c].sidelined = not client_status[c].sidelined
 end),
 
 awful.key({ modkey,           }, "Down",
 function (c)
     local scr = screen[mouse.screen]
     local workarea = scr.workarea
-    if c.sidelined then
-      if c.orig_geometry then
-        c:geometry(c.orig_geometry)
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
       end
     else
-      c.orig_geometry = c:geometry()
+      client_status[c].geometry = c:geometry()
       workarea.y = workarea.y + math.floor(workarea.height/2)
       workarea.height = math.floor(workarea.height/2)
       c:geometry(workarea)
     end
-    c.sidelined = not c.sidelined
+    client_status[c].sidelined = not client_status[c].sidelined
 end),
-
-
-
 
 awful.key({ modkey, "Shift"   }, "m",
 function (c)
