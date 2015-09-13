@@ -43,7 +43,10 @@ customization.default.property = {
     ncol = 1,
     min_opacity = 0.4,
     max_opacity = 1,
-    default_naughty_opacity = 1,
+    default_naughty_opacity = 0.95,
+    low_naughty_opacity = 0.9,
+    normal_naughty_opacity = 0.95,
+    critical_naughty_opacity = 1,
 }
 
 customization.default.compmgr = 'xcompmgr'
@@ -51,9 +54,9 @@ customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
 
-naughty.config.presets.low.opacity = customization.default.property.default_naughty_opacity
-naughty.config.presets.normal.opacity = customization.default.property.default_naughty_opacity
-naughty.config.presets.critical.opacity = customization.default.property.default_naughty_opacity
+naughty.config.presets.low.opacity = customization.default.property.low_naughty_opacity
+naughty.config.presets.normal.opacity = customization.default.property.normal_naughty_opacity
+naughty.config.presets.critical.opacity = customization.default.property.critical_naughty_opacity
 
 do
     local config_path = awful.util.getdir("config")
