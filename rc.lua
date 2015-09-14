@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.16"
+customization.config.version = "1.5.17"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1067,25 +1067,7 @@ function (c)
     c.maximized_vertical   = not c.maximized_vertical
 end),
 
-awful.key({ modkey,           }, "Right",
-function (c)
-    local scr = screen[mouse.screen]
-    local workarea = scr.workarea
-    if client_status[c] == nil then
-      client_status[c] = {sidelined=false, geometry=nil}
-    end
-    if client_status[c].sidelined then
-      if client_status[c].geometry then
-        c:geometry(client_status[c].geometry)
-      end
-    else
-      client_status[c].geometry = c:geometry()
-      workarea.x = workarea.x + math.floor(workarea.width/2)
-      workarea.width = math.floor(workarea.width/2)
-      c:geometry(workarea)
-    end
-    client_status[c].sidelined = not client_status[c].sidelined
-end),
+-- move client to sides, i.e., sidelining
 
 awful.key({ modkey,           }, "Left",
 function (c)
@@ -1100,6 +1082,26 @@ function (c)
       end
     else
       client_status[c].geometry = c:geometry()
+      workarea.width = math.floor(workarea.width/2)
+      c:geometry(workarea)
+    end
+    client_status[c].sidelined = not client_status[c].sidelined
+end),
+
+awful.key({ modkey,           }, "Right",
+function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
+      end
+    else
+      client_status[c].geometry = c:geometry()
+      workarea.x = workarea.x + math.floor(workarea.width/2)
       workarea.width = math.floor(workarea.width/2)
       c:geometry(workarea)
     end
@@ -1144,6 +1146,100 @@ function (c)
     end
     client_status[c].sidelined = not client_status[c].sidelined
 end),
+
+-- extend client sides
+
+awful.key({ modkey, "Mod1"    }, "Left",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.x/7)
+  if delta ~= 0 then
+    cg.x = cg.x - delta
+    cg.width = cg.width + delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1"    }, "Right",
+function (c)
+  local cg = c:geometry()
+  local workarea = screen[mouse.screen].workarea
+  local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
+  local delta = math.floor(rmargin/7)
+  if delta ~= 0 then
+    cg.width = cg.width + delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1"    }, "Up",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.y/7)
+  if delta ~= 0 then
+    cg.y = cg.y - delta
+    cg.height = cg.height + delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1"    }, "Down",
+function (c)
+  local cg = c:geometry()
+  local workarea = screen[mouse.screen].workarea
+  local bmargin = math.max( (workarea.y + workarea.height - cg.y - cg.height), 0)
+  local delta = math.floor(bmargin/7)
+  if delta ~= 0 then
+    cg.height = cg.height + delta
+    c:geometry(cg)
+  end
+end),
+
+-- shrink client sides
+
+awful.key({ modkey, "Mod1", "Shift" }, "Left",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.width/11)
+  if delta ~= 0 and cg.width > 256 then
+    cg.width = cg.width - delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1", "Shift" }, "Right",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.width/11)
+  if delta ~= 0 and cg.width > 256 then
+    cg.x = cg.x + delta
+    cg.width = cg.width - delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1", "Shift" }, "Up",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.height/11)
+  if delta ~= 0 and cg.height > 256 then
+    cg.height = cg.height - delta
+    c:geometry(cg)
+  end
+end),
+
+awful.key({ modkey, "Mod1", "Shift" }, "Down",
+function (c)
+  local cg = c:geometry()
+  local delta = math.floor(cg.height/11)
+  if delta ~= 0 and cg.height > 256 then
+    cg.y = cg.y + delta
+    cg.height = cg.height - delta
+    c:geometry(cg)
+  end
+end),
+
+-- maximize/minimize
 
 awful.key({ modkey, "Shift"   }, "m",
 function (c)

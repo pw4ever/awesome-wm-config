@@ -234,10 +234,18 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>|kill focused client||
 |<kbd>Modkey</kbd>+<kbd>f</kbd>|toggle fullscreen status|hides statusbar|
 |<kbd>Modkey</kbd>+<kbd>m</kbd>|toggle maximized status|leaves statusbar visible|
-|<kbd>Modkey</kbd>+<kbd>Right</kbd>|move window to right half screen|leaves statusbar visible|
 |<kbd>Modkey</kbd>+<kbd>Left</kbd>|move window to left half screen|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Right</kbd>|move window to right half screen|leaves statusbar visible|
 |<kbd>Modkey</kbd>+<kbd>Up</kbd>|move window to top half screen|leaves statusbar visible|
 |<kbd>Modkey</kbd>+<kbd>Down</kbd>|move window to bottom half screen|leaves statusbar visible|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Left</kbd>|extend client to the left|by 1/7 of the margin|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Right</kbd>|extend client to the right|by 1/7 of the margin|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Up</kbd>|extend client to the top|by 1/7 of the margin|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Down</kbd>|extend client to the bottom|by 1/7 of the margin|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Left</kbd>|shrink client from right|by 1/11 of client width; leave client width at least 256 pixels|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Right</kbd>|shrink client from left|by 1/11 of client width; leave client width at least 256 pixels|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Up</kbd>|shrink client from bottom|by 1/11 of client height; leave client height at least 256 pixels|
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Down</kbd>|shrink client from top|by 1/11 of client height; leave client height at least 256 pixels|
 |<kbd>Modkey</kbd>+<kbd>Shift</kbd>+<kbd>m</kbd>|minimize|minimized client need mouse click on tasklist to restore|
 |<kbd>Modkey</kbd>+<kbd>Ctrl</kbd>+<kbd>Space</kbd>|toggle floating status||
 |<kbd>Modkey</kbd>+<kbd>t</kbd>|toggle ontop status||
