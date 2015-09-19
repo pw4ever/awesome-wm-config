@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.17"
+customization.config.version = "1.5.18"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -829,6 +829,34 @@ end),
 
 awful.key({ modkey, }, "End", function ()
     awful.util.spawn("systemctl suspend")
+end),
+
+awful.key({ modkey,  "Mod1" }, "Home", function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Hibernate (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl hibernate")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end),
+
+awful.key({ modkey,  "Mod1" }, "End", function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Hybrid Sleep (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl hybrid-sleep")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
 end),
 
 awful.key({ modkey, }, "Insert", function ()

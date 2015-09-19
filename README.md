@@ -317,6 +317,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd>+<kbd>`</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd>+<kbd>Home</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd>+<kbd>End</kbd> | suspend | systemctl suspend |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>Home</kbd> | hibernate (will confirm) | systemctl hibernate |
+|<kbd>Modkey</kbd>+<kbd>Alt</kbd>+<kbd>End</kbd> | hybrid sleep (will confirm) | systemctl hybrid-sleep |
 |<kbd>Modkey</kbd>+<kbd>Insert</kbd> | reboot (will confirm) | systemctl reboot |
 |<kbd>Modkey</kbd>+<kbd>Delete</kbd> | power off (will confirm) | systemctl poweroff |
 |<kbd>Modkey</kbd>+<kbd>'</kbd> | GUI appfinder | xfce4-appfinder |
