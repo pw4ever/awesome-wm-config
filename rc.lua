@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.18"
+customization.config.version = "1.5.19"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1022,18 +1022,6 @@ end),
 
 awful.key({ modkey }, "F12", function ()
     awful.util.spawn("mpc next")
-end),
-
-awful.key({ modkey }, "Home", function ()
-    awful.util.spawn("mpc seek -5%")
-end),
-
-awful.key({ modkey }, "End", function ()
-    awful.util.spawn("mpc stop")
-end),
-
-awful.key({ modkey }, "Insert", function ()
-    awful.util.spawn("mpc seek +5%")
 end),
 
 awful.key({ modkey, "Control" }, "Left", function ()
