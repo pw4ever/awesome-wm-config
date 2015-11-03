@@ -614,6 +614,15 @@ awful.key({modkey}, "F2", function()
     )
 end),
 
+awful.key({modkey}, "r", function()
+    awful.prompt.run(
+    {prompt = "Run: "},
+    mypromptbox[mouse.screen].widget,
+    awful.util.spawn, awful.completion.shell,
+    awful.util.getdir("cache") .. "/history"
+    )
+end),
+
 awful.key({modkey}, "F3", function()
     local config_path = awful.util.getdir("config")
     awful.util.spawn_with_shell(config_path .. "/bin/trackpad-toggle.sh")
