@@ -175,6 +175,8 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>c</kbd>|edit "rc.lua" with the primary editor|"c" for configuration file|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>;</kbd>|show main menu|<kbd>Shift</kbd><kbd>;</kbd>=<kbd>:</kbd> for Vim's command mode|
 |<kbd>Modkey</kbd><kbd>;</kbd>|show main menu|<kbd>Shift</kbd>-less <kbd>:</kbd>; see above| 
+|<kbd>Modkey</kbd><kbd>x</kbd>|show main menu|for MSFT Windows user| 
+|<kbd>Modkey</kbd><kbd>X</kbd>|show main menu|for MSFT Windows user|
 |<kbd>Modkey</kbd><kbd>/</kbd>|show main menu|for ease of reach|
 |<kbd>Modkey</kbd><kbd>`</kbd>|lock screen with screensaver||
 |<kbd>Modkey</kbd><kbd>Enter</kbd>|launch user terminal||

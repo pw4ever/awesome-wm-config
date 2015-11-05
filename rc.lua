@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.21"
+customization.config.version = "1.5.22"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -730,6 +730,10 @@ awful.key({ modkey, }, "/", function() mymainmenu:toggle({keygrabber=true}) end)
 awful.key({ modkey, }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({ modkey, "Shift" }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
+
+awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end),
+
+awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
