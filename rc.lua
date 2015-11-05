@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.22"
+customization.config.version = "1.5.23"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -436,6 +436,7 @@ mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
 awful.button({ }, 1, awful.tag.viewonly),
 awful.button({ modkey }, 1, awful.client.movetotag),
+awful.button({ }, 2, awful.tag.delete),
 awful.button({ }, 3, awful.tag.viewtoggle),
 awful.button({ modkey }, 3, awful.client.toggletag),
 awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),

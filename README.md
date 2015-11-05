@@ -336,6 +336,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | --- | --- |
 |<kbd>left button</kbd>|view the tag|
 |<kbd>Modkey</kbd><kbd>left button</kbd>|move current client to the tag|
+|<kbd>middle button</kbd>|delete the tag if empty|
 |<kbd>right button</kbd>|toggle whether to view the tag|
 |<kbd>Modkey</kbd><kbd>right button</kbd>|toggle the tag for current client|
 |<kbd>scroll up</kbd>|view the prev tag|
