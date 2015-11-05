@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.20"
+customization.config.version = "1.5.21"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -185,7 +185,6 @@ do
     end
 end
 
-
 -- }}}
 
 -- {{{ Variable definitions
@@ -315,21 +314,106 @@ end
 -- }}}
 --]]
 
+-- {{{ System functions
+
+customization.func.system_lock = function ()
+  awful.util.spawn("xscreensaver-command -l")
+end
+
+customization.func.system_suspend = function ()
+  awful.util.spawn("systemctl suspend")
+end
+
+customization.func.system_hibernate = function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Hibernate (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl hibernate")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end
+
+customization.func.system_hybrid_sleep = function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Hybrid Sleep (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl hybrid-sleep")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end
+
+customization.func.system_reboot = function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Reboot (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl reboot")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end
+
+customization.func.system_power_off = function ()
+  local scr = mouse.screen
+  awful.prompt.run({prompt = "Power Off (type 'yes' to confirm)? "},
+  mypromptbox[scr].widget,
+  function (t)
+    if string.lower(t) == 'yes' then
+      awful.util.spawn("systemctl poweroff")
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
+  end)
+end
+
+customization.func.app_finder = function ()
+    awful.util.spawn("xfce4-appfinder")
+end
+
+-- }}}
 
 -- {{{ Menu
+
+-- Create a launcher widget and a main menu
+mysystemmenu = {
+    --{ "manual", tools.terminal .. " -e man awesome" },
+    { "&lock", customization.func.system_lock },
+    { "&suspend", customization.func.system_suspend },
+    { "hi&bernate", customization.func.system_hibernate },
+    { "hybri&d sleep", customization.func.system_hybrid_sleep },
+    { "&reboot", customization.func.system_reboot },
+    { "&power off", customization.func.system_power_off }
+}
+
 -- Create a launcher widget and a main menu
 myawesomemenu = {
     --{ "manual", tools.terminal .. " -e man awesome" },
-    { "edit config", tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
-    { "restart", awesome.restart },
-    { "quit", awesome.quit }
+    { "&edit config", tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
+    { "&restart", awesome.restart },
+    { "&quit", awesome.quit }
 }
 
 mymainmenu = awful.menu({
     items = {
-        { "awesome", myawesomemenu, beautiful.awesome_icon },
-        { "applications", myapp },
-        { "open terminal", tools.terminal },
+        { "&system", mysystemmenu, beautiful.awesome_icon },
+        { "a&wesome", myawesomemenu, beautiful.awesome_icon },
+        { "app &finder", customization.func.app_finder },
+        { "&applications", myapp },
+        { "open &terminal", tools.terminal },
     }
 })
 
@@ -641,7 +725,11 @@ awful.key({ modkey }, "c", function ()
     awful.util.spawn(tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
 end),
 
-awful.key({modkey,}, "/", function() mymainmenu:toggle({keygrabber=true}) end),
+awful.key({ modkey, }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
+
+awful.key({ modkey, }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
+
+awful.key({ modkey, "Shift" }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
@@ -828,77 +916,21 @@ end),
 
 --- admin
 
-awful.key({ modkey, }, "`", function ()
-    awful.util.spawn("xscreensaver-command -l")
-end),
+awful.key({ modkey, }, "`", customization.func.system_lock),
 
-awful.key({ modkey, }, "Home", function ()
-    awful.util.spawn("xscreensaver-command -l")
-end),
+awful.key({ modkey, }, "Home", customization.func.system_lock),
 
-awful.key({ modkey, }, "End", function ()
-    awful.util.spawn("systemctl suspend")
-end),
+awful.key({ modkey, }, "End", customization.func.system_suspend),
 
-awful.key({ modkey,  "Mod1" }, "Home", function ()
-  local scr = mouse.screen
-  awful.prompt.run({prompt = "Hibernate (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
-  function (t)
-    if string.lower(t) == 'yes' then
-      awful.util.spawn("systemctl hibernate")
-    end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-  end)
-end),
+awful.key({ modkey,  "Mod1" }, "Home", customization.func.system_hibernate),
 
-awful.key({ modkey,  "Mod1" }, "End", function ()
-  local scr = mouse.screen
-  awful.prompt.run({prompt = "Hybrid Sleep (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
-  function (t)
-    if string.lower(t) == 'yes' then
-      awful.util.spawn("systemctl hybrid-sleep")
-    end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-  end)
-end),
+awful.key({ modkey,  "Mod1" }, "End", customization.func.system_hybrid_sleep),
 
-awful.key({ modkey, }, "Insert", function ()
-  local scr = mouse.screen
-  awful.prompt.run({prompt = "Reboot (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
-  function (t)
-    if string.lower(t) == 'yes' then
-      awful.util.spawn("systemctl reboot")
-    end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-  end)
-end),
+awful.key({ modkey, }, "Insert", customization.func.system_reboot),
 
-awful.key({ modkey, }, "Delete", function ()
-  local scr = mouse.screen
-  awful.prompt.run({prompt = "Power Off (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
-  function (t)
-    if string.lower(t) == 'yes' then
-      awful.util.spawn("systemctl poweroff")
-    end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
-  end)
-end),
+awful.key({ modkey, }, "Delete", customization.func.system_power_off),
 
-awful.key({ modkey }, "'", function ()
-    awful.util.spawn("xfce4-appfinder")
-end),
+awful.key({ modkey }, "'", customization.func.app_finder),
 
 --- everyday
 
