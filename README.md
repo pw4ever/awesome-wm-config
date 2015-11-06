@@ -253,8 +253,9 @@ in the floating mode, the following mouse actions *on client window* are enabled
 | key combo | function | comment |
 | --- | --- | --- |
 |<kbd>Modkey</kbd><kbd>j</kbd>|focus on the next client in current tag|"j" is easy to reach|
+|<kbd>Modkey</kbd><kbd>Tab</kbd>|focus on the next client in current tag|MSFT Windows key|
 |<kbd>Modkey</kbd><kbd>k</kbd>|focus on the prev client in current tag|"k" is easy to reach|
-|<kbd>Modkey</kbd><kbd>Tab</kbd>|focus on the last-focus client in current tag||
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Tab</kbd>|focus on the prev client in current tag|MSFT Windows key|
 |<kbd>Modkey</kbd><kbd>u</kbd>|jump to the urgent client|"u" for urgent|
 
 #### swap order/select master

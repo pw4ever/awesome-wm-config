@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.1"
+customization.config.version = "1.6.2"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -501,23 +501,26 @@ customization.func.tag_action_menu = function (t)
 end
 
 customization.func.clients_on_tag = function ()
-  local clients = {}
+  local clients = { 
+    items = {},
+    theme = { width = 400 },
+  }
   local next = next
   local t = awful.tag.selected()
   if t then
-    for i, c in pairs(t:clients()) do
-      if c.focusable then
-        clients[i] = {
+    for _, c in pairs(t:clients()) do
+      if c.focusable and c.pid ~= 0 then
+        table.insert(clients.items, {
           c.name .. " ~" .. tostring(c.pid) or "",
           function ()
             client.focus = c
+            c:raise()
           end,
           c.icon
-        }
+        })
       end
     end
-    if next(clients) ~= nil then
-      clients.theme = { width = 400 }
+    if next(clients.items) ~= nil then
       local m = awful.menu(clients)
       m:show({keygrabber=true})
       return m
@@ -526,11 +529,14 @@ customization.func.clients_on_tag = function ()
 end
 
 customization.func.all_clients = function ()
-  local clients = {}
+  local clients = {
+    items = {},
+    theme = { width = 400},
+  }
   local next = next
-  for i, c in pairs(client.get()) do
-    if c.focusable then
-      clients[i] = {
+  for _, c in pairs(client.get()) do
+    if c.focusable and c.pid ~= 0 then
+      table.insert(clients.items, {
         c.name .. " ~" .. tostring(c.pid) or "",
         function ()
           local t = c:tags()
@@ -538,13 +544,13 @@ customization.func.all_clients = function ()
             awful.tag.viewonly(t[1])
           end
           client.focus = c
+          c:raise()
         end,
         c.icon
-      }
+      })
     end
   end
-  if next(clients) ~= nil then
-    clients.theme = { width = 400 }
+  if next(clients.items) ~= nil then
     local m = awful.menu(clients)
     m:show({keygrabber=true})
     return m
@@ -925,11 +931,13 @@ awful.key({ modkey, "Ctrl" }, "'", function ()
   if t then
     local keywords = {}
     local scr = mouse.screen
-    for i, c in pairs(t:clients()) do
-      local k = c.name .. " ~" .. tostring(c.pid) or ""
-      if k ~= "" then
-        clients[k] = c
-        table.insert(keywords, k)
+    for _, c in pairs(t:clients()) do
+      if c.focusable and c.pid ~= 0 then
+        local k = c.name .. " ~" .. tostring(c.pid) or ""
+        if k ~= "" then
+          clients[k] = c
+          table.insert(keywords, k)
+        end
       end
     end
     if next(clients) ~= nil then
@@ -939,6 +947,7 @@ awful.key({ modkey, "Ctrl" }, "'", function ()
         local c = clients[t]
         if c then
           client.focus = c
+          c:raise()
         end
       end,
       function (t, p, n)
@@ -955,11 +964,13 @@ awful.key({ modkey, "Shift", "Ctrl" }, "'", function ()
   local next = next
   local keywords = {}
   local scr = mouse.screen
-  for i, c in pairs(client.get()) do
-    local k = c.name .. " ~" .. tostring(c.pid) or ""
-    if k ~= "" then
-      clients[k] = c
-      table.insert(keywords, k)
+  for _, c in pairs(client.get()) do
+    if c.focusable and c.pid ~= 0 then
+      local k = c.name .. " ~" .. tostring(c.pid) or ""
+      if k ~= "" then
+        clients[k] = c
+        table.insert(keywords, k)
+      end
     end
   end
   if next(clients) ~= nil then
@@ -973,6 +984,7 @@ awful.key({ modkey, "Shift", "Ctrl" }, "'", function ()
           awful.tag.viewonly(t[1])
         end
         client.focus = c
+        c:raise()
       end
     end,
     function (t, p, n)
@@ -1073,19 +1085,24 @@ function ()
     if client.focus then client.focus:raise() end
 end),
 
+awful.key({ modkey,           }, "Tab",
+function ()
+    awful.client.focus.byidx(1)
+    if client.focus then client.focus:raise() end
+end),
+
 awful.key({ modkey,           }, "k",
 function ()
     awful.client.focus.byidx(-1)
     if client.focus then client.focus:raise() end
 end),
 
-awful.key({ modkey,           }, "Tab",
+awful.key({ modkey, "Shift"   }, "Tab",
 function ()
-    awful.client.focus.history.previous()
-    if client.focus then
-        client.focus:raise()
-    end
+    awful.client.focus.byidx(-1)
+    if client.focus then client.focus:raise() end
 end),
+
 
 awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
 
