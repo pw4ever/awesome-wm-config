@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.0"
+customization.config.version = "1.6.1"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -451,50 +451,53 @@ customization.func.task_action_menu = function (c)
 end
 
 customization.func.tag_action_menu = function (t)
-  local menu = awful.menu({
-    theme = {
-      width = 200,
-    },
-    items = {
-      {"=== tag action menu ==="},
-      {
-        "tag view &only", function () 
-          awful.tag.viewonly(t)
-        end
+  t = t or awful.tag.selected()
+  if t then
+    local menu = awful.menu({
+      theme = {
+        width = 200,
       },
-      {
-        "client &move", function () 
-          awful.client.movetotag(t)
-        end
-      },
-      {
-        "tag &delete", function () 
-          awful.tag.delete(t)
-        end
-      },
-      {
-        "tag view &toggle", function () 
-          awful.tag.viewtoggle(t)
-        end
-      },
-      {
-        "client toggle ta&g", function () 
-          awful.client.toggletag(t)
-        end
-      },
-      {
-        "tag view &prev", function () 
-          awful.tag.viewprev(awful.tag.getscreen(t))
-        end
-      },
-      {
-        "tag view &next", function () 
-          awful.tag.viewnext(awful.tag.getscreen(t))
-        end
-      },
-    }
-  })
-  menu:toggle({keygrabber=true})
+      items = {
+        {"=== tag action menu ==="},
+        {
+          "tag view &only", function () 
+            awful.tag.viewonly(t)
+          end
+        },
+        {
+          "client &move", function () 
+            awful.client.movetotag(t)
+          end
+        },
+        {
+          "tag &delete", function () 
+            awful.tag.delete(t)
+          end
+        },
+        {
+          "tag view &toggle", function () 
+            awful.tag.viewtoggle(t)
+          end
+        },
+        {
+          "client toggle ta&g", function () 
+            awful.client.toggletag(t)
+          end
+        },
+        {
+          "tag view &prev", function () 
+            awful.tag.viewprev(awful.tag.getscreen(t))
+          end
+        },
+        {
+          "tag view &next", function () 
+            awful.tag.viewnext(awful.tag.getscreen(t))
+          end
+        },
+      }
+    })
+    menu:toggle({keygrabber=true})
+  end
 end
 
 customization.func.clients_on_tag = function ()
@@ -503,13 +506,15 @@ customization.func.clients_on_tag = function ()
   local t = awful.tag.selected()
   if t then
     for i, c in pairs(t:clients()) do
-      clients[i] = {
-        c.name .. " ~" .. tostring(c.pid) or "",
-        function ()
-          client.focus = c
-        end,
-        c.icon
-      }
+      if c.focusable then
+        clients[i] = {
+          c.name .. " ~" .. tostring(c.pid) or "",
+          function ()
+            client.focus = c
+          end,
+          c.icon
+        }
+      end
     end
     if next(clients) ~= nil then
       clients.theme = { width = 400 }
@@ -524,17 +529,19 @@ customization.func.all_clients = function ()
   local clients = {}
   local next = next
   for i, c in pairs(client.get()) do
-    clients[i] = {
-      c.name .. " ~" .. tostring(c.pid) or "",
-      function ()
-        local t = c:tags()
-        if t then
-          awful.tag.viewonly(t[1])
-        end
-        client.focus = c
-      end,
-      c.icon
-    }
+    if c.focusable then
+      clients[i] = {
+        c.name .. " ~" .. tostring(c.pid) or "",
+        function ()
+          local t = c:tags()
+          if t then
+            awful.tag.viewonly(t[1])
+          end
+          client.focus = c
+        end,
+        c.icon
+      }
+    end
   end
   if next(clients) ~= nil then
     clients.theme = { width = 400 }
@@ -779,6 +786,8 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
+awful.button({ }, 1, customization.func.all_clients),
+awful.button({ }, 2, customization.func.tag_action_menu),
 awful.button({ }, 3, function () mymainmenu:toggle() end),
 awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
@@ -905,12 +914,7 @@ awful.key({ modkey, }, ";", function()
   end
 end),
 
-awful.key({ modkey, "Shift" }, ";", function() 
-  local t = awful.tag.selected()
-  if t then
-    customization.func.tag_action_menu(t) 
-  end
-end),
+awful.key({ modkey, "Shift" }, ";", customization.func.tag_action_menu),
 
 awful.key({ modkey, }, "'", customization.func.clients_on_tag ),
 

@@ -365,6 +365,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | mouse action | function |
 | --- | --- |
+|<kbd>left button</kbd>|choose from all clients|
+|<kbd>middle button</kbd>|show tag action menu|
 |<kbd>right button</kbd>|show main menu|
 |<kbd>scroll up</kbd>|view the prev tag|
 |<kbd>scroll down</kbd>|view the next tag|
