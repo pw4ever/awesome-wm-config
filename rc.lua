@@ -26,12 +26,12 @@ local capi = {
 }
 
 -- do not use letters, which shadow access key to menu entry
-awful.menu.menu_keys.up = {  "Up", "PageUp", ".", "<", }
-awful.menu.menu_keys.down = { "Down", "PageDown", ",", ">", }
-awful.menu.menu_keys.enter = { "Space", "Right", "]", "}", }
-awful.menu.menu_keys.back = { "Backspace", "Left", "[", "{", }
-awful.menu.menu_keys.exec = { "Enter", }
-awful.menu.menu_keys.close = { "Escape", }
+awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
+awful.menu.menu_keys.up = {  "Up", ",", "<", ";", ":", }
+awful.menu.menu_keys.enter = { "Right", "]", "}", "=", "+", }
+awful.menu.menu_keys.back = { "Left", "[", "{", "-", "_", }
+awful.menu.menu_keys.exec = { "Return", "Space", }
+awful.menu.menu_keys.close = { "Escape", "BackSpace", }
 
 -- customization
 customization = {}
@@ -42,7 +42,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.5"
+customization.config.version = "1.6.6"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
