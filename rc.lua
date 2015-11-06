@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.2"
+customization.config.version = "1.6.3"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -242,10 +242,19 @@ local tools = {
     },
 }
 
-tools.browser.primary = os.getenv("BROWSER") or "chromium"
+tools.browser.primary = os.getenv("BROWSER") or "firefox"
 tools.browser.secondary = ({chromium="firefox", firefox="chromium"})[tools.browser.primary]
+
+-- alternative: override
+--tools.browser.primary = "google-chrome-stable"
+--tools.browser.secondary = "firefox"
+
 tools.editor.primary = os.getenv("EDITOR") or "gvim"
 tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
+
+-- alternative: override
+--tools.editor.primary = "gvim"
+--tools.editor.secondary = "emacs"
 
 local myapp = nil
 do
@@ -260,7 +269,7 @@ do
             if type(v) == 'table' then
                 table.insert(current, {k, build(v)})
             else
-                table.insert(current, {k, v})
+                table.insert(current, {v, v})
             end
         end
         return current
@@ -384,71 +393,565 @@ customization.func.app_finder = function ()
     awful.util.spawn("xfce4-appfinder")
 end
 
-customization.func.task_action_menu = function (c)
+-- {{ client actions
+
+customization.func.client_focus_next = function ()
+    awful.client.focus.byidx(1)
+    if client.focus then client.focus:raise() end
+end
+
+customization.func.client_focus_prev = function ()
+    awful.client.focus.byidx(-1)
+    if client.focus then client.focus:raise() end
+end
+
+customization.func.client_focus_urgent = awful.client.urgent.jumpto
+
+customization.func.client_swap_next = function () awful.client.swap.byidx(  1) end
+
+customization.func.client_swap_prev = function () awful.client.swap.byidx( -1) end
+
+customization.func.client_move_next = function () util.client.rel_send(1) end
+
+customization.func.client_move_prev = function () util.client.rel_send(-1) end
+
+customization.func.client_move_to_tag = function () 
+  local keywords = {}
+  local scr = mouse.screen
+  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    table.insert(keywords, t.name)
+  end
+  awful.prompt.run({prompt = "Move client to tag: "},
+  mypromptbox[scr].widget,
+  function (t)
+    local tag = util.tag.name2tag(t)
+    if tag then
+      awful.client.movetotag(tag)
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, keywords)
+  end,
+  nil)
+end
+
+customization.func.client_toggle_tag = function (c) 
+  local keywords = {}
+  local scr = mouse.screen
+  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    table.insert(keywords, t.name)
+  end
+  local c = c or client.focus
+  awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
+  mypromptbox[scr].widget,
+  function (t)
+    local tag = util.tag.name2tag(t)
+    if tag then
+      awful.client.toggletag(tag)
+    end
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, keywords)
+  end,
+  nil)
+end
+
+customization.func.client_toggle_titlebar = function ()  
+  awful.titlebar.toggle(client.focus)
+end
+
+customization.func.client_raise = function (c)
+  c:raise()
+end
+
+customization.func.client_fullscreen = function (c) 
+  c.fullscreen = not c.fullscreen  
+end
+
+customization.func.client_maximize_horizontal = function (c) 
+  c.maximized_horizontal = not c.maximized_horizontal
+end
+
+customization.func.client_maximize_vertical = function (c) 
+  c.maximized_vertical = not c.maximized_vertical
+end
+
+customization.func.client_maximize = function (c) 
+  customization.func.client_maximize_horizontal(c)
+  customization.func.client_maximize_vertical(c)
+end
+
+customization.func.client_minimize = function (c) 
+  c.minimized = not c.minimized
+end
+
+do 
+
+  -- closures for client_status
+  -- client_status[client] = {sidelined = <boolean>, geometry= <client geometry>}
+  local client_status = {}
+
+  customization.func.client_sideline_left = function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
+      end
+    else
+      client_status[c].geometry = c:geometry()
+      workarea.width = math.floor(workarea.width/2)
+      c:geometry(workarea)
+    end
+    client_status[c].sidelined = not client_status[c].sidelined
+  end
+
+  customization.func.client_sideline_right = function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
+      end
+    else
+      client_status[c].geometry = c:geometry()
+      workarea.x = workarea.x + math.floor(workarea.width/2)
+      workarea.width = math.floor(workarea.width/2)
+      c:geometry(workarea)
+    end
+    client_status[c].sidelined = not client_status[c].sidelined
+  end
+
+  customization.func.client_sideline_top = function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
+      end
+    else
+      client_status[c].geometry = c:geometry()
+      workarea.height = math.floor(workarea.height/2)
+      c:geometry(workarea)
+    end
+    client_status[c].sidelined = not client_status[c].sidelined
+  end
+
+  customization.func.client_sideline_bottom = function (c)
+    local scr = screen[mouse.screen]
+    local workarea = scr.workarea
+    if client_status[c] == nil then
+      client_status[c] = {sidelined=false, geometry=nil}
+    end
+    if client_status[c].sidelined then
+      if client_status[c].geometry then
+        c:geometry(client_status[c].geometry)
+      end
+    else
+      client_status[c].geometry = c:geometry()
+      workarea.y = workarea.y + math.floor(workarea.height/2)
+      workarea.height = math.floor(workarea.height/2)
+      c:geometry(workarea)
+    end
+    client_status[c].sidelined = not client_status[c].sidelined
+  end
+
+  customization.func.client_sideline_extend_left = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.x/7)
+    if delta ~= 0 then
+      cg.x = cg.x - delta
+      cg.width = cg.width + delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_extend_right = function (c)
+    local cg = c:geometry()
+    local workarea = screen[mouse.screen].workarea
+    local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
+    local delta = math.floor(rmargin/7)
+    if delta ~= 0 then
+      cg.width = cg.width + delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_extend_top = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.y/7)
+    if delta ~= 0 then
+      cg.y = cg.y - delta
+      cg.height = cg.height + delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_extend_bottom = function (c)
+    local cg = c:geometry()
+    local workarea = screen[mouse.screen].workarea
+    local bmargin = math.max( (workarea.y + workarea.height - cg.y - cg.height), 0)
+    local delta = math.floor(bmargin/7)
+    if delta ~= 0 then
+      cg.height = cg.height + delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_shrink_left = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.width/11)
+    if delta ~= 0 and cg.width > 256 then
+      cg.width = cg.width - delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_shrink_right = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.width/11)
+    if delta ~= 0 and cg.width > 256 then
+      cg.x = cg.x + delta
+      cg.width = cg.width - delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_shrink_top = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.height/11)
+    if delta ~= 0 and cg.height > 256 then
+      cg.height = cg.height - delta
+      c:geometry(cg)
+    end
+  end
+
+  customization.func.client_sideline_shrink_bottom = function (c)
+    local cg = c:geometry()
+    local delta = math.floor(cg.height/11)
+    if delta ~= 0 and cg.height > 256 then
+      cg.y = cg.y + delta
+      cg.height = cg.height - delta
+      c:geometry(cg)
+    end
+  end
+
+end
+
+
+customization.func.client_opaque_less = function (c)
+  local opacity = c.opacity - 0.1
+  if opacity and opacity >= customization.default.property.min_opacity then
+    c.opacity = opacity
+  end
+end
+
+customization.func.client_opaque_more = function (c)
+  local opacity = c.opacity + 0.1
+  if opacity and opacity <= customization.default.property.max_opacity then
+    c.opacity = opacity
+  end
+end
+
+customization.func.client_opaque_off = function (c)
+  awful.util.spawn_with_shell("pkill " .. customization.default.compmgr)
+end
+
+customization.func.client_opaque_on = function (c)
+  awful.util.spawn_with_shell(customization.default.compmgr)
+end
+
+customization.func.client_swap_with_master = function (c) 
+  c:swap(awful.client.getmaster()) 
+end
+
+customization.func.client_toggle_top = function (c)
+  c.ontop = not c.ontop
+end
+
+customization.func.client_toggle_sticky = function (c)
+  c.sticky = not c.sticky
+end
+
+customization.func.client_kill = function (c)
+  c:kill()
+end
+
+
+customization.func.client_action_menu = function (c)
+  c = c or client.focus
   local menu = awful.menu({
     theme = {
       width = 200,
     },
     items = {
+      { "&cancel", function () end },
+      { "=== task action menu ===" },
+      { "--- status ---" },
       {
-        "=== task action menu ==="
-      },
-      {
-        "h&orizontal", function () 
-          c.maximized_horizontal = not c.maximized_horizontal
-        end
-      },
-      {
-        "&vertical", function () 
-          c.maximized_vertical = not c.maximized_vertical
-        end
-      },
-      {
-        "m&aximize", function () 
-          c.maximized_horizontal = not c.maximized_horizontal
-          c.maximized_vertical = not c.maximized_vertical
-        end
-      },
-      {
-        "m&inimize", function () 
-          c.minimized = not c.minimized
-        end
-      },
-      {
-        "&less opaque", function () 
-          local opacity = c.opacity - 0.1
-          if opacity and opacity >= customization.default.property.min_opacity then
-            c.opacity = opacity
-          end
-        end
-      },
-      {
-        "&more opaque", function () 
-          local opacity = c.opacity + 0.1
-          if opacity and opacity <= customization.default.property.max_opacity then
-            c.opacity = opacity
-          end
+        "&raise", function () 
+          customization.func.client_raise(c)
         end
       },
       {
         "&top", function () 
-          c.ontop = not c.ontop
+          customization.func.client_toggle_top(c)
         end
       },
       {
         "&sticky", function () 
-          c.sticky = not c.sticky
+          customization.func.client_toggle_sticky(c)    
         end
       },
       {
         "&kill", function () 
-          c.sticky = not c.sticky
+          customization.func.client_kill(c)
+        end
+      },
+      {
+        "toggle title&bar", function () 
+          customization.func.client_toggle_titlebar(c)
+        end
+      },
+      { "--- focus ---" },
+      {
+        "&next client", function () 
+          customization.func.client_focus_next(c)
+        end
+      },
+      {
+        "&prev client", function () 
+          customization.func.client_focus_prev(c)
+        end
+      },
+      {
+        "&urgent", function () 
+          customization.func.client_focus_urgent(c)
+        end
+      },
+      { "--- tag ---" },
+      {
+        "move to next tag", function () 
+          customization.func.client_move_next(c)
+        end
+      },
+      {
+        "move to previous tag", function () 
+          customization.func.client_move_prev(c)
+        end
+      },
+      {
+        "move to ta&g", function () 
+          customization.func.client_move_to_tag(c)
+        end
+      },
+      {
+        "togg&le tag", function () 
+          customization.func.client_toggle_tag(c)
+        end
+      },
+      { "--- geometry ---" },
+      {
+        "&fullscreen", function () 
+          customization.func.client_fullscreen(c)
+        end
+      },
+      {
+        "m&aximize", function () 
+          customization.func.client_maximize(c)
+        end
+      },
+      {
+        "maximize h&orizontal", function () 
+          customization.func.client_maximize_horizontal(c)
+        end
+      },
+      {
+        "maximize &vertical", function () 
+          customization.func.client_maximize_vertical(c)
+        end
+      },
+      {
+        "m&inimize", function () 
+          customization.func.client_minimize(c) 
+        end
+      },
+      {
+        "move to left", function () 
+          customization.func.client_sideline_left(c) 
+        end
+      },
+      {
+        "move to right", function () 
+          customization.func.client_sideline_right(c) 
+        end
+      },
+      {
+        "move to top", function () 
+          customization.func.client_sideline_top(c) 
+        end
+      },
+      {
+        "move to bottom", function () 
+          customization.func.client_sideline_bottom(c) 
+        end
+      },
+      {
+        "extend left", function () 
+          customization.func.client_sideline_extend_left(c) 
+        end
+      },
+      {
+        "extend right", function () 
+          customization.func.client_sideline_extend_right(c) 
+        end
+      },
+      {
+        "extend top", function () 
+          customization.func.client_sideline_extend_top(c) 
+        end
+      },
+      {
+        "extend bottom", function () 
+          customization.func.client_sideline_extend_bottom(c) 
+        end
+      },
+      {
+        "shrink left", function () 
+          customization.func.client_sideline_shrink_left(c) 
+        end
+      },
+      {
+        "shrink right", function () 
+          customization.func.client_sideline_shrink_right(c) 
+        end
+      },
+      {
+        "shrink top", function () 
+          customization.func.client_sideline_shrink_top(c) 
+        end
+      },
+      {
+        "shrink bottom", function () 
+          customization.func.client_sideline_shrink_bottom(c) 
+        end
+      },
+      { "--- opacity ---"},
+      {
+        "&less opaque", function () 
+          customization.func.client_opaque_less(c)
+        end
+      },
+      {
+        "&more opaque", function () 
+          customization.func.client_opaque_more(c)
+        end
+      },
+      {
+        "opacity off", function () 
+          customization.func.client_opaque_off(c)
+        end
+      },
+      {
+        "opacity on", function () 
+          customization.func.client_opaque_on(c)
+        end
+      },
+      { "--- ordering ---"},
+      {
+        "swap with master", function () 
+          customization.func.client_swap_with_master(c)
+        end
+      },
+      {
+        "swap with next", function () 
+          customization.func.client_swap_next(c)
+        end
+      },
+      {
+        "swap with prev", function () 
+          customization.func.client_swap_prev(c)
         end
       },
     }
   })
   menu:toggle({keygrabber=true})
 end
+
+-- }}
+
+-- {{ tag actions
+
+customization.func.tag_add_after = function ()
+  local scr = mouse.screen
+  local sel_idx = awful.tag.getidx()
+  local t = util.tag.add(nil, 
+  {
+    screen = scr,
+    index = sel_idx and sel_idx+1 or 1,
+    layout = customization.default.property.layout,
+    mwfact = customization.default.property.mwfact,
+    nmaster = customization.default.property.nmaster,
+    ncol = customization.default.property.ncol,
+  })
+end
+
+customization.func.tag_add_before = function ()
+  local scr = mouse.screen
+  local sel_idx = awful.tag.getidx()
+  local t = util.tag.add(nil, 
+  {
+    screen = scr,
+    index = sel_idx and sel_idx or 1,
+    layout = customization.default.property.layout,
+    mwfact = customization.default.property.mwfact,
+    nmaster = customization.default.property.nmaster,
+    ncol = customization.default.property.ncol,
+  })
+end
+
+customization.func.tag_delete = awful.tag.delete
+
+customization.func.tag_rename = function ()
+  local scr = mouse.screen
+  local sel = awful.tag.selected(scr)
+  util.tag.rename(sel)
+end
+
+customization.func.tag_view_prev = awful.tag.viewprev
+
+customization.func.tag_view_next = awful.tag.viewnext
+
+customization.func.tag_last = awful.tag.history.restore
+
+customization.func.tag_goto = function () 
+  local keywords = {}
+  local scr = mouse.screen
+  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    table.insert(keywords, t.name)
+  end
+  awful.prompt.run({prompt = "Goto tag: "},
+  mypromptbox[scr].widget,
+  function (t)
+    awful.tag.viewonly(util.tag.name2tag(t))
+  end,
+  function (t, p, n)
+    return awful.completion.generic(t, p, n, keywords)
+  end)
+end
+
+customization.func.tag_move_forward = function () util.tag.rel_move(awful.tag.selected(), 1) end
+
+customization.func.tag_move_backward = function () util.tag.rel_move(awful.tag.selected(), -1) end
 
 customization.func.tag_action_menu = function (t)
   t = t or awful.tag.selected()
@@ -458,40 +961,56 @@ customization.func.tag_action_menu = function (t)
         width = 200,
       },
       items = {
+        { "&cancel", function () end },
         {"=== tag action menu ==="},
         {
-          "tag view &only", function () 
-            awful.tag.viewonly(t)
+          "add tag &after current one", function () 
+            customization.func.tag_add_after(t)
           end
         },
         {
-          "client &move", function () 
-            awful.client.movetotag(t)
+          "add tag &before current one", function () 
+            customization.func.tag_add_before(t)
           end
         },
         {
-          "tag &delete", function () 
-            awful.tag.delete(t)
+          "&delete current tag if empty", function () 
+            customization.func.tag_delete(t)
           end
         },
         {
-          "tag view &toggle", function () 
-            awful.tag.viewtoggle(t)
+          "&goto tag", function () 
+            customization.func.tag_goto(t)
           end
         },
         {
-          "client toggle ta&g", function () 
-            awful.client.toggletag(t)
+          "&rename current tag", function () 
+            customization.func.tag_rename(t)
           end
         },
         {
-          "tag view &prev", function () 
-            awful.tag.viewprev(awful.tag.getscreen(t))
+          "view &previous tag", function () 
+            customization.func.tag_view_prev(t)
           end
         },
         {
-          "tag view &next", function () 
-            awful.tag.viewnext(awful.tag.getscreen(t))
+          "view &next tag", function () 
+            customization.func.tag_view_next(t)
+          end
+        },
+        {
+          "view &last tag", function () 
+            customization.func.tag_last(t)
+          end
+        },
+        {
+          "move tag &forward", function () 
+            customization.func.tag_move_forward()
+          end
+        },
+        {
+          "move tag &backward", function () 
+            customization.func.tag_move_backward()
           end
         },
       }
@@ -499,6 +1018,10 @@ customization.func.tag_action_menu = function (t)
     menu:toggle({keygrabber=true})
   end
 end
+
+-- }}
+
+-- {{ clients on tags
 
 customization.func.clients_on_tag = function ()
   local clients = { 
@@ -524,6 +1047,39 @@ customization.func.clients_on_tag = function ()
       local m = awful.menu(clients)
       m:show({keygrabber=true})
       return m
+    end
+  end
+end
+
+customization.func.clients_on_tag_prompt = function () 
+  local clients = {}
+  local next = next
+  local t = awful.tag.selected()
+  if t then
+    local keywords = {}
+    local scr = mouse.screen
+    for _, c in pairs(t:clients()) do
+      if c.focusable and c.pid ~= 0 then
+        local k = c.name .. " ~" .. tostring(c.pid) or ""
+        if k ~= "" then
+          clients[k] = c
+          table.insert(keywords, k)
+        end
+      end
+    end
+    if next(clients) ~= nil then
+      awful.prompt.run({prompt = "Focus on client on current tag: "},
+      mypromptbox[scr].widget,
+      function (t)
+        local c = clients[t]
+        if c then
+          client.focus = c
+          c:raise()
+        end
+      end,
+      function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+      end)
     end
   end
 end
@@ -557,6 +1113,42 @@ customization.func.all_clients = function ()
   end
 end
 
+customization.func.all_clients_prompt = function ()
+  local clients = {}
+  local next = next
+  local keywords = {}
+  local scr = mouse.screen
+  for _, c in pairs(client.get()) do
+    if c.focusable and c.pid ~= 0 then
+      local k = c.name .. " ~" .. tostring(c.pid) or ""
+      if k ~= "" then
+        clients[k] = c
+        table.insert(keywords, k)
+      end
+    end
+  end
+  if next(clients) ~= nil then
+    awful.prompt.run({prompt = "Focus on client from global list: "},
+    mypromptbox[scr].widget,
+    function (t)
+      local c = clients[t]
+      if c then
+        local t = c:tags()
+        if t then
+          awful.tag.viewonly(t[1])
+        end
+        client.focus = c
+        c:raise()
+      end
+    end,
+    function (t, p, n)
+      return awful.completion.generic(t, p, n, keywords)
+    end)
+  end
+end
+
+-- }}
+
 -- }}}
 
 -- {{{ Menu
@@ -581,13 +1173,30 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({
-    items = {
-        { "&system", mysystemmenu, beautiful.awesome_icon },
-        { "a&wesome", myawesomemenu, beautiful.awesome_icon },
-        { "app &finder", customization.func.app_finder },
-        { "&applications", myapp },
-        { "open &terminal", tools.terminal },
-    }
+  theme = { width=150, },
+  items = {
+    { "&system", mysystemmenu },
+    { "app &finder", customization.func.app_finder },
+    { "&apps", myapp },
+    { "&terminal", tools.terminal },
+    { "a&wesome", myawesomemenu, beautiful.awesome_icon },
+    { "&client action", function () 
+      customization.func.client_action_menu()
+      mymainmenu:hide()
+    end, beautiful.awesome_icon },
+    { "&tag action", function ()
+      customization.func.tag_action_menu()
+      mymainmenu:hide()
+    end, beautiful.awesome_icon },
+    { "clients &on current tag", function ()
+      customization.func.clients_on_tag()
+      mymainmenu:hide()
+    end, beautiful.awesome_icon },
+    { "clients on a&ll tags", function ()
+      customization.func.all_clients()
+      mymainmenu:hide()
+    end, beautiful.awesome_icon },
+  }
 })
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
@@ -648,7 +1257,7 @@ awful.button({ modkey }, 2, function (c)
 end),
 
 awful.button({ }, 3, function (c)
-  customization.func.task_action_menu(c)
+  customization.func.client_action_menu(c)
 end),
 
 awful.button({ }, 4, function ()
@@ -916,82 +1525,19 @@ awful.key({ modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=tru
 awful.key({ modkey, }, ";", function()
   local c = client.focus
   if c then
-    customization.func.task_action_menu(c)
+    customization.func.client_action_menu(c)
   end
 end),
 
 awful.key({ modkey, "Shift" }, ";", customization.func.tag_action_menu),
 
-awful.key({ modkey, }, "'", customization.func.clients_on_tag ),
+awful.key({ modkey, }, "'", customization.func.clients_on_tag),
 
-awful.key({ modkey, "Ctrl" }, "'", function () 
-  local clients = {}
-  local next = next
-  local t = awful.tag.selected()
-  if t then
-    local keywords = {}
-    local scr = mouse.screen
-    for _, c in pairs(t:clients()) do
-      if c.focusable and c.pid ~= 0 then
-        local k = c.name .. " ~" .. tostring(c.pid) or ""
-        if k ~= "" then
-          clients[k] = c
-          table.insert(keywords, k)
-        end
-      end
-    end
-    if next(clients) ~= nil then
-      awful.prompt.run({prompt = "Focus on client on current tag: "},
-      mypromptbox[scr].widget,
-      function (t)
-        local c = clients[t]
-        if c then
-          client.focus = c
-          c:raise()
-        end
-      end,
-      function (t, p, n)
-        return awful.completion.generic(t, p, n, keywords)
-      end)
-    end
-  end
-end),
+awful.key({ modkey, "Ctrl" }, "'", customization.func.clients_on_tag_prompt),
 
-awful.key({ modkey, "Shift" }, "'", customization.func.all_clients ),
+awful.key({ modkey, "Shift" }, "'", customization.func.all_clients),
 
-awful.key({ modkey, "Shift", "Ctrl" }, "'", function ()
-  local clients = {}
-  local next = next
-  local keywords = {}
-  local scr = mouse.screen
-  for _, c in pairs(client.get()) do
-    if c.focusable and c.pid ~= 0 then
-      local k = c.name .. " ~" .. tostring(c.pid) or ""
-      if k ~= "" then
-        clients[k] = c
-        table.insert(keywords, k)
-      end
-    end
-  end
-  if next(clients) ~= nil then
-    awful.prompt.run({prompt = "Focus on client from global list: "},
-    mypromptbox[scr].widget,
-    function (t)
-      local c = clients[t]
-      if c then
-        local t = c:tags()
-        if t then
-          awful.tag.viewonly(t[1])
-        end
-        client.focus = c
-        c:raise()
-      end
-    end,
-    function (t, p, n)
-      return awful.completion.generic(t, p, n, keywords)
-    end)
-  end
-end),
+awful.key({ modkey, "Shift", "Ctrl" }, "'", customization.func.all_clients_prompt),
 
 awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end),
 
@@ -1005,161 +1551,59 @@ awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .
 
 --- add/delete/rename
 
-awful.key({modkey}, "a",
-function ()
-    local scr = mouse.screen
-    local sel_idx = awful.tag.getidx()
-    local t = util.tag.add(nil, 
-    {
-        screen = scr,
-        index = sel_idx and sel_idx+1 or 1,
-        layout = customization.default.property.layout,
-        mwfact = customization.default.property.mwfact,
-        nmaster = customization.default.property.nmaster,
-        ncol = customization.default.property.ncol,
-    })
-end),
+awful.key({modkey}, "a", customization.func.tag_add_after),
 
-awful.key({modkey, "Shift"}, "a",
-function ()
-    local scr = mouse.screen
-    local sel_idx = awful.tag.getidx()
-    local t = util.tag.add(nil, 
-    {
-        screen = scr,
-        index = sel_idx and sel_idx or 1,
-        layout = customization.default.property.layout,
-        mwfact = customization.default.property.mwfact,
-        nmaster = customization.default.property.nmaster,
-        ncol = customization.default.property.ncol,
-    })
-end),
+awful.key({modkey, "Shift"}, "a", customization.func.tag_add_before),
 
-awful.key({modkey, "Shift"}, "d", awful.tag.delete),
+awful.key({modkey, "Shift"}, "d", customization.func.tag_add_before),
 
-awful.key({modkey, "Shift"}, "r",
-function ()
-    local scr = mouse.screen
-    local sel = awful.tag.selected(scr)
-    util.tag.rename(sel)
-end),
+awful.key({modkey, "Shift"}, "r", customization.func.tag_rename),
 
 --- view
 
-awful.key({modkey,}, "p", awful.tag.viewprev),
+awful.key({modkey,}, "p", customization.func.tag_view_prev),
 
-awful.key({modkey,}, "n", awful.tag.viewnext),
+awful.key({modkey,}, "n", customization.func.tag_view_next),
 
-awful.key({modkey,}, "z", awful.tag.history.restore),
+awful.key({modkey,}, "z", customization.func.tag_last),
 
-awful.key({modkey,}, "g",
-function () 
-    local keywords = {}
-    local scr = mouse.screen
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-        table.insert(keywords, t.name)
-    end
-    awful.prompt.run({prompt = "Find tag: "},
-    mypromptbox[scr].widget,
-    function (t)
-        awful.tag.viewonly(util.tag.name2tag(t))
-    end,
-    function (t, p, n)
-        return awful.completion.generic(t, p, n, keywords)
-    end)
-end),
+awful.key({modkey,}, "g", customization.func.tag_goto),
 
 --- move
 
-awful.key({modkey, "Control"}, "p", function () util.tag.rel_move(awful.tag.selected(), -1) end), 
+awful.key({modkey, "Control"}, "p", customization.func.tag_move_forward), 
 
-awful.key({modkey, "Control"}, "n", function () util.tag.rel_move(awful.tag.selected(), 1) end), 
+awful.key({modkey, "Control"}, "n", customization.func.tag_move_backward), 
 
 -- client management
 
 --- change focus
 
-awful.key({ modkey,           }, "j",
-function ()
-    awful.client.focus.byidx(1)
-    if client.focus then client.focus:raise() end
-end),
+awful.key({ modkey,           }, "j", customization.func.client_focus_next),
 
-awful.key({ modkey,           }, "Tab",
-function ()
-    awful.client.focus.byidx(1)
-    if client.focus then client.focus:raise() end
-end),
+awful.key({ modkey,           }, "Tab", customization.func.client_focus_next),
 
-awful.key({ modkey,           }, "k",
-function ()
-    awful.client.focus.byidx(-1)
-    if client.focus then client.focus:raise() end
-end),
+awful.key({ modkey,           }, "k", customization.func.client_focus_prev),
 
-awful.key({ modkey, "Shift"   }, "Tab",
-function ()
-    awful.client.focus.byidx(-1)
-    if client.focus then client.focus:raise() end
-end),
+awful.key({ modkey, "Shift"   }, "Tab", customization.func.client_focus_prev),
 
-
-awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+awful.key({ modkey,           }, "u", customization.func.client_focus_urgent),
 
 --- swap order/select master
 
-awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
+awful.key({ modkey, "Shift"   }, "j", customization.func.client_swap_next),
 
-awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end),
+awful.key({ modkey, "Shift"   }, "k", customization.func.client_swap_prev),
 
 --- move/copy to tag
 
-awful.key({modkey, "Shift"}, "p", function () util.client.rel_send(-1) end),
+awful.key({modkey, "Shift"}, "n", customization.func.client_move_next),
 
-awful.key({modkey, "Shift"}, "n", function () util.client.rel_send(1) end),
+awful.key({modkey, "Shift"}, "p", customization.func.client_move_prev),
 
-awful.key({modkey, "Shift"}, "g",
-function () 
-    local keywords = {}
-    local scr = mouse.screen
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-        table.insert(keywords, t.name)
-    end
-    awful.prompt.run({prompt = "Move client to tag: "},
-    mypromptbox[scr].widget,
-    function (t)
-        local tag = util.tag.name2tag(t)
-        if tag then
-            awful.client.movetotag(tag)
-        end
-    end,
-    function (t, p, n)
-        return awful.completion.generic(t, p, n, keywords)
-    end,
-    nil)
-end),
+awful.key({modkey, "Shift"}, "g", customization.func.client_move_to_tag),
 
-awful.key({modkey, "Control", "Shift"}, "g",
-function () 
-    local keywords = {}
-    local scr = mouse.screen
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-        table.insert(keywords, t.name)
-    end
-    local c = client.focus
-    awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
-    mypromptbox[scr].widget,
-    function (t)
-        local tag = util.tag.name2tag(t)
-        if tag then
-            awful.client.toggletag(tag)
-        end
-    end,
-    function (t, p, n)
-        return awful.completion.generic(t, p, n, keywords)
-    end,
-    nil)
-end),
+awful.key({modkey, "Control", "Shift"}, "g", customization.func.client_toggle_tag),
 
 --- change space allocation in tile layout
 
@@ -1179,9 +1623,7 @@ awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end)
 
 --- misc
 
-awful.key({ modkey, "Shift" }, "`",     function ()  
-    awful.titlebar.toggle(client.focus)
-end),
+awful.key({ modkey, "Shift" }, "`", customization.func.client_toggle_titlebar),
 
 -- app bindings
 
@@ -1235,12 +1677,10 @@ end),
 
 awful.key({ modkey, }, "b", function ()
     awful.util.spawn(tools.browser.primary)
-    --awful.util.spawn('google-chrome-stable')
 end),
 
 awful.key({ modkey, "Shift" }, "b", function ()
     awful.util.spawn(tools.browser.secondary)
-    --awful.util.spawn('firefox')
 end),
 
 awful.key({ modkey, "Mod1", }, "v", function ()
@@ -1382,254 +1822,71 @@ nil
 
 -- client management
 
--- client_status[client] = {sidelined = <boolean>, geometry= <client geometry>}
-local client_status = {}
-
 --- operation
 clientkeys = awful.util.table.join(
 
-awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+awful.key({ modkey, "Shift"   }, "c", customization.func.client_kill),
 
-awful.key({ "Mod1",   }, "F4",      function (c) c:kill()                         end),
+awful.key({ "Mod1",   }, "F4", customization.func.client_kill),
 
-awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+awful.key({ modkey,           }, "f", customization.func.client_fullscreen),
 
-awful.key({ modkey,           }, "m",
-function (c)
-    if not c.sidelined then
-      c.right = true
-    end
-    if c.orig_geometry then
-    end
-    c.maximized_horizontal = not c.maximized_horizontal
-    c.maximized_vertical   = not c.maximized_vertical
-end),
+awful.key({ modkey,           }, "m", customization.func.client_maximize),
 
 -- move client to sides, i.e., sidelining
 
-awful.key({ modkey,           }, "Left",
-function (c)
-    local scr = screen[mouse.screen]
-    local workarea = scr.workarea
-    if client_status[c] == nil then
-      client_status[c] = {sidelined=false, geometry=nil}
-    end
-    if client_status[c].sidelined then
-      if client_status[c].geometry then
-        c:geometry(client_status[c].geometry)
-      end
-    else
-      client_status[c].geometry = c:geometry()
-      workarea.width = math.floor(workarea.width/2)
-      c:geometry(workarea)
-    end
-    client_status[c].sidelined = not client_status[c].sidelined
-end),
+awful.key({ modkey,           }, "Left", customization.func.client_sideline_left),
 
-awful.key({ modkey,           }, "Right",
-function (c)
-    local scr = screen[mouse.screen]
-    local workarea = scr.workarea
-    if client_status[c] == nil then
-      client_status[c] = {sidelined=false, geometry=nil}
-    end
-    if client_status[c].sidelined then
-      if client_status[c].geometry then
-        c:geometry(client_status[c].geometry)
-      end
-    else
-      client_status[c].geometry = c:geometry()
-      workarea.x = workarea.x + math.floor(workarea.width/2)
-      workarea.width = math.floor(workarea.width/2)
-      c:geometry(workarea)
-    end
-    client_status[c].sidelined = not client_status[c].sidelined
-end),
+awful.key({ modkey,           }, "Right", customization.func.client_sideline_right),
 
-awful.key({ modkey,           }, "Up",
-function (c)
-    local scr = screen[mouse.screen]
-    local workarea = scr.workarea
-    if client_status[c] == nil then
-      client_status[c] = {sidelined=false, geometry=nil}
-    end
-    if client_status[c].sidelined then
-      if client_status[c].geometry then
-        c:geometry(client_status[c].geometry)
-      end
-    else
-      client_status[c].geometry = c:geometry()
-      workarea.height = math.floor(workarea.height/2)
-      c:geometry(workarea)
-    end
-    client_status[c].sidelined = not client_status[c].sidelined
-end),
+awful.key({ modkey,           }, "Up", customization.func.client_sideline_top),
 
-awful.key({ modkey,           }, "Down",
-function (c)
-    local scr = screen[mouse.screen]
-    local workarea = scr.workarea
-    if client_status[c] == nil then
-      client_status[c] = {sidelined=false, geometry=nil}
-    end
-    if client_status[c].sidelined then
-      if client_status[c].geometry then
-        c:geometry(client_status[c].geometry)
-      end
-    else
-      client_status[c].geometry = c:geometry()
-      workarea.y = workarea.y + math.floor(workarea.height/2)
-      workarea.height = math.floor(workarea.height/2)
-      c:geometry(workarea)
-    end
-    client_status[c].sidelined = not client_status[c].sidelined
-end),
+awful.key({ modkey,           }, "Down", customization.func.client_sideline_bottom),
 
 -- extend client sides
 
-awful.key({ modkey, "Mod1"    }, "Left",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.x/7)
-  if delta ~= 0 then
-    cg.x = cg.x - delta
-    cg.width = cg.width + delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1"    }, "Left", customization.func.client_sideline_extend_left),
 
-awful.key({ modkey, "Mod1"    }, "Right",
-function (c)
-  local cg = c:geometry()
-  local workarea = screen[mouse.screen].workarea
-  local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
-  local delta = math.floor(rmargin/7)
-  if delta ~= 0 then
-    cg.width = cg.width + delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1"    }, "Right", customization.func.client_sideline_extend_right),
 
-awful.key({ modkey, "Mod1"    }, "Up",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.y/7)
-  if delta ~= 0 then
-    cg.y = cg.y - delta
-    cg.height = cg.height + delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1"    }, "Up", customization.func.client_sideline_extend_top),
 
-awful.key({ modkey, "Mod1"    }, "Down",
-function (c)
-  local cg = c:geometry()
-  local workarea = screen[mouse.screen].workarea
-  local bmargin = math.max( (workarea.y + workarea.height - cg.y - cg.height), 0)
-  local delta = math.floor(bmargin/7)
-  if delta ~= 0 then
-    cg.height = cg.height + delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1"    }, "Down", customization.func.client_sideline_extend_bottom),
 
 -- shrink client sides
 
-awful.key({ modkey, "Mod1", "Shift" }, "Left",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.width/11)
-  if delta ~= 0 and cg.width > 256 then
-    cg.width = cg.width - delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1", "Shift" }, "Left", customization.func.client_sideline_shrink_left),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Right",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.width/11)
-  if delta ~= 0 and cg.width > 256 then
-    cg.x = cg.x + delta
-    cg.width = cg.width - delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1", "Shift" }, "Right", customization.func.client_sideline_shrink_right),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Up",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.height/11)
-  if delta ~= 0 and cg.height > 256 then
-    cg.height = cg.height - delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1", "Shift" }, "Up", customization.func.client_sideline_shrink_top),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Down",
-function (c)
-  local cg = c:geometry()
-  local delta = math.floor(cg.height/11)
-  if delta ~= 0 and cg.height > 256 then
-    cg.y = cg.y + delta
-    cg.height = cg.height - delta
-    c:geometry(cg)
-  end
-end),
+awful.key({ modkey, "Mod1", "Shift" }, "Down", customization.func.client_sideline_shrink_bottom),
 
 -- maximize/minimize
 
-awful.key({ modkey, "Shift"   }, "m",
-function (c)
-    -- The client currently has the input focus, so it cannot be
-    -- minimized, since minimized clients can't have the focus.
-    c.minimized = true
-end),
+awful.key({ modkey, "Shift"   }, "m", customization.func.client_minimize),
 
-awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
+awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle),
 
 
-awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop end),
+awful.key({ modkey,           }, "t", customization.func.client_toggle_top),
 
-awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky end),
+awful.key({ modkey,           }, "s", customization.func.client_toggle_sticky),
 
-awful.key({ modkey,           }, ",",
-function (c)
-    c.maximized_horizontal = not c.maximized_horizontal
-end),
+awful.key({ modkey,           }, ",", customization.func.client_maximize_horizontal),
 
-awful.key({ modkey,           }, ".",
-function (c)
-    c.maximized_vertical   = not c.maximized_vertical
-end),
+awful.key({ modkey,           }, ".", customization.func.client_maximize_vertical),
 
-awful.key({ modkey,           }, "[",
-function (c)
-    local opacity = c.opacity - 0.1
-    if opacity and opacity >= customization.default.property.min_opacity then
-        c.opacity = opacity
-    end
-end),
+awful.key({ modkey,           }, "[", customization.func.client_opaque_less),
 
-awful.key({ modkey,           }, "]",
-function (c)
-    local opacity = c.opacity + 0.1
-    if opacity and opacity <= customization.default.property.max_opacity then
-        c.opacity = opacity
-    end
-end),
+awful.key({ modkey,           }, "]", customization.func.client_opaque_more),
 
-awful.key({ modkey, 'Shift'   }, "[",
-function (c)
-    awful.util.spawn_with_shell("pkill " .. customization.default.compmgr)
-end),
+awful.key({ modkey, 'Shift'   }, "[", customization.func.client_opaque_off),
 
-awful.key({ modkey, 'Shift'   }, "]",
-function (c)
-    awful.util.spawn_with_shell(customization.default.compmgr)
-end),
+awful.key({ modkey, 'Shift'   }, "]", customization.func.client_opaque_on),
 
-awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
+awful.key({ modkey, "Control" }, "Return", customization.func.client_swap_with_master),
 
 nil
 
