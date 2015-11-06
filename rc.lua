@@ -3,6 +3,7 @@ package.path = package.path .. ";./?/init.lua;"
 local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
+awful.menu = require("awful.menu")
 require("awful.autofocus")
 require("awful.dbus")
 require("awful.remote")
@@ -24,6 +25,14 @@ local capi = {
     client = client,
 }
 
+-- do not use letters, which shadow access key to menu entry
+awful.menu.menu_keys.up = {  "Up", "PageUp", ".", "<", }
+awful.menu.menu_keys.down = { "Down", "PageDown", ",", ">", }
+awful.menu.menu_keys.enter = { "Space", "Right", "]", "}", }
+awful.menu.menu_keys.back = { "Backspace", "Left", "[", "{", }
+awful.menu.menu_keys.exec = { "Enter", }
+awful.menu.menu_keys.close = { "Escape", }
+
 -- customization
 customization = {}
 customization.config = {}
@@ -33,7 +42,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.4"
+customization.config.version = "1.6.5"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -962,7 +971,8 @@ customization.func.tag_action_menu = function (t)
       },
       items = {
         { "&cancel", function () end },
-        {"=== tag action menu ==="},
+        { "=== tag action menu ===" },
+        { "--- dynamic tagging ---" },
         {
           "add tag &after current one", function () 
             customization.func.tag_add_after(t)
@@ -979,13 +989,14 @@ customization.func.tag_action_menu = function (t)
           end
         },
         {
-          "&goto tag", function () 
-            customization.func.tag_goto(t)
-          end
-        },
-        {
           "&rename current tag", function () 
             customization.func.tag_rename(t)
+          end
+        },
+        { "--- focus ---" },
+        {
+          "&goto tag", function () 
+            customization.func.tag_goto(t)
           end
         },
         {
@@ -1003,6 +1014,7 @@ customization.func.tag_action_menu = function (t)
             customization.func.tag_last(t)
           end
         },
+        { "--- ordering ---" },
         {
           "move tag &forward", function () 
             customization.func.tag_move_forward()
