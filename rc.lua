@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.24"
+customization.config.version = "1.6.0"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -314,7 +314,7 @@ end
 -- }}}
 --]]
 
--- {{{ System functions
+-- {{{ Customized functions
 
 customization.func.system_lock = function ()
   awful.util.spawn("xscreensaver-command -l")
@@ -384,6 +384,166 @@ customization.func.app_finder = function ()
     awful.util.spawn("xfce4-appfinder")
 end
 
+customization.func.task_action_menu = function (c)
+  local menu = awful.menu({
+    theme = {
+      width = 200,
+    },
+    items = {
+      {
+        "=== task action menu ==="
+      },
+      {
+        "h&orizontal", function () 
+          c.maximized_horizontal = not c.maximized_horizontal
+        end
+      },
+      {
+        "&vertical", function () 
+          c.maximized_vertical = not c.maximized_vertical
+        end
+      },
+      {
+        "m&aximize", function () 
+          c.maximized_horizontal = not c.maximized_horizontal
+          c.maximized_vertical = not c.maximized_vertical
+        end
+      },
+      {
+        "m&inimize", function () 
+          c.minimized = not c.minimized
+        end
+      },
+      {
+        "&less opaque", function () 
+          local opacity = c.opacity - 0.1
+          if opacity and opacity >= customization.default.property.min_opacity then
+            c.opacity = opacity
+          end
+        end
+      },
+      {
+        "&more opaque", function () 
+          local opacity = c.opacity + 0.1
+          if opacity and opacity <= customization.default.property.max_opacity then
+            c.opacity = opacity
+          end
+        end
+      },
+      {
+        "&top", function () 
+          c.ontop = not c.ontop
+        end
+      },
+      {
+        "&sticky", function () 
+          c.sticky = not c.sticky
+        end
+      },
+      {
+        "&kill", function () 
+          c.sticky = not c.sticky
+        end
+      },
+    }
+  })
+  menu:toggle({keygrabber=true})
+end
+
+customization.func.tag_action_menu = function (t)
+  local menu = awful.menu({
+    theme = {
+      width = 200,
+    },
+    items = {
+      {"=== tag action menu ==="},
+      {
+        "tag view &only", function () 
+          awful.tag.viewonly(t)
+        end
+      },
+      {
+        "client &move", function () 
+          awful.client.movetotag(t)
+        end
+      },
+      {
+        "tag &delete", function () 
+          awful.tag.delete(t)
+        end
+      },
+      {
+        "tag view &toggle", function () 
+          awful.tag.viewtoggle(t)
+        end
+      },
+      {
+        "client toggle ta&g", function () 
+          awful.client.toggletag(t)
+        end
+      },
+      {
+        "tag view &prev", function () 
+          awful.tag.viewprev(awful.tag.getscreen(t))
+        end
+      },
+      {
+        "tag view &next", function () 
+          awful.tag.viewnext(awful.tag.getscreen(t))
+        end
+      },
+    }
+  })
+  menu:toggle({keygrabber=true})
+end
+
+customization.func.clients_on_tag = function ()
+  local clients = {}
+  local next = next
+  local t = awful.tag.selected()
+  if t then
+    for i, c in pairs(t:clients()) do
+      clients[i] = {
+        c.name .. " ~" .. tostring(c.pid) or "",
+        function ()
+          client.focus = c
+        end,
+        c.icon
+      }
+    end
+    if next(clients) ~= nil then
+      clients.theme = { width = 400 }
+      local m = awful.menu(clients)
+      m:show({keygrabber=true})
+      return m
+    end
+  end
+end
+
+customization.func.all_clients = function ()
+  local clients = {}
+  local next = next
+  for i, c in pairs(client.get()) do
+    clients[i] = {
+      c.name .. " ~" .. tostring(c.pid) or "",
+      function ()
+        local t = c:tags()
+        if t then
+          awful.tag.viewonly(t[1])
+        end
+        client.focus = c
+      end,
+      c.icon
+    }
+  end
+  if next(clients) ~= nil then
+    clients.theme = { width = 400 }
+    local m = awful.menu(clients)
+    m:show({keygrabber=true})
+    return m
+  end
+end
+
 -- }}}
 
 -- {{{ Menu
@@ -436,15 +596,19 @@ mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
 awful.button({ }, 1, awful.tag.viewonly),
 awful.button({ modkey }, 1, awful.client.movetotag),
-awful.button({ }, 2, awful.tag.delete),
-awful.button({ }, 3, awful.tag.viewtoggle),
-awful.button({ modkey }, 3, awful.client.toggletag),
+awful.button({ }, 2, awful.tag.viewtoggle),
+awful.button({ modkey }, 2, awful.client.toggletag),
+awful.button({ }, 3, function (t)
+  customization.func.tag_action_menu(t)
+end),
+awful.button({ modkey }, 3, awful.tag.delete),
 awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),
 awful.button({ }, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end)
 )
 
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
+
 awful.button({ }, 1, function (c)
     if c == client.focus then
         c.minimized = true
@@ -461,18 +625,24 @@ awful.button({ }, 1, function (c)
         c:raise()
     end
 end),
-awful.button({ }, 3, function ()
-    if instance then
-        instance:hide()
-        instance = nil
-    else
-        instance = awful.menu.clients({ width=250 })
-    end
+
+awful.button({ }, 2, function (c)
+  customization.func.clients_on_tag()
 end),
+
+awful.button({ modkey }, 2, function (c)
+    customization.func.all_clients()
+end),
+
+awful.button({ }, 3, function (c)
+  customization.func.task_action_menu(c)
+end),
+
 awful.button({ }, 4, function ()
     awful.client.focus.byidx(-1)
     if client.focus then client.focus:raise() end
 end),
+
 awful.button({ }, 5, function ()
     awful.client.focus.byidx(1)
     if client.focus then client.focus:raise() end
@@ -726,11 +896,86 @@ awful.key({ modkey }, "c", function ()
     awful.util.spawn(tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
 end),
 
-awful.key({ modkey, }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
+awful.key({ modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({ modkey, }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
+awful.key({ modkey, }, ";", function()
+  local c = client.focus
+  if c then
+    customization.func.task_action_menu(c)
+  end
+end),
 
-awful.key({ modkey, "Shift" }, ";", function() mymainmenu:toggle({keygrabber=true}) end),
+awful.key({ modkey, "Shift" }, ";", function() 
+  local t = awful.tag.selected()
+  if t then
+    customization.func.tag_action_menu(t) 
+  end
+end),
+
+awful.key({ modkey, }, "'", customization.func.clients_on_tag ),
+
+awful.key({ modkey, "Ctrl" }, "'", function () 
+  local clients = {}
+  local next = next
+  local t = awful.tag.selected()
+  if t then
+    local keywords = {}
+    local scr = mouse.screen
+    for i, c in pairs(t:clients()) do
+      local k = c.name .. " ~" .. tostring(c.pid) or ""
+      if k ~= "" then
+        clients[k] = c
+        table.insert(keywords, k)
+      end
+    end
+    if next(clients) ~= nil then
+      awful.prompt.run({prompt = "Focus on client on current tag: "},
+      mypromptbox[scr].widget,
+      function (t)
+        local c = clients[t]
+        if c then
+          client.focus = c
+        end
+      end,
+      function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+      end)
+    end
+  end
+end),
+
+awful.key({ modkey, "Shift" }, "'", customization.func.all_clients ),
+
+awful.key({ modkey, "Shift", "Ctrl" }, "'", function ()
+  local clients = {}
+  local next = next
+  local keywords = {}
+  local scr = mouse.screen
+  for i, c in pairs(client.get()) do
+    local k = c.name .. " ~" .. tostring(c.pid) or ""
+    if k ~= "" then
+      clients[k] = c
+      table.insert(keywords, k)
+    end
+  end
+  if next(clients) ~= nil then
+    awful.prompt.run({prompt = "Focus on client from global list: "},
+    mypromptbox[scr].widget,
+    function (t)
+      local c = clients[t]
+      if c then
+        local t = c:tags()
+        if t then
+          awful.tag.viewonly(t[1])
+        end
+        client.focus = c
+      end
+    end,
+    function (t, p, n)
+      return awful.completion.generic(t, p, n, keywords)
+    end)
+  end
+end),
 
 awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end),
 
@@ -935,7 +1180,7 @@ awful.key({ modkey, }, "Insert", customization.func.system_reboot),
 
 awful.key({ modkey, }, "Delete", customization.func.system_power_off),
 
-awful.key({ modkey }, "'", customization.func.app_finder),
+awful.key({ modkey, }, "/", customization.func.app_finder),
 
 --- everyday
 
@@ -981,7 +1226,7 @@ awful.key({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
 end),
 
-awful.key({modkey, "Shift" }, "/", function() 
+awful.key({modkey, "Shift" }, "\\", function() 
     awful.util.spawn("kmag")
 end),
 
@@ -1123,6 +1368,8 @@ local client_status = {}
 clientkeys = awful.util.table.join(
 
 awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+
+awful.key({ "Mod1",   }, "F4",      function (c) c:kill()                         end),
 
 awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
 
@@ -1554,6 +1801,8 @@ awful.rules.rules = {
         properties = {
             sticky = true,
             opacity = 0.4,
+            focusable = false,
+            ontop = false,
         },
     }
 

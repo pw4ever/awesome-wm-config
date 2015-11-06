@@ -173,11 +173,15 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>f3</kbd>|toggle touchpad|depend on `synclient` from `xf86-input-synaptics`|
 |<kbd>Modkey</kbd><kbd>f4</kbd>|prompt Lua code to be eval-ed in awesome|inherited from awesome defaults|
 |<kbd>Modkey</kbd><kbd>c</kbd>|edit "rc.lua" with the primary editor|"c" for configuration file|
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>;</kbd>|show main menu|<kbd>Shift</kbd><kbd>;</kbd>=<kbd>:</kbd> for Vim's command mode|
-|<kbd>Modkey</kbd><kbd>;</kbd>|show main menu|<kbd>Shift</kbd>-less <kbd>:</kbd>; see above| 
-|<kbd>Modkey</kbd><kbd>x</kbd>|show main menu|for MSFT Windows user| 
-|<kbd>Modkey</kbd><kbd>X</kbd>|show main menu|for MSFT Windows user|
-|<kbd>Modkey</kbd><kbd>/</kbd>|show main menu|for ease of reach|
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>/</kbd>|show main menu||
+|<kbd>Modkey</kbd><kbd>x</kbd>|show main menu|MSFT Windows key| 
+|<kbd>Modkey</kbd><kbd>X</kbd>|show main menu|MSFT Windows key|
+|<kbd>Modkey</kbd><kbd>;</kbd>|show task action menu|| 
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>;</kbd>|show tag action menu||
+|<kbd>Modkey</kbd><kbd>'</kbd>|choose from clients on current tag|| 
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>'</kbd>|prompt to choose from clients on current tag|| 
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>'</kbd>|choose from all clients||
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>'</kbd>|prompt to choose from all clients||
 |<kbd>Modkey</kbd><kbd>`</kbd>|lock screen with screensaver||
 |<kbd>Modkey</kbd><kbd>Enter</kbd>|launch user terminal||
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>|launch root terminal||
@@ -218,6 +222,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 | key combo | function | comment |
 | --- | --- | --- |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>c</kbd>|kill focused client||
+|<kbd>Alt</kbd><kbd>f4</kbd>|kill focused client|MSFT Windows key|
 |<kbd>Modkey</kbd><kbd>f</kbd>|toggle fullscreen status|hides statusbar|
 |<kbd>Modkey</kbd><kbd>m</kbd>|toggle maximized status|leaves statusbar visible|
 |<kbd>Modkey</kbd><kbd>Left</kbd>|move window to left half screen|leaves statusbar visible|
@@ -269,9 +274,9 @@ all these keys work on the single **currently focused client**
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>p</kbd>|send the client to the previous tag|"p" for previous|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>n</kbd>|send the client to the next tag|"n" for next|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>g</kbd>|**move the client to the named tag**|with tag name completion by <kbd>Tab</kbd>|
-|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd>+g|**toggle the named tag for the client**|with tag name completion by <kbd>Tab</kbd>|
-|<kbd>Modkey</kbd><kbd>Shift</kbd>+[1-9,0]|**move the client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
-|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd>+[1-9,0]|**toggle the {first-ninth, tenth} tag for the client**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>g</kbd>|**toggle the named tag for the client**|with tag name completion by <kbd>Tab</kbd>|
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>1-9,0</kbd>|**move the client to {first-ninth, tenth} tag**|prompt for "add a new tag" if not already existed|
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>1-9,0</kbd>|**toggle the {first-ninth, tenth} tag for the client**|prompt for "add a new tag" if not already existed|
 
 #### change space allocation in **tile** layout
 
@@ -307,7 +312,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>End</kbd> | hybrid sleep (will confirm) | systemctl hybrid-sleep |
 |<kbd>Modkey</kbd><kbd>Insert</kbd> | reboot (will confirm) | systemctl reboot |
 |<kbd>Modkey</kbd><kbd>Delete</kbd> | power off (will confirm) | systemctl poweroff |
-|<kbd>Modkey</kbd><kbd>'</kbd> | GUI appfinder | xfce4-appfinder |
+|<kbd>Modkey</kbd><kbd>/</kbd> | GUI appfinder | xfce4-appfinder |
 
 #### everyday
 
@@ -324,7 +329,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | chromium |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| secondary browser | virtualbox |
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>/|</kbd> screen magnifier | kmag |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>|screen magnifier | kmag |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 
 #### the rest
@@ -338,9 +343,10 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | --- | --- |
 |<kbd>left button</kbd>|view the tag|
 |<kbd>Modkey</kbd><kbd>left button</kbd>|move current client to the tag|
-|<kbd>middle button</kbd>|delete the tag if empty|
-|<kbd>right button</kbd>|toggle whether to view the tag|
-|<kbd>Modkey</kbd><kbd>right button</kbd>|toggle the tag for current client|
+|<kbd>middle button</kbd>|toggle whether to view the tag|
+|<kbd>Modkey</kbd><kbd>middle button</kbd>|toggle the tag for current client|
+|<kbd>right button</kbd>|show tag action menu|
+|<kbd>Modkey</kbd><kbd>right button</kbd>|delete the tag if empty|
 |<kbd>scroll up</kbd>|view the prev tag|
 |<kbd>scroll down</kbd>|view the next tag|
 
@@ -349,7 +355,9 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | mouse action | function |
 | --- | --- |
 |<kbd>left button</kbd>|toggle task minimize status|
-|<kbd>right button</kbd>|menu of all tasks across tags|
+|<kbd>middle button</kbd>|choose from clients on current tag|
+|<kbd>Modkey</kbd><kbd>middle button</kbd>|choose from all clients|
+|<kbd>right button</kbd>|show task action menu|
 |<kbd>scroll up</kbd>|focus on prev task|
 |<kbd>scroll down</kbd>|focus on next task|
 
