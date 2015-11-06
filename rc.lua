@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.3"
+customization.config.version = "1.6.4"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1555,7 +1555,7 @@ awful.key({modkey}, "a", customization.func.tag_add_after),
 
 awful.key({modkey, "Shift"}, "a", customization.func.tag_add_before),
 
-awful.key({modkey, "Shift"}, "d", customization.func.tag_add_before),
+awful.key({modkey, "Shift"}, "d", customization.func.tag_delete),
 
 awful.key({modkey, "Shift"}, "r", customization.func.tag_rename),
 
