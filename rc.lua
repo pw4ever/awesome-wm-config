@@ -33,7 +33,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.5.23"
+customization.config.version = "1.5.24"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -940,6 +940,14 @@ awful.key({ modkey }, "'", customization.func.app_finder),
 --- everyday
 
 awful.key({ modkey, "Mod1", }, "l", function ()
+    awful.util.spawn(tools.system.filemanager)
+end),
+
+awful.key({ modkey,  }, "e", function ()
+    awful.util.spawn(tools.system.filemanager)
+end),
+
+awful.key({ modkey,  }, "E", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
 
