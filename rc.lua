@@ -42,7 +42,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.6"
+customization.config.version = "1.6.7"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1583,9 +1583,9 @@ awful.key({modkey,}, "g", customization.func.tag_goto),
 
 --- move
 
-awful.key({modkey, "Control"}, "p", customization.func.tag_move_forward), 
+awful.key({modkey, "Control"}, "p", customization.func.tag_move_backward), 
 
-awful.key({modkey, "Control"}, "n", customization.func.tag_move_backward), 
+awful.key({modkey, "Control"}, "n", customization.func.tag_move_forward), 
 
 -- client management
 
