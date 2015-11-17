@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=quicksynergy
-TryExec=quicksynergy
-Exec=quicksynergy
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome
