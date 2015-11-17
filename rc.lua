@@ -1321,7 +1321,7 @@ mytextbattery = wibox.widget.textbox()
 
 -- http://awesome.naquadah.org/wiki/Bashets
 bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
-bashets.register("battery.sh", {widget=mytextbattery, update_time=5, format="<span fgcolor='yellow'>$1</span>"})
+bashets.register("battery.sh", {widget=mytextbattery, update_time=10, format="<span fgcolor='yellow'>$1</span>"})
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
