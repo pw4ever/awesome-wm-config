@@ -50,7 +50,7 @@ customization.default.property = {
     mwfact = 0.5,
     nmaster = 1,
     ncol = 1,
-    min_opacity = 0.4,
+    min_opacity = 0.01,
     max_opacity = 1,
     default_naughty_opacity = 0.90,
     low_naughty_opacity = 0.90,
@@ -179,6 +179,7 @@ do
     end)
 
     customization.orig.restart = awesome.restart
+    --[[
     awesome.restart = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
@@ -192,6 +193,8 @@ do
             return awful.completion.generic(t, p, n, {'no', 'NO', 'yes', 'YES'})
         end)
     end
+    --]]
+
 end
 
 -- }}}
@@ -251,12 +254,12 @@ local tools = {
     },
 }
 
-tools.browser.primary = os.getenv("BROWSER") or "firefox"
-tools.browser.secondary = ({chromium="firefox", firefox="chromium"})[tools.browser.primary]
+--tools.browser.primary = os.getenv("BROWSER") or "firefox"
+--tools.browser.secondary = ({chromium="firefox", firefox="chromium"})[tools.browser.primary]
 
 -- alternative: override
---tools.browser.primary = "google-chrome-stable"
---tools.browser.secondary = "firefox"
+tools.browser.primary = "google-chrome-stable"
+tools.browser.secondary = "firefox"
 
 tools.editor.primary = os.getenv("EDITOR") or "gvim"
 tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
@@ -1218,10 +1221,11 @@ menu = mymainmenu })
 
 -- {{{ Wibox
 mytextclock = wibox.widget.textbox()
+mytextbattery = wibox.widget.textbox()
 
 -- http://awesome.naquadah.org/wiki/Bashets
 bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
-
+bashets.register("battery.sh", {widget=mytextbattery, update_time=5, format="<span fgcolor='yellow'>$1</span>"})
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -1305,7 +1309,7 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, ontop = true })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
@@ -1316,6 +1320,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(mytextbattery)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -1330,6 +1335,7 @@ end
 
 util.taglist.set_taglist(mytaglist)
 -- }}}
+
 
 do
     -- test whether screen 1 tag file exists
@@ -1423,6 +1429,11 @@ awful.button({ }, 5, awful.tag.viewprev)
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+
+-- toggle wibox visibility
+ awful.key({ modkey }, "w", function ()
+     mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
+ end),
 
 -- window management
 
