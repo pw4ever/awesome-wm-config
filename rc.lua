@@ -44,6 +44,15 @@ awful.menu.menu_keys.close = { "Escape", "BackSpace", }
 
 bashets.set_script_path(rudiment.config_path .. "/bashets/")
 
+
+
+-- VimAw configuration file
+local config = require("vimaw.config")
+
+
+-- Run VimAw
+local VimAw = require("vimaw.VimAw")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -417,6 +426,7 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextbattery)
     right_layout:add(mytextclock)
+    right_layout:add(VimAw.modeBox)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -526,6 +536,12 @@ toggleNotifylist = {}
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 
+    -------------------------------------------------- !!!!!!!!!!!!!!!!!!!!
+    -- Shortcut for returning to NORMAL MODE
+    awful.key({ modkey,           }, "Escape", function () normalMode() end),
+    awful.key({ "Control", "Mod1" }, "[", function () normalMode() end),
+    -------------------------------------------------- !!!!!!!!!!!!!!!!!!!!
+    
 -- toggle wibox visibility
  awful.key({ modkey }, "w", function ()
      mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
