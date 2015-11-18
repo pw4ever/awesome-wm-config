@@ -1,11 +1,35 @@
+-- shared config
 local awful = require("awful")
 local naughty = require("naughty")
-rudiment = {}
+local rudiment = {}
 rudiment.config = {}
 
 rudiment.config.version = "1.6.7"
 rudiment.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. rudiment.config.version
+rudiment.config_path = awful.util.getdir("config")
 
+rudiment.default = {}
+rudiment.default.property = {}
+rudiment.default.property = {
+    layout = awful.layout.suit.floating,
+    mwfact = 0.5,
+    nmaster = 1,
+    ncol = 1,
+    min_opacity = 0.01,
+    max_opacity = 1,
+    default_naughty_opacity = 0.90,
+    low_naughty_opacity = 0.90,
+    normal_naughty_opacity = 0.95,
+    critical_naughty_opacity = 1,
+}
+rudiment.default.compmgr = 'xcompmgr'
+rudiment.default.wallpaper_change_interval = 15
+rudiment.option = {}
+rudiment.option.wallpaper_change_p = true
+naughty.config.presets.low.opacity = rudiment.default.property.low_naughty_opacity
+naughty.config.presets.normal.opacity = rudiment.default.property.normal_naughty_opacity
+naughty.config.presets.critical.opacity = rudiment.default.property.critical_naughty_opacity
+rudiment.naughty = naughty
 do
     local tools = {
         terminal = "sakura",

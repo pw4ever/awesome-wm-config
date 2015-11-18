@@ -11,7 +11,6 @@ require("awful.remote")
 awful.ewmh = require("awful.ewmh")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 local menubar = require("menubar")
 
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
@@ -26,9 +25,15 @@ local capi = {
     client = client,
 }
 
+local customization = {}
+customization.config = {}
+customization.orig = {}
 local misc = require("misc")
-local customization = require("customization")
 local rudiment = require("rudiment")
+
+local naughty = rudiment.naughty
+
+
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
 awful.menu.menu_keys.up = {  "Up", ",", "<", ";", ":", }
@@ -37,12 +42,7 @@ awful.menu.menu_keys.back = { "Left", "[", "{", "-", "_", }
 awful.menu.menu_keys.exec = { "Return", "Space", }
 awful.menu.menu_keys.close = { "Escape", "BackSpace", }
 
-
-naughty.config.presets.low.opacity = customization.default.property.low_naughty_opacity
-naughty.config.presets.normal.opacity = customization.default.property.normal_naughty_opacity
-naughty.config.presets.critical.opacity = customization.default.property.critical_naughty_opacity
-
-bashets.set_script_path(customization.config_path .. "/bashets/")
+bashets.set_script_path(rudiment.config_path .. "/bashets/")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -177,7 +177,7 @@ end
 
 do
     local function init_theme(theme_name)
-        local theme_path = customization.config_path .. "/themes/" .. theme_name .. "/theme.lua"
+        local theme_path = rudiment.config_path .. "/themes/" .. theme_name .. "/theme.lua"
         beautiful.init(theme_path)
     end
     init_theme("zenburn")
@@ -188,7 +188,6 @@ end
 -- This is used later as the default terminal and editor to run.
 
 --{{
-local tools = rudiment.tools
 
 local myapp = nil
 do
@@ -208,7 +207,7 @@ do
         end
         return current
     end
-    myapp = build(tools)
+    myapp = build(rudiment.tools)
 end
 --}}
 
@@ -265,52 +264,52 @@ end
 -- {{{ Menu
 
 -- Create a launcher widget and a main menu
-mysystemmenu = {
+local mysystemmenu = {
     --{ "manual", tools.terminal .. " -e man awesome" },
-    { "&lock", customization.func.system_lock },
-    { "&suspend", customization.func.system_suspend },
-    { "hi&bernate", customization.func.system_hibernate },
-    { "hybri&d sleep", customization.func.system_hybrid_sleep },
-    { "&reboot", customization.func.system_reboot },
-    { "&power off", customization.func.system_power_off }
+    { "&lock", misc.system_lock },
+    { "&suspend", misc.system_suspend },
+    { "hi&bernate", misc.system_hibernate },
+    { "hybri&d sleep", misc.system_hybrid_sleep },
+    { "&reboot", misc.system_reboot },
+    { "&power off", misc.system_power_off }
 }
 
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local myawesomemenu = {
     --{ "manual", tools.terminal .. " -e man awesome" },
-    { "&edit config", tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
+    { "&edit config", rudiment.tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
     { "&restart", awesome.restart },
     { "&quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({
+local mymainmenu = awful.menu({
   theme = { width=150, },
   items = {
     { "&system", mysystemmenu },
-    { "app &finder", customization.func.app_finder },
+    { "app &finder", misc.app_finder },
     { "&apps", myapp },
-    { "&terminal", tools.terminal },
+    { "&terminal", rudiment.tools.terminal },
     { "a&wesome", myawesomemenu, beautiful.awesome_icon },
     { "&client action", function () 
-      customization.func.client_action_menu()
+      misc.client_action_menu()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
     { "&tag action", function ()
-      customization.func.tag_action_menu()
+      misc.tag_action_menu()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
     { "clients &on current tag", function ()
-      customization.func.clients_on_tag()
+      misc.clients_on_tag()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
     { "clients on a&ll tags", function ()
-      customization.func.all_clients()
+      misc.all_clients()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
   }
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menu = mymainmenu })
 
 -- }}}
@@ -333,7 +332,7 @@ awful.button({ modkey }, 1, awful.client.movetotag),
 awful.button({ }, 2, awful.tag.viewtoggle),
 awful.button({ modkey }, 2, awful.client.toggletag),
 awful.button({ }, 3, function (t)
-  customization.func.tag_action_menu(t)
+  misc.tag_action_menu(t)
 end),
 awful.button({ modkey }, 3, awful.tag.delete),
 awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),
@@ -361,15 +360,15 @@ awful.button({ }, 1, function (c)
 end),
 
 awful.button({ }, 2, function (c)
-  customization.func.clients_on_tag()
+  misc.clients_on_tag()
 end),
 
 awful.button({ modkey }, 2, function (c)
-    customization.func.all_clients()
+    misc.all_clients()
 end),
 
 awful.button({ }, 3, function (c)
-  customization.func.client_action_menu(c)
+  misc.client_action_menu(c)
 end),
 
 awful.button({ }, 4, function ()
@@ -460,10 +459,10 @@ do
                     local tag = awful.tag.add(tagname,
                     {
                         screen = count_index,
-                        layout = customization.default.property.layout,
-                        mwfact = customization.default.property.mwfact,
-                        nmaster = customization.default.property.nmaster,
-                        ncol = customization.default.property.ncol,
+                        layout = rudiment.default.property.layout,
+                        mwfact = rudiment.default.property.mwfact,
+                        nmaster = rudiment.default.property.nmaster,
+                        ncol = rudiment.default.property.ncol,
                     }
                     )
                     awful.tag.move(count[count_index], tag)
@@ -492,10 +491,10 @@ do
         local tag = awful.tag.add("genesis",
         {
             screen = 1,
-            layout = customization.default.property.layout,
-            mwfact = customization.default.property.mwfact,
-            nmaster = customization.default.property.nmaster,
-            ncol = customization.default.property.ncol, 
+            layout = rudiment.default.property.layout,
+            mwfact = rudiment.default.property.mwfact,
+            nmaster = rudiment.default.property.nmaster,
+            ncol = rudiment.default.property.ncol, 
         } 
         )
         awful.tag.viewonly(tag)
@@ -503,10 +502,10 @@ do
         awful.tag.add("nil",
         {
             screen = 2,
-            layout = customization.default.property.layout,
-            mwfact = customization.default.property.mwfact,
-            nmaster = customization.default.property.nmaster,
-            ncol = customization.default.property.ncol, 
+            layout = rudiment.default.property.layout,
+            mwfact = rudiment.default.property.mwfact,
+            nmaster = rudiment.default.property.nmaster,
+            ncol = rudiment.default.property.ncol, 
         } 
         ) 
 
@@ -516,8 +515,8 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-awful.button({ }, 1, customization.func.all_clients),
-awful.button({ }, 2, customization.func.tag_action_menu),
+awful.button({ }, 1, misc.all_clients),
+awful.button({ }, 2, misc.tag_action_menu),
 awful.button({ }, 3, function () mymainmenu:toggle() end),
 awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
@@ -544,22 +543,7 @@ awful.key({ modkey }, "\\", misc.notify.toggleAwesomeInfo),
 
 awful.key({modkey}, "v", misc.notify.togglevolume),
 
-awful.key({modkey}, "F1",
-function ()
-    local text = ""
-    text = text .. "You are running awesome <span fgcolor='red'>" .. awesome.version .. "</span> (<span fgcolor='red'>" .. awesome.release .. "</span>)"
-    text = text .. "\n" .. "with config version <span fgcolor='red'>" .. customization.config.version .. "</span>"
-    text = text .. "\n\n" .. "help can be found at the URL: <u>" .. customization.config.help_url .. "</u>"
-    text = text .. "\n\n\n\n" .. "opening in <b>" .. tools.browser.primary .. "</b>..."
-    naughty.notify({
-        preset = naughty.config.presets.normal,
-        title="help about configuration",
-        text=text,
-        timeout = 20,
-        screen = mouse.screen,
-    })
-    awful.util.spawn_with_shell(tools.browser.primary .. " '" .. customization.config.help_url .. "'")
-end),
+awful.key({modkey}, "F1", misc.onlieHelp),
 
 --- Layout
 
@@ -596,7 +580,7 @@ awful.key({modkey}, "r", function()
 end),
 
 awful.key({modkey}, "F3", function()
-    awful.util.spawn_with_shell(customization.config_path .. "/bin/trackpad-toggle.sh")
+    awful.util.spawn_with_shell(rudiment.config_path .. "/bin/trackpad-toggle.sh")
 end),
 
 awful.key({modkey}, "F4", function()
@@ -609,7 +593,7 @@ awful.key({modkey}, "F4", function()
 end),
 
 awful.key({ modkey }, "c", function () 
-    awful.util.spawn(tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
+    awful.util.spawn(rudiment.tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
 end),
 
 awful.key({ modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=true}) end),
@@ -617,85 +601,85 @@ awful.key({ modkey, "Shift" }, "/", function() mymainmenu:toggle({keygrabber=tru
 awful.key({ modkey, }, ";", function()
   local c = client.focus
   if c then
-    customization.func.client_action_menu(c)
+    misc.client_action_menu(c)
   end
 end),
 
-awful.key({ modkey, "Shift" }, ";", customization.func.tag_action_menu),
+awful.key({ modkey, "Shift" }, ";", misc.tag_action_menu),
 
-awful.key({ modkey, }, "'", customization.func.clients_on_tag),
+awful.key({ modkey, }, "'", misc.clients_on_tag),
 
-awful.key({ modkey, "Ctrl" }, "'", customization.func.clients_on_tag_prompt),
+awful.key({ modkey, "Ctrl" }, "'", misc.clients_on_tag_prompt),
 
-awful.key({ modkey, "Shift" }, "'", customization.func.all_clients),
+awful.key({ modkey, "Shift" }, "'", misc.all_clients),
 
-awful.key({ modkey, "Shift", "Ctrl" }, "'", customization.func.all_clients_prompt),
+awful.key({ modkey, "Shift", "Ctrl" }, "'", misc.all_clients_prompt),
 
 awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end),
 
 awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
+awful.key({ modkey,           }, "Return", function () awful.util.spawn(rudiment.tools.terminal) end),
 
-awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
+awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. rudiment.tools.terminal) end),
 
 -- dynamic tagging
 
 --- add/delete/rename
 
-awful.key({modkey}, "a", customization.func.tag_add_after),
+awful.key({modkey}, "a", misc.tag_add_after),
 
-awful.key({modkey, "Shift"}, "a", customization.func.tag_add_before),
+awful.key({modkey, "Shift"}, "a", misc.tag_add_before),
 
-awful.key({modkey, "Shift"}, "d", customization.func.tag_delete),
+awful.key({modkey, "Shift"}, "d", misc.tag_delete),
 
-awful.key({modkey, "Shift"}, "r", customization.func.tag_rename),
+awful.key({modkey, "Shift"}, "r", misc.tag_rename),
 
 --- view
 
-awful.key({modkey,}, "p", customization.func.tag_view_prev),
+awful.key({modkey,}, "p", misc.tag_view_prev),
 
-awful.key({modkey,}, "n", customization.func.tag_view_next),
+awful.key({modkey,}, "n", misc.tag_view_next),
 
-awful.key({modkey,}, "z", customization.func.tag_last),
+awful.key({modkey,}, "z", misc.tag_last),
 
-awful.key({modkey,}, "g", customization.func.tag_goto),
+awful.key({modkey,}, "g", misc.tag_goto),
 
 --- move
 
-awful.key({modkey, "Control"}, "p", customization.func.tag_move_backward), 
+awful.key({modkey, "Control"}, "p", misc.tag_move_backward), 
 
-awful.key({modkey, "Control"}, "n", customization.func.tag_move_forward), 
+awful.key({modkey, "Control"}, "n", misc.tag_move_forward), 
 
 -- client management
 
 --- change focus
 
-awful.key({ modkey,           }, "j", customization.func.client_focus_next),
+awful.key({ modkey,           }, "j", misc.client_focus_next),
 
-awful.key({ modkey,           }, "Tab", customization.func.client_focus_next),
+awful.key({ modkey,           }, "Tab", misc.client_focus_next),
 
-awful.key({ modkey,           }, "k", customization.func.client_focus_prev),
+awful.key({ modkey,           }, "k", misc.client_focus_prev),
 
-awful.key({ modkey, "Shift"   }, "Tab", customization.func.client_focus_prev),
+awful.key({ modkey, "Shift"   }, "Tab", misc.client_focus_prev),
 
-awful.key({ modkey,           }, "u", customization.func.client_focus_urgent),
+awful.key({ modkey,           }, "u", misc.client_focus_urgent),
 
 --- swap order/select master
 
-awful.key({ modkey, "Shift"   }, "j", customization.func.client_swap_next),
+awful.key({ modkey, "Shift"   }, "j", misc.client_swap_next),
 
-awful.key({ modkey, "Shift"   }, "k", customization.func.client_swap_prev),
+awful.key({ modkey, "Shift"   }, "k", misc.client_swap_prev),
 
 --- move/copy to tag
 
-awful.key({modkey, "Shift"}, "n", customization.func.client_move_next),
+awful.key({modkey, "Shift"}, "n", misc.client_move_next),
 
-awful.key({modkey, "Shift"}, "p", customization.func.client_move_prev),
+awful.key({modkey, "Shift"}, "p", misc.client_move_prev),
 
-awful.key({modkey, "Shift"}, "g", customization.func.client_move_to_tag),
+awful.key({modkey, "Shift"}, "g", misc.client_move_to_tag),
 
-awful.key({modkey, "Control", "Shift"}, "g", customization.func.client_toggle_tag),
+awful.key({modkey, "Control", "Shift"}, "g", misc.client_toggle_tag),
 
 --- change space allocation in tile layout
 
@@ -715,40 +699,40 @@ awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end)
 
 --- misc
 
-awful.key({ modkey, "Shift" }, "`", customization.func.client_toggle_titlebar),
+awful.key({ modkey, "Shift" }, "`", misc.client_toggle_titlebar),
 
 -- app bindings
 
 --- admin
 
-awful.key({ modkey, }, "`", customization.func.system_lock),
+awful.key({ modkey, }, "`", misc.system_lock),
 
-awful.key({ modkey, }, "Home", customization.func.system_lock),
+awful.key({ modkey, }, "Home", misc.system_lock),
 
-awful.key({ modkey, }, "End", customization.func.system_suspend),
+awful.key({ modkey, }, "End", misc.system_suspend),
 
-awful.key({ modkey,  "Mod1" }, "Home", customization.func.system_hibernate),
+awful.key({ modkey,  "Mod1" }, "Home", misc.system_hibernate),
 
-awful.key({ modkey,  "Mod1" }, "End", customization.func.system_hybrid_sleep),
+awful.key({ modkey,  "Mod1" }, "End", misc.system_hybrid_sleep),
 
-awful.key({ modkey, }, "Insert", customization.func.system_reboot),
+awful.key({ modkey, }, "Insert", misc.system_reboot),
 
-awful.key({ modkey, }, "Delete", customization.func.system_power_off),
+awful.key({ modkey, }, "Delete", misc.system_power_off),
 
-awful.key({ modkey, }, "/", customization.func.app_finder),
+awful.key({ modkey, }, "/", misc.app_finder),
 
 --- everyday
 
 awful.key({ modkey, "Mod1", }, "l", function ()
-    awful.util.spawn(tools.system.filemanager)
+    awful.util.spawn(rudiment.tools.system.filemanager)
 end),
 
 awful.key({ modkey,  }, "e", function ()
-    awful.util.spawn(tools.system.filemanager)
+    awful.util.spawn(rudiment.tools.system.filemanager)
 end),
 
 awful.key({ modkey,  }, "E", function ()
-    awful.util.spawn(tools.system.filemanager)
+    awful.util.spawn(rudiment.tools.system.filemanager)
 end),
 
 awful.key({ modkey, "Mod1", }, "p", function ()
@@ -760,19 +744,19 @@ awful.key({ modkey, "Mod1", }, "r", function ()
 end),
 
 awful.key({ modkey, }, "i", function ()
-    awful.util.spawn(tools.editor.primary)
+    awful.util.spawn(rudiment.tools.editor.primary)
 end),
 
 awful.key({ modkey, "Shift" }, "i", function ()
-    awful.util.spawn(tools.editor.secondary)
+    awful.util.spawn(rudiment.tools.editor.secondary)
 end),
 
 awful.key({ modkey, }, "b", function ()
-    awful.util.spawn(tools.browser.primary)
+    awful.util.spawn(rudiment.tools.browser.primary)
 end),
 
 awful.key({ modkey, "Shift" }, "b", function ()
-    awful.util.spawn(tools.browser.secondary)
+    awful.util.spawn(rudiment.tools.browser.secondary)
 end),
 
 awful.key({ modkey, "Mod1", }, "v", function ()
@@ -850,7 +834,7 @@ awful.key({}, "Print", function ()
 end),
 
 awful.key({}, "XF86Launch1", function ()
-    awful.util.spawn(tools.terminal)
+    awful.util.spawn(rudiment.tools.terminal)
 end),
 
 awful.key({ }, "XF86Sleep", function ()
@@ -917,68 +901,68 @@ nil
 --- operation
 clientkeys = awful.util.table.join(
 
-awful.key({ modkey, "Shift"   }, "c", customization.func.client_kill),
+awful.key({ modkey, "Shift"   }, "c", misc.client_kill),
 
-awful.key({ "Mod1",   }, "F4", customization.func.client_kill),
+awful.key({ "Mod1",   }, "F4", misc.client_kill),
 
-awful.key({ modkey,           }, "f", customization.func.client_fullscreen),
+awful.key({ modkey,           }, "f", misc.client_fullscreen),
 
-awful.key({ modkey,           }, "m", customization.func.client_maximize),
+awful.key({ modkey,           }, "m", misc.client_maximize),
 
 -- move client to sides, i.e., sidelining
 
-awful.key({ modkey,           }, "Left", customization.func.client_sideline_left),
+awful.key({ modkey,           }, "Left", misc.client_sideline_left),
 
-awful.key({ modkey,           }, "Right", customization.func.client_sideline_right),
+awful.key({ modkey,           }, "Right", misc.client_sideline_right),
 
-awful.key({ modkey,           }, "Up", customization.func.client_sideline_top),
+awful.key({ modkey,           }, "Up", misc.client_sideline_top),
 
-awful.key({ modkey,           }, "Down", customization.func.client_sideline_bottom),
+awful.key({ modkey,           }, "Down", misc.client_sideline_bottom),
 
 -- extend client sides
 
-awful.key({ modkey, "Mod1"    }, "Left", customization.func.client_sideline_extend_left),
+awful.key({ modkey, "Mod1"    }, "Left", misc.client_sideline_extend_left),
 
-awful.key({ modkey, "Mod1"    }, "Right", customization.func.client_sideline_extend_right),
+awful.key({ modkey, "Mod1"    }, "Right", misc.client_sideline_extend_right),
 
-awful.key({ modkey, "Mod1"    }, "Up", customization.func.client_sideline_extend_top),
+awful.key({ modkey, "Mod1"    }, "Up", misc.client_sideline_extend_top),
 
-awful.key({ modkey, "Mod1"    }, "Down", customization.func.client_sideline_extend_bottom),
+awful.key({ modkey, "Mod1"    }, "Down", misc.client_sideline_extend_bottom),
 
 -- shrink client sides
 
-awful.key({ modkey, "Mod1", "Shift" }, "Left", customization.func.client_sideline_shrink_left),
+awful.key({ modkey, "Mod1", "Shift" }, "Left", misc.client_sideline_shrink_left),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Right", customization.func.client_sideline_shrink_right),
+awful.key({ modkey, "Mod1", "Shift" }, "Right", misc.client_sideline_shrink_right),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Up", customization.func.client_sideline_shrink_top),
+awful.key({ modkey, "Mod1", "Shift" }, "Up", misc.client_sideline_shrink_top),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Down", customization.func.client_sideline_shrink_bottom),
+awful.key({ modkey, "Mod1", "Shift" }, "Down", misc.client_sideline_shrink_bottom),
 
 -- maximize/minimize
 
-awful.key({ modkey, "Shift"   }, "m", customization.func.client_minimize),
+awful.key({ modkey, "Shift"   }, "m", misc.client_minimize),
 
 awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle),
 
 
-awful.key({ modkey,           }, "t", customization.func.client_toggle_top),
+awful.key({ modkey,           }, "t", misc.client_toggle_top),
 
-awful.key({ modkey,           }, "s", customization.func.client_toggle_sticky),
+awful.key({ modkey,           }, "s", misc.client_toggle_sticky),
 
-awful.key({ modkey,           }, ",", customization.func.client_maximize_horizontal),
+awful.key({ modkey,           }, ",", misc.client_maximize_horizontal),
 
-awful.key({ modkey,           }, ".", customization.func.client_maximize_vertical),
+awful.key({ modkey,           }, ".", misc.client_maximize_vertical),
 
-awful.key({ modkey,           }, "[", customization.func.client_opaque_less),
+awful.key({ modkey,           }, "[", misc.client_opaque_less),
 
-awful.key({ modkey,           }, "]", customization.func.client_opaque_more),
+awful.key({ modkey,           }, "]", misc.client_opaque_more),
 
-awful.key({ modkey, 'Shift'   }, "[", customization.func.client_opaque_off),
+awful.key({ modkey, 'Shift'   }, "[", misc.client_opaque_off),
 
-awful.key({ modkey, 'Shift'   }, "]", customization.func.client_opaque_on),
+awful.key({ modkey, 'Shift'   }, "]", misc.client_opaque_on),
 
-awful.key({ modkey, "Control" }, "Return", customization.func.client_swap_with_master),
+awful.key({ modkey, "Control" }, "Return", misc.client_swap_with_master),
 
 nil
 
@@ -1128,7 +1112,7 @@ awful.rules.rules = {
             raise = true,
             keys = clientkeys,
             buttons = clientbuttons,
-            opacity = customization.default.property.default_naughty_opacity,
+            opacity = rudiment.default.property.default_naughty_opacity,
         }
     },
 
@@ -1258,7 +1242,7 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
-client.connect_signal("manage", customization.func.client_manage_tag)
+client.connect_signal("manage", misc.client_manage_tag)
 
 -- }}}
 
