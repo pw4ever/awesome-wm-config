@@ -1420,7 +1420,7 @@ awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-
+notifylist = {}
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 
@@ -1433,6 +1433,12 @@ awful.key({ modkey, "Control" }, "r", awesome.restart),
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
 awful.key({ modkey }, "\\", function () 
+    if notifylist.info then
+        naughty.destroy(notifylist.info)
+        notifylist.info = nil
+        return
+    end
+
     local info = "Version: " .. awesome.version 
     info = info ..  "\n" .. "Release: " .. awesome.release
     info = info ..  "\n" .. "Config: " .. awesome.conffile
@@ -1453,7 +1459,7 @@ awful.key({ modkey }, "\\", function ()
     info = string.gsub(info, "(%u[%a ]*:)%f[ ]", "<span color='red'>%1</span>")
     local tmp = awesome.composite_manager_running
     awesome.composite_manager_running = false
-    naughty.notify({
+    notifylist.info = naughty.notify({
         preset = naughty.config.presets.normal,
         title="awesome info",
         text=info,
