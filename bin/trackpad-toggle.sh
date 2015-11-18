@@ -1,3 +1,8 @@
 #!/bin/bash - 
 #synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
-xinput set-prop 14 138 $(xinput list-props  14|awk '/138/{print !$4} ')
+
+d='ETPS/2 Elantech Touchpad'
+p='138'
+a=$(xinput list-props  "$d"|awk "/$p/{print !\$4}")
+echo Now: $a
+xinput set-prop "$d" "$p"  $a
