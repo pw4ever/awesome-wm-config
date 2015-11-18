@@ -104,8 +104,9 @@ end
 -- * create a file /tmp/awesome-autostart-once when first time "dex" autostart items (at the end of this file)
 -- * only "rm" this file when awesome.quit
 
-local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
-local awesome_restart_tags_fname = "/tmp/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
+local cachedir = awful.util.getdir("cache")
+local awesome_autostart_once_fname = cachedir .. "/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
+local awesome_restart_tags_fname = cachedir .. "/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
 
 do
     awesome.connect_signal("exit", function (restart)

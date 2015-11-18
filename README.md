@@ -102,7 +102,6 @@ sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 
 ### miscellaneous
 
-* make sure that you can write to `/tmp` (for dynamic tagging), e.g., through `tmpfs`
 * populate your `$HOME/.config/autostart` with [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart files (optionally with `OnlyShowIn=awesome` if you only want them to auto-start in [awesome][awesome]).
 * [my autostart setup can be found here](https://github.com/pw4ever/awesome-wm-config/tree/master/autostart).
 
