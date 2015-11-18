@@ -26,6 +26,8 @@ local capi = {
     client = client,
 }
 
+local misc = require("misc")
+
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
 awful.menu.menu_keys.up = {  "Up", ",", "<", ";", ":", }
@@ -1523,7 +1525,7 @@ awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-notifylist = {}
+toggleNotifylist = {}
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 
@@ -1541,9 +1543,9 @@ awful.key({ modkey, "Control" }, "r", awesome.restart),
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
 awful.key({ modkey }, "\\", function () 
-    if notifylist.info then
-        naughty.destroy(notifylist.info)
-        notifylist.info = nil
+    if toggleNotifylist.info then
+        naughty.destroy(toggleNotifylist.info)
+        toggleNotifylist.info = nil
         return
     end
 
@@ -1567,7 +1569,7 @@ awful.key({ modkey }, "\\", function ()
     info = string.gsub(info, "(%u[%a ]*:)%f[ ]", "<span color='red'>%1</span>")
     local tmp = awesome.composite_manager_running
     awesome.composite_manager_running = false
-    notifylist.info = naughty.notify({
+    toggleNotifylist.info = naughty.notify({
         preset = naughty.config.presets.normal,
         title="awesome info",
         text=info,
@@ -1577,21 +1579,7 @@ awful.key({ modkey }, "\\", function ()
     awesome.composite_manager_running = tmp
 end),
 
-awful.key({modkey}, "v", function ()
-    if notifylist.volnotify then
-        naughty.destroy(notifylist.volnotify)
-        notifylist.volnotify = nil
-        return
-    end
-    local vol = "<span face='monospace'>" .. awful.util.pread("myscripts/showvol.sh") .. "</span>"
-    notifylist.volnotify = naughty.notify({
-        preset = naughty.config.presets.normal,
-        title="Volume Info",
-        text=vol,
-        timeout = 10,
-        screen = mouse.screen,
-    })
-end),
+awful.key({modkey}, "v", misc.notify.togglevolume),
 
 awful.key({modkey}, "F1",
 function ()
@@ -1852,7 +1840,7 @@ awful.key({}, "XF86AudioStop", function ()
 end),
 
 awful.key({}, "XF86AudioRaiseVolume", function ()
-    awful.util.spawn("amixer sset Master 5%+")
+    misc.Volume.Up()
 end),
 
 awful.key({ modkey }, "XF86AudioRaiseVolume", function ()
@@ -1860,7 +1848,7 @@ awful.key({ modkey }, "XF86AudioRaiseVolume", function ()
 end),
 
 awful.key({}, "XF86AudioLowerVolume", function ()
-    awful.util.spawn("amixer sset Master 5%-")
+    misc.Volume.Down()
 end),
 
 awful.key({}, "XF86AudioMute", function ()
