@@ -1,4 +1,3 @@
-require("repetitive")
 package.path = package.path .. ";./?/init.lua;"
 
 local gears = require("gears")
