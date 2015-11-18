@@ -28,8 +28,8 @@ local capi = {
 local customization = {}
 customization.config = {}
 customization.orig = {}
-local misc = require("misc")
 local rudiment = require("rudiment")
+local misc = require("misc")
 
 local naughty = rudiment.naughty
 
