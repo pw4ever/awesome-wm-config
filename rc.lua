@@ -31,7 +31,7 @@ customization.orig = {}
 local rudiment = require("rudiment")
 local misc = require("misc")
 
-local naughty = rudiment.naughty
+local naughty = require("naughty") 
 
 
 -- do not use letters, which shadow access key to menu entry
