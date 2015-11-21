@@ -1,1 +1,1 @@
-/home/tony/myscripts/showvol.sh
+amixer scontents |awk '/\%/{print $5}'|  tr -d '\n'  | sed 's/[][]//g' 
