@@ -4,6 +4,16 @@ local naughty = require("naughty")
 local rudiment = {}
 rudiment.config = {}
 
+
+-- Default modkey.
+-- Usually, Mod4 is the key with a logo between Control and Alt.
+-- If you do not like this or do not have such a key,
+-- I suggest you to remap Mod4 to another key using xmodmap or other tools.
+-- However, you can use another modifier like Mod1, but it may interact with others.
+rudiment.modkey = "Mod4"
+
+
+
 rudiment.config.version = "1.6.7"
 rudiment.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. rudiment.config.version
 rudiment.config_path = awful.util.getdir("config")

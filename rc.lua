@@ -28,10 +28,11 @@ local customization = {}
 customization.config = {}
 customization.orig = {}
 local rudiment = require("rudiment")
+modkey = rudiment.modkey
 local misc = require("misc")
 
 local naughty = require("naughty") 
-
+numeric_keys = require("numeric_keys")
 
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
@@ -219,12 +220,6 @@ do
 end
 --}}
 
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -533,7 +528,27 @@ awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
 toggleNotifylist = {}
 -- {{{ Key bindings
+
+-- object creation
+local n_binding = misc.binding.numeric:new({ argument = 0, factor = 1 } )
+local ngkeys, nckeys =  numeric_keys.new(n_binding)
 globalkeys = awful.util.table.join(
+
+---numeric binding
+awful.key({ modkey}, "u", 
+function () 
+    n_binding:start( 
+         function ()
+        root.keys(ngkeys) 
+        client.focus:keys(nckeys)
+           end ,
+        function () 
+           root.keys( globalkeys)
+           client.focus:keys(clientkeys)
+           n_binding.factor = 1
+           n_binding.argument = 0
+       end) 
+end),
 
     -------------------------------------------------- !!!!!!!!!!!!!!!!!!!!
     -- Shortcut for returning to NORMAL MODE
@@ -594,9 +609,6 @@ awful.key({modkey}, "r", function()
     )
 end),
 
-awful.key({modkey}, "F3", function()
-    awful.util.spawn_with_shell(rudiment.config_path .. "/bin/trackpad-toggle.sh")
-end),
 
 awful.key({modkey}, "F4", function()
     awful.prompt.run(
@@ -678,7 +690,7 @@ awful.key({ modkey,           }, "k", misc.client_focus_prev),
 
 awful.key({ modkey, "Shift"   }, "Tab", misc.client_focus_prev),
 
-awful.key({ modkey,           }, "u", misc.client_focus_urgent),
+awful.key({ modkey,           }, "y", misc.client_focus_urgent),
 
 --- swap order/select master
 
@@ -783,6 +795,10 @@ awful.key({modkey, "Shift" }, "\\", function()
 end),
 
 --- the rest
+
+awful.key({}, "XF86TouchpadToggle", function()
+    awful.util.spawn_with_shell(rudiment.config_path .. "/bin/trackpad-toggle.sh")
+end),
 
 awful.key({}, "XF86AudioPrev", function ()
     awful.util.spawn("mpc prev")
@@ -1111,6 +1127,8 @@ awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 -- Set keys
 root.keys(globalkeys)
+
+-- globalgrabber = awful.keygrabber.run(misc.keys2CallbackFunction(globalkeys))
 -- }}}
 
 -- {{{ Rules

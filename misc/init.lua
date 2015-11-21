@@ -18,6 +18,70 @@ misc.Volume.step = "1%"
 misc.Volume.control = "Master"
 
 misc.timer = {}
+
+misc.binding = {}
+misc.binding.numeric = {}
+misc.binding.numeric.argument = 0 
+misc.binding.numeric.factor = 1
+misc.util = {}
+misc.resize_step = 1
+misc.opaque_step = 0.1
+
+function misc.binding.numeric:new (o)
+    o = o or {}   -- create object if user does not provide one setmetatable(o, self)
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+---the default is a emacs like method
+function misc.binding.numeric:default()
+    if self.argument == 0 then
+        return 4 * self.factor
+    else
+        return self.argument * self.factor
+    end
+end
+
+
+-- first function apply this bindings
+-- second go back to parent
+function misc.binding.numeric:start( numeric_Callback, parent_Callback )
+    -- this function can be used to return to this binding
+    self.binding = numeric_Callback
+    numeric_Callback()
+    self.stop = parent_Callback
+end
+
+-- add key whose callback get looped certain times
+function misc.binding.numeric:key_loop ( mods, key, callback)
+    return awful.key(mods, key,
+    function (...)
+        local num = self:default()
+        for i = 1, num do
+            callback(...)
+        end
+    self.stop()
+    end)
+end
+
+-- add key with numeric argument
+function misc.binding.numeric:key_argument (mods, key, callback)
+    return awful.key(mods, key,
+    function (...)
+        callback(self:default(), ...)
+        self.stop()
+    end)
+end
+
+function misc.notify.togglenotify( key, option)
+    if misc.notify.togglelist[key] then
+        naughty.destroy(misc.notify.togglelist[key])
+        misc.notify.togglelist[key] = nil
+        return
+    end
+    misc.notify.togglelist[key] = naughty.notify(options)
+end
 function misc.notify.volume (options)
     local vol = "<span face='monospace'>" .. awful.util.pread("myscripts/showvol.sh") .. "</span>"
     options = awful.util.table.join(options, {
@@ -31,12 +95,15 @@ function misc.notify.volume (options)
 end
 
 function misc.notify.togglevolume ()
-    if misc.notify.togglelist.volnotify then
-        naughty.destroy(misc.notify.togglelist.volnotify)
-        misc.notify.togglelist.volnotify = nil
-        return
-    end
-    misc.notify.volume()
+    local vol = "<span face='monospace'>" .. awful.util.pread("myscripts/showvol.sh") .. "</span>"
+    options = awful.util.table.join(options, {
+        preset = naughty.config.presets.normal,
+        title="Volume Info",
+        text=vol,
+        timeout = 0,
+        screen = mouse.screen,
+    })
+    misc.notify.togglenotify("volnotify",options)
 end
 
 function misc.notify.toggleAwesomeInfo()
@@ -96,6 +163,9 @@ function misc.Volume.Down ()
     misc.Volume.Change(misc.Volume.control,  misc.Volume.step, "-")
 end
 
+function misc.Volume.Up_n (n)
+    misc.Volume.Change(misc.Volume.control, n*misc.Volume.step, "+")
+end
 
 -- 
 
@@ -158,41 +228,41 @@ function misc.lua_completion (line, cur_pos, ncomp)
 end
 
 function misc.usefuleval(s)
-	local f, err = loadstring("return "..s);
-	if not f then
-		f, err = loadstring(s);
-	end
-	if f then
-		setfenv(f, _G);
-		local ret = { pcall(f) };
-		if ret[1] then
-			-- Ok
-			table.remove(ret, 1)
-			local highest_index = #ret;
-			for k, v in pairs(ret) do
-				if type(k) == "number" and k > highest_index then
-					highest_index = k;
-				end
-				ret[k] = select(2, pcall(tostring, ret[k])) or "<no value>";
-			end
-			-- Fill in the gaps
-			for i = 1, highest_index do
-				if not ret[i] then
-					ret[i] = "nil"
-				end
-			end
-			if highest_index > 0 then
-				naughty.notify({ awful.util.escape("Result"..(highest_index > 1 and "s" or "")..": "..tostring(table.concat(ret, ", "))), screen = mouse.screen});
-			else
-				naughty.notify({ "Result: Nothing", screen = mouse.screen})
-			end
-		else
-			err = ret[2];
-		end
-	end
-	if err then
-		naughty.notify({ awful.util.escape("Error: "..tostring(err)), screen = mouse.screen})
-	end
+    local f, err = loadstring("return "..s);
+    if not f then
+        f, err = loadstring(s);
+    end
+    if f then
+        setfenv(f, _G);
+        local ret = { pcall(f) };
+        if ret[1] then
+            -- Ok
+            table.remove(ret, 1)
+            local highest_index = #ret;
+            for k, v in pairs(ret) do
+                if type(k) == "number" and k > highest_index then
+                    highest_index = k;
+                end
+                ret[k] = select(2, pcall(tostring, ret[k])) or "<no value>";
+            end
+            -- Fill in the gaps
+            for i = 1, highest_index do
+                if not ret[i] then
+                    ret[i] = "nil"
+                end
+            end
+            if highest_index > 0 then
+                naughty.notify({ awful.util.escape("Result"..(highest_index > 1 and "s" or "")..": "..tostring(table.concat(ret, ", "))), screen = mouse.screen});
+            else
+                naughty.notify({ "Result: Nothing", screen = mouse.screen})
+            end
+        else
+            err = ret[2];
+        end
+    end
+    if err then
+        naughty.notify({ awful.util.escape("Error: "..tostring(err)), screen = mouse.screen})
+    end
 end
 
 function misc.onlieHelp ()
@@ -315,6 +385,11 @@ end
 
 misc.client_focus_prev = function ()
     awful.client.focus.byidx(-1)
+    if client.focus then client.focus:raise() end
+end
+
+misc.client_focus_next_n = function (n)
+    awful.client.focus.byidx(n)
     if client.focus then client.focus:raise() end
 end
 
@@ -520,6 +595,32 @@ do
     end
   end
 
+  misc.client_sideline_extend_left_n = function (n, c)
+    local cg = c:geometry()
+      cg.x = cg.x - misc.resize_step * n
+      cg.width = cg.width + misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_extend_right_n = function (n, c)
+    local cg = c:geometry()
+      cg.width = cg.width + misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_extend_top_n = function (n, c)
+    local cg = c:geometry()
+      cg.y = cg.y - misc.resize_step * n
+      cg.height = cg.height + misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_extend_bottom_n = function (n, c)
+    local cg = c:geometry()
+      cg.height = cg.height + misc.resize_step * n
+      c:geometry(cg)
+  end
+
   misc.client_sideline_shrink_left = function (c)
     local cg = c:geometry()
     local delta = math.floor(cg.width/11)
@@ -558,6 +659,31 @@ do
     end
   end
 
+  misc.client_sideline_shrink_left_n = function (n,c)
+    local cg = c:geometry()
+      cg.width = cg.width - misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_shrink_right_n = function (n,c)
+    local cg = c:geometry()
+      cg.x = cg.x + misc.resize_step * n
+      cg.width = cg.width - misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_shrink_top_n = function (n,c)
+    local cg = c:geometry()
+      cg.height = cg.height - misc.resize_step * n
+      c:geometry(cg)
+  end
+
+  misc.client_sideline_shrink_bottom = function (n,c)
+    local cg = c:geometry()
+      cg.y = cg.y + misc.resize_step * n
+      cg.height = cg.height - misc.resize_step * n
+      c:geometry(cg)
+  end
 end
 
 
@@ -570,6 +696,20 @@ end
 
 misc.client_opaque_more = function (c)
   local opacity = c.opacity + 0.1
+  if opacity and opacity <= rudiment.default.property.max_opacity then
+    c.opacity = opacity
+  end
+end
+
+misc.client_opaque_less_n = function (n,c)
+  local opacity = c.opacity - n * misc.opaque_step
+  if opacity and opacity >= rudiment.default.property.min_opacity then
+    c.opacity = opacity
+  end
+end
+
+misc.client_opaque_more_n = function (n,c)
+  local opacity = c.opacity + n * misc.opaque_step
   if opacity and opacity <= rudiment.default.property.max_opacity then
     c.opacity = opacity
   end
@@ -1090,4 +1230,16 @@ misc.client_manage_tag = function (c, startup)
         end
     end
 end
+
+function misc.util.compose(f, g) 
+    return 
+    function(...) 
+        return f(g(...)) 
+    end 
+end
+
+function misc.util.negate (n)
+    return -n;
+end
+
 return misc
