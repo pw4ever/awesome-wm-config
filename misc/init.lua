@@ -21,7 +21,7 @@ misc.timer = {}
 
 misc.binding = {}
 misc.binding.numeric = {}
-misc.binding.numeric.argument = 0 
+misc.binding.numeric.argument = 0
 misc.binding.numeric.factor = 1
 misc.util = {}
 misc.resize_step = 1
@@ -114,10 +114,10 @@ function misc.notify.toggleAwesomeInfo()
         return
     end
 
-    local info = "Version: " .. awesome.version 
+    local info = "Version: " .. awesome.version
     info = info ..  "\n" .. "Release: " .. awesome.release
     info = info ..  "\n" .. "Config: " .. awesome.conffile
-    info = info ..  "\n" .. "Config Version: " .. rudiment.config.version 
+    info = info ..  "\n" .. "Config Version: " .. rudiment.config.version
     info = info ..  "\n" .. "Config Help: " .. rudiment.config.help_url
     if awesome.composite_manager_running then
         info = info .. "\n" .. "<span fgcolor='red'>a composite manager is running</span>"
@@ -167,7 +167,7 @@ function misc.Volume.Up_n (n)
     misc.Volume.Change(misc.Volume.control, n*misc.Volume.step, "+")
 end
 
--- 
+--
 
 -- hack for lua eval
 function misc.lua_completion (line, cur_pos, ncomp)
@@ -293,7 +293,7 @@ do
 
     misc.timer.change_wallpaper:connect_signal("timeout", misc.change_wallpaper)
 
-    misc.timer.change_wallpaper:connect_signal("property::timeout", 
+    misc.timer.change_wallpaper:connect_signal("property::timeout",
     function ()
         misc.timer.change_wallpaper:stop()
         misc.timer.change_wallpaper:start()
@@ -403,7 +403,7 @@ misc.client_move_next = function () util.client.rel_send(1) end
 
 misc.client_move_prev = function () util.client.rel_send(-1) end
 
-misc.client_move_to_tag = function () 
+misc.client_move_to_tag = function ()
   local keywords = {}
   local scr = mouse.screen
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -423,7 +423,7 @@ misc.client_move_to_tag = function ()
   nil)
 end
 
-misc.client_toggle_tag = function (c) 
+misc.client_toggle_tag = function (c)
   local keywords = {}
   local scr = mouse.screen
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -444,7 +444,7 @@ misc.client_toggle_tag = function (c)
   nil)
 end
 
-misc.client_toggle_titlebar = function ()  
+misc.client_toggle_titlebar = function ()
   awful.titlebar.toggle(client.focus)
 end
 
@@ -452,28 +452,28 @@ misc.client_raise = function (c)
   c:raise()
 end
 
-misc.client_fullscreen = function (c) 
-  c.fullscreen = not c.fullscreen  
+misc.client_fullscreen = function (c)
+  c.fullscreen = not c.fullscreen
 end
 
-misc.client_maximize_horizontal = function (c) 
+misc.client_maximize_horizontal = function (c)
   c.maximized_horizontal = not c.maximized_horizontal
 end
 
-misc.client_maximize_vertical = function (c) 
+misc.client_maximize_vertical = function (c)
   c.maximized_vertical = not c.maximized_vertical
 end
 
-misc.client_maximize = function (c) 
+misc.client_maximize = function (c)
   misc.client_maximize_horizontal(c)
   misc.client_maximize_vertical(c)
 end
 
-misc.client_minimize = function (c) 
+misc.client_minimize = function (c)
   c.minimized = not c.minimized
 end
 
-do 
+do
 
   -- closures for client_status
   -- client_status[client] = {sidelined = <boolean>, geometry= <client geometry>}
@@ -723,8 +723,8 @@ misc.client_opaque_on = function (c)
   awful.util.spawn_with_shell(rudiment.default.compmgr)
 end
 
-misc.client_swap_with_master = function (c) 
-  c:swap(awful.client.getmaster()) 
+misc.client_swap_with_master = function (c)
+  c:swap(awful.client.getmaster())
 end
 
 misc.client_toggle_top = function (c)
@@ -751,187 +751,187 @@ misc.client_action_menu = function (c)
       { "=== task action menu ===" },
       { "--- status ---" },
       {
-        "&raise", function () 
+        "&raise", function ()
           misc.client_raise(c)
         end
       },
       {
-        "&top", function () 
+        "&top", function ()
           misc.client_toggle_top(c)
         end
       },
       {
-        "&sticky", function () 
-          misc.client_toggle_sticky(c)    
+        "&sticky", function ()
+          misc.client_toggle_sticky(c)
         end
       },
       {
-        "&kill", function () 
+        "&kill", function ()
           misc.client_kill(c)
         end
       },
       {
-        "toggle title&bar", function () 
+        "toggle title&bar", function ()
           misc.client_toggle_titlebar(c)
         end
       },
       { "--- focus ---" },
       {
-        "&next client", function () 
+        "&next client", function ()
           misc.client_focus_next(c)
         end
       },
       {
-        "&prev client", function () 
+        "&prev client", function ()
           misc.client_focus_prev(c)
         end
       },
       {
-        "&urgent", function () 
+        "&urgent", function ()
           misc.client_focus_urgent(c)
         end
       },
       { "--- tag ---" },
       {
-        "move to next tag", function () 
+        "move to next tag", function ()
           misc.client_move_next(c)
         end
       },
       {
-        "move to previous tag", function () 
+        "move to previous tag", function ()
           misc.client_move_prev(c)
         end
       },
       {
-        "move to ta&g", function () 
+        "move to ta&g", function ()
           misc.client_move_to_tag(c)
         end
       },
       {
-        "togg&le tag", function () 
+        "togg&le tag", function ()
           misc.client_toggle_tag(c)
         end
       },
       { "--- geometry ---" },
       {
-        "&fullscreen", function () 
+        "&fullscreen", function ()
           misc.client_fullscreen(c)
         end
       },
       {
-        "m&aximize", function () 
+        "m&aximize", function ()
           misc.client_maximize(c)
         end
       },
       {
-        "maximize h&orizontal", function () 
+        "maximize h&orizontal", function ()
           misc.client_maximize_horizontal(c)
         end
       },
       {
-        "maximize &vertical", function () 
+        "maximize &vertical", function ()
           misc.client_maximize_vertical(c)
         end
       },
       {
-        "m&inimize", function () 
-          misc.client_minimize(c) 
+        "m&inimize", function ()
+          misc.client_minimize(c)
         end
       },
       {
-        "move to left", function () 
-          misc.client_sideline_left(c) 
+        "move to left", function ()
+          misc.client_sideline_left(c)
         end
       },
       {
-        "move to right", function () 
-          misc.client_sideline_right(c) 
+        "move to right", function ()
+          misc.client_sideline_right(c)
         end
       },
       {
-        "move to top", function () 
-          misc.client_sideline_top(c) 
+        "move to top", function ()
+          misc.client_sideline_top(c)
         end
       },
       {
-        "move to bottom", function () 
-          misc.client_sideline_bottom(c) 
+        "move to bottom", function ()
+          misc.client_sideline_bottom(c)
         end
       },
       {
-        "extend left", function () 
-          misc.client_sideline_extend_left(c) 
+        "extend left", function ()
+          misc.client_sideline_extend_left(c)
         end
       },
       {
-        "extend right", function () 
-          misc.client_sideline_extend_right(c) 
+        "extend right", function ()
+          misc.client_sideline_extend_right(c)
         end
       },
       {
-        "extend top", function () 
-          misc.client_sideline_extend_top(c) 
+        "extend top", function ()
+          misc.client_sideline_extend_top(c)
         end
       },
       {
-        "extend bottom", function () 
-          misc.client_sideline_extend_bottom(c) 
+        "extend bottom", function ()
+          misc.client_sideline_extend_bottom(c)
         end
       },
       {
-        "shrink left", function () 
-          misc.client_sideline_shrink_left(c) 
+        "shrink left", function ()
+          misc.client_sideline_shrink_left(c)
         end
       },
       {
-        "shrink right", function () 
-          misc.client_sideline_shrink_right(c) 
+        "shrink right", function ()
+          misc.client_sideline_shrink_right(c)
         end
       },
       {
-        "shrink top", function () 
-          misc.client_sideline_shrink_top(c) 
+        "shrink top", function ()
+          misc.client_sideline_shrink_top(c)
         end
       },
       {
-        "shrink bottom", function () 
-          misc.client_sideline_shrink_bottom(c) 
+        "shrink bottom", function ()
+          misc.client_sideline_shrink_bottom(c)
         end
       },
       { "--- opacity ---"},
       {
-        "&less opaque", function () 
+        "&less opaque", function ()
           misc.client_opaque_less(c)
         end
       },
       {
-        "&more opaque", function () 
+        "&more opaque", function ()
           misc.client_opaque_more(c)
         end
       },
       {
-        "opacity off", function () 
+        "opacity off", function ()
           misc.client_opaque_off(c)
         end
       },
       {
-        "opacity on", function () 
+        "opacity on", function ()
           misc.client_opaque_on(c)
         end
       },
       { "--- ordering ---"},
       {
-        "swap with master", function () 
+        "swap with master", function ()
           misc.client_swap_with_master(c)
         end
       },
       {
-        "swap with next", function () 
+        "swap with next", function ()
           misc.client_swap_next(c)
         end
       },
       {
-        "swap with prev", function () 
+        "swap with prev", function ()
           misc.client_swap_prev(c)
         end
       },
@@ -947,7 +947,7 @@ end
 misc.tag_add_after = function ()
   local scr = mouse.screen
   local sel_idx = awful.tag.getidx()
-  local t = util.tag.add(nil, 
+  local t = util.tag.add(nil,
   {
     screen = scr,
     index = sel_idx and sel_idx+1 or 1,
@@ -961,7 +961,7 @@ end
 misc.tag_add_before = function ()
   local scr = mouse.screen
   local sel_idx = awful.tag.getidx()
-  local t = util.tag.add(nil, 
+  local t = util.tag.add(nil,
   {
     screen = scr,
     index = sel_idx and sel_idx or 1,
@@ -986,7 +986,7 @@ misc.tag_view_next = awful.tag.viewnext
 
 misc.tag_last = awful.tag.history.restore
 
-misc.tag_goto = function () 
+misc.tag_goto = function ()
   local keywords = {}
   local scr = mouse.screen
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -1018,54 +1018,54 @@ misc.tag_action_menu = function (t)
         { "=== tag action menu ===" },
         { "--- dynamic tagging ---" },
         {
-          "add tag &after current one", function () 
+          "add tag &after current one", function ()
             misc.tag_add_after(t)
           end
         },
         {
-          "add tag &before current one", function () 
+          "add tag &before current one", function ()
             misc.tag_add_before(t)
           end
         },
         {
-          "&delete current tag if empty", function () 
+          "&delete current tag if empty", function ()
             misc.tag_delete(t)
           end
         },
         {
-          "&rename current tag", function () 
+          "&rename current tag", function ()
             misc.tag_rename(t)
           end
         },
         { "--- focus ---" },
         {
-          "&goto tag", function () 
+          "&goto tag", function ()
             misc.tag_goto(t)
           end
         },
         {
-          "view &previous tag", function () 
+          "view &previous tag", function ()
             misc.tag_view_prev(t)
           end
         },
         {
-          "view &next tag", function () 
+          "view &next tag", function ()
             misc.tag_view_next(t)
           end
         },
         {
-          "view &last tag", function () 
+          "view &last tag", function ()
             misc.tag_last(t)
           end
         },
         { "--- ordering ---" },
         {
-          "move tag &forward", function () 
+          "move tag &forward", function ()
             misc.tag_move_forward()
           end
         },
         {
-          "move tag &backward", function () 
+          "move tag &backward", function ()
             misc.tag_move_backward()
           end
         },
@@ -1080,7 +1080,7 @@ end
 -- {{ clients on tags
 
 misc.clients_on_tag = function ()
-  local clients = { 
+  local clients = {
     items = {},
     theme = { width = 400 },
   }
@@ -1107,7 +1107,7 @@ misc.clients_on_tag = function ()
   end
 end
 
-misc.clients_on_tag_prompt = function () 
+misc.clients_on_tag_prompt = function ()
   local clients = {}
   local next = next
   local t = awful.tag.selected()
@@ -1231,11 +1231,11 @@ misc.client_manage_tag = function (c, startup)
     end
 end
 
-function misc.util.compose(f, g) 
-    return 
-    function(...) 
-        return f(g(...)) 
-    end 
+function misc.util.compose(f, g)
+    return
+    function(...)
+        return f(g(...))
+    end
 end
 
 function misc.util.negate (n)

@@ -28,7 +28,7 @@ util.client = {}
 
 function util.client.rel_send(rel_idx)
     local client = capi.client.focus
-    if client then 
+    if client then
         local scr = capi.client.focus.screen or capi.mouse.screen
         local sel = awful.tag.selected(scr)
         local sel_idx = awful.tag.getidx(sel)
@@ -44,7 +44,7 @@ end
 util.tag = {}
 
 function util.tag.rel_move(tag, rel_idx)
-    if tag then 
+    if tag then
         local scr = awful.tag.getscreen(tag)
         local tag_idx = awful.tag.getidx(tag)
         local tags = awful.tag.gettags(scr)
@@ -80,8 +80,8 @@ end
 --@param name: name of the tag
 --@param props: table of properties (screen, index, etc.)
 function util.tag.add(name, props)
-    props = props or 
-    { 
+    props = props or
+    {
         screen = capi.mouse.screen,
         index = 1,
     }
@@ -138,7 +138,7 @@ function util.tag.rename(tag, newp)
             text=key,
             timeout=20,
         }
-        ) 
+        )
     end
     --]]
 
