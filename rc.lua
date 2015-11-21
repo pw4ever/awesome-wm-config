@@ -24,9 +24,6 @@ local capi = {
     client = client,
 }
 
-local customization = {}
-customization.config = {}
-customization.orig = {}
 local rudiment = require("rudiment")
 modkey = rudiment.modkey
 local misc = require("misc")
@@ -43,6 +40,11 @@ awful.menu.menu_keys.exec = { "Return", "Space", }
 awful.menu.menu_keys.close = { "Escape", "BackSpace", }
 
 bashets.set_script_path(rudiment.config_path .. "/bashets/")
+
+-- customization
+customization = {}
+customization.config = {}
+customization.orig = {}
 
 
 
@@ -85,8 +87,9 @@ end
 -- * create a file /tmp/awesome-autostart-once when first time "dex" autostart items (at the end of this file)
 -- * only "rm" this file when awesome.quit
 
-local awesome_autostart_once_fname = "/tmp/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
-local awesome_restart_tags_fname = "/tmp/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
+local cachedir = awful.util.getdir("cache")
+local awesome_autostart_once_fname = cachedir .. "/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
+local awesome_restart_tags_fname = cachedir .. "/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
 
 do
     awesome.connect_signal("exit", function (restart)
@@ -526,7 +529,7 @@ awful.button({ }, 4, awful.tag.viewprev),
 awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-toggleNotifylist = {}
+
 -- {{{ Key bindings
 
 -- object creation
