@@ -31,7 +31,7 @@ local rudiment = require("rudiment")
 modkey = rudiment.modkey
 local misc = require("misc")
 
-local naughty = require("naughty") 
+local naughty = require("naughty")
 numeric_keys = require("numeric_keys")
 
 -- do not use letters, which shadow access key to menu entry
@@ -81,7 +81,7 @@ end
 -- {{{
 -- HACK! prevent Awesome start autostart items multiple times in a session
 -- cause: in-place restart by awesome.restart, xrandr change
--- idea: 
+-- idea:
 -- * create a file /tmp/awesome-autostart-once when first time "dex" autostart items (at the end of this file)
 -- * only "rm" this file when awesome.quit
 
@@ -144,7 +144,7 @@ do
 
             -- save tags for each client
             awful.util.mkdir(awesome_restart_tags_fname)
-            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname) 
+            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname)
             -- race condition (whether awesome_restart_tags_fname is created) due to asynchrony of "spawn_with_shell"
             for _, c in ipairs(client.get()) do
                 local client_id = c.pid .. '-' .. c.window
@@ -293,7 +293,7 @@ local mymainmenu = awful.menu({
     { "&apps", myapp },
     { "&terminal", rudiment.tools.terminal },
     { "a&wesome", myawesomemenu, beautiful.awesome_icon },
-    { "&client action", function () 
+    { "&client action", function ()
       misc.client_action_menu()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
@@ -478,7 +478,7 @@ do
         end
 
         for s = 1, screen.count() do
-            local fname = awesome_restart_tags_fname .. "-selected." .. s 
+            local fname = awesome_restart_tags_fname .. "-selected." .. s
             f = io.open(fname, "r")
             if f then
                 local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
@@ -498,8 +498,8 @@ do
             layout = rudiment.default.property.layout,
             mwfact = rudiment.default.property.mwfact,
             nmaster = rudiment.default.property.nmaster,
-            ncol = rudiment.default.property.ncol, 
-        } 
+            ncol = rudiment.default.property.ncol,
+        }
         )
         awful.tag.viewonly(tag)
 
@@ -509,9 +509,9 @@ do
             layout = rudiment.default.property.layout,
             mwfact = rudiment.default.property.mwfact,
             nmaster = rudiment.default.property.nmaster,
-            ncol = rudiment.default.property.ncol, 
-        } 
-        ) 
+            ncol = rudiment.default.property.ncol,
+        }
+        )
 
     end
 end
@@ -535,19 +535,19 @@ local ngkeys, nckeys =  numeric_keys.new(n_binding)
 globalkeys = awful.util.table.join(
 
 ---numeric binding
-awful.key({ modkey}, "u", 
-function () 
-    n_binding:start( 
+awful.key({ modkey}, "u",
+function ()
+    n_binding:start(
          function ()
-        root.keys(ngkeys) 
+        root.keys(ngkeys)
         client.focus:keys(nckeys)
            end ,
-        function () 
+        function ()
            root.keys( globalkeys)
            client.focus:keys(clientkeys)
            n_binding.factor = 1
            n_binding.argument = 0
-       end) 
+       end)
 end),
 
     -------------------------------------------------- !!!!!!!!!!!!!!!!!!!!
@@ -555,7 +555,7 @@ end),
     awful.key({ modkey,           }, "Escape", function () normalMode() end),
     awful.key({ "Control", "Mod1" }, "[", function () normalMode() end),
     -------------------------------------------------- !!!!!!!!!!!!!!!!!!!!
-    
+
 -- toggle wibox visibility
  awful.key({ modkey }, "w", function ()
      mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
@@ -619,7 +619,7 @@ awful.key({modkey}, "F4", function()
     )
 end),
 
-awful.key({ modkey }, "c", function () 
+awful.key({ modkey }, "c", function ()
     awful.util.spawn(rudiment.tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
 end),
 
@@ -674,9 +674,9 @@ awful.key({modkey,}, "g", misc.tag_goto),
 
 --- move
 
-awful.key({modkey, "Control"}, "p", misc.tag_move_backward), 
+awful.key({modkey, "Control"}, "p", misc.tag_move_backward),
 
-awful.key({modkey, "Control"}, "n", misc.tag_move_forward), 
+awful.key({modkey, "Control"}, "n", misc.tag_move_forward),
 
 -- client management
 
@@ -790,7 +790,7 @@ awful.key({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
 end),
 
-awful.key({modkey, "Shift" }, "\\", function() 
+awful.key({modkey, "Shift" }, "\\", function()
     awful.util.spawn("kmag")
 end),
 
@@ -1136,7 +1136,7 @@ root.keys(globalkeys)
 awful.rules.rules = {
 
     -- All clients will match this rule.
-    { 
+    {
         rule = { },
         properties = {
             border_width = beautiful.border_width,
@@ -1149,19 +1149,19 @@ awful.rules.rules = {
         }
     },
 
-    { 
+    {
         rule = { class = "MPlayer" },
-        properties = { 
+        properties = {
             floating = true,
             opacity = 1,
-        } 
+        }
     },
 
-    { 
+    {
         rule = { class = "gimp" },
-        properties = { 
-            floating = true, 
-        }, 
+        properties = {
+            floating = true,
+        },
     },
 
     --[[
