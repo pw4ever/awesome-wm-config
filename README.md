@@ -175,8 +175,8 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>/</kbd>|show main menu||
 |<kbd>Modkey</kbd><kbd>x</kbd>|show main menu|MSFT Windows key| 
 |<kbd>Modkey</kbd><kbd>X</kbd>|show main menu|MSFT Windows key|
-|<kbd>Modkey</kbd><kbd>;</kbd>|show task action menu|| 
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>;</kbd>|show tag action menu||
+|<kbd>Modkey</kbd><kbd>;</kbd>|toggle task action menu|| 
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>;</kbd>|toggle tag action menu||
 |<kbd>Modkey</kbd><kbd>'</kbd>|choose from clients on current tag|| 
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>'</kbd>|prompt to choose from clients on current tag|| 
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>'</kbd>|choose from all clients||
