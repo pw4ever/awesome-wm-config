@@ -26,7 +26,7 @@ function update_volume(widget)
        volume = volume .. "M"
        
    end
-   widget:set_markup("<span fgcolor='red'>|Vol:" .. volume .. "|</span>")
+   widget:set_markup("<span fgcolor='cyan'>|<small>Vol:</small>" .. volume .. "</span>")
 end
  
 update_volume(audio_volume_widget.widget)

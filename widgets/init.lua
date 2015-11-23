@@ -1,4 +1,4 @@
 local widgets = {}
-widgets.audio_volume = require("audio_volume")
+widgets.audio_volume = require("widgets.audio_volume")
 
 return widgets
