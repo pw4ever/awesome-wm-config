@@ -1,9 +1,10 @@
-package.path = package.path .. ";./?/init.lua;"
+local awful = require("awful")
+local config_path = awful.util.getdir("config")
+package.path = config_path .. "/?/init.lua;" .. package.path
+package.path = config_path .. "/widgets/?/init.lua;" .. package.path
 
 local math = require("math")
 local gears = require("gears")
-local awful = require("awful")
-awful.keygrabber = require("awful.keygrabber")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
 awful.ewmh = require("awful.ewmh")
@@ -30,6 +31,11 @@ local capi = {
     client = client,
 }
 
+-- widgets
+local widgets = require("widgets")
+
+local vicious = require("vicious")
+
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
 awful.menu.menu_keys.up = {  "Up", ",", "<", ";", ":", }
@@ -47,7 +53,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.7.1"
+customization.config.version = "1.7.2"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1358,10 +1364,35 @@ menu = mymainmenu })
 -- }}}
 
 -- {{{ Wibox
-mytextclock = wibox.widget.textbox()
+local mytextclock = wibox.widget.textbox()
+bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"}) -- http://awesome.naquadah.org/wiki/Bashets
 
--- http://awesome.naquadah.org/wiki/Bashets
-bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
+-- vicious widgets: http://awesome.naquadah.org/wiki/Vicious
+local mymemusage = wibox.widget.textbox()
+vicious.register(mymemusage, vicious.widgets.mem, "<span fgcolor='yellow'>|<small>Mem:</small>$1% ($2MB/$3MB)</span>", 1)
+
+local mympdstatus = wibox.widget.textbox()
+mympdstatus:set_ellipsize("end")
+vicious.register(mympdstatus, vicious.widgets.mpd,
+  function (mpdwidget, args)
+    local text = nil
+    if args["{state}"] == "Stop" then 
+      text = " - "
+    else 
+      text = "[" .. args["{state}"] .. "] " .. args["{Artist}"]..' - '.. args["{Title}"]
+    end
+    return '<span fgcolor="light green">|<small>MPD:</small>' .. text .. '</span>'
+  end, 1)
+-- http://git.sysphere.org/vicious/tree/README
+mympdstatus = wibox.layout.constraint(mympdstatus, "exact", 250, nil)
+
+local mycpuusage = awful.widget.graph()
+mycpuusage:set_width(50)
+mycpuusage:set_background_color("#494B4F")
+mycpuusage:set_color({ 
+  type = "linear", from = { 0, 0 }, to = { 10,0 }, 
+  stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
+vicious.register(mycpuusage, vicious.widgets.cpu, "$1")                   
 
 -- Create a wibox for each screen and add it
 myuniarg = {}
@@ -1461,6 +1492,10 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(mycpuusage)
+    right_layout:add(mymemusage)
+    right_layout:add(mympdstatus)
+    right_layout:add(widgets.audio_volume.widget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
