@@ -25,6 +25,9 @@ local capi = {
     client = client,
 }
 
+-- widgets
+local audio_volume_widget = require("audio_volume_widget")
+
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
 awful.menu.menu_keys.up = {  "Up", ",", "<", ";", ":", }
@@ -1408,6 +1411,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(audio_volume_widget.widget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
