@@ -9,6 +9,7 @@
     - [dependencies](#dependencies)
     - [miscellaneous](#miscellaneous)
   - [usage](#usage)
+    - [**universal argument**](#universal-argument)
     - [window management](#window-management)
       - [restart/quit/info](#restartquitinfo)
       - [**layout**](#layout)
@@ -112,6 +113,19 @@ Take a look at the "rc.lua" configuration file (`$HOME/.config/awesome/rc.lua`; 
 Most keybindings are prefixed with the <kbd>Modkey</kbd>. This config associates <kbd>Modkey</kbd> to X Window's <kbd>Mod4</kbd>. On many machines, this associates the <kbd>Super_L</kbd> (tip: use `xmodmap` in terminal emulator to verify/change this), which usually translate to the (intuitively) <kbd>Windows</kbd> key.
 
 Some keybinding requires further input (e.g., rename a tag), which will grab the key focus from your application. The <kbd>Esc</kbd> key is used to cancel partial input.
+
+### **universal argument**
+
+Universal Argument (UniArg), inspired by the [namesake Emacs feature](https://www.gnu.org/software/emacs/manual/html_node/emacs/Arguments.html), supplies a positive numeric argument to the following command. Depending on the context, the number can be the number of repetitions or percentage of adjustment. For example, with the UniArg being 3, "open terminal" operation (<kbd>Modkey</kbd><kbd>Enter</kbd> by default) will open 3 terminals.
+
+Universal argument is activated by inputing a greater-than-1 number, and is deactivated by a less-than-2 number or a non-number.
+
+There are two modes of universal argument: Regular and persistent. Regular universal argument only applies to the next operation, while persistent universal argument applies to all following operations until changes or deactivated.
+
+| key combo | function | comment |
+| --- | --- | --- |
+|<kbd>Modkey</kbd><kbd>u</kbd>|prompt for universal argument|see above paragraphs for details|
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>u</kbd>|prompt for persistent universal argument|see above paragraphs for details|
 
 ### window management
 
@@ -232,10 +246,10 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Right</kbd>|extend client to the right|by 1/7 of the margin|
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Up</kbd>|extend client to the top|by 1/7 of the margin|
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Down</kbd>|extend client to the bottom|by 1/7 of the margin|
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Left</kbd>|shrink client from right|by 1/11 of client width; leave client width at least 256 pixels|
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Right</kbd>|shrink client from left|by 1/11 of client width; leave client width at least 256 pixels|
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Up</kbd>|shrink client from bottom|by 1/11 of client height; leave client height at least 256 pixels|
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Down</kbd>|shrink client from top|by 1/11 of client height; leave client height at least 256 pixels|
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Left</kbd>|shrink client from right|by 1/11 of client width; leave client width at least 50 pixels|
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Right</kbd>|shrink client from left|by 1/11 of client width; leave client width at least 50 pixels|
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Up</kbd>|shrink client from bottom|by 1/11 of client height; leave client height at least 50 pixels|
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Down</kbd>|shrink client from top|by 1/11 of client height; leave client height at least 50 pixels|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>m</kbd>|minimize|minimized client need mouse click on tasklist to restore|
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Space</kbd>|toggle floating status||
 |<kbd>Modkey</kbd><kbd>t</kbd>|toggle ontop status||
@@ -255,7 +269,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Tab</kbd>|focus on the next client in current tag|MSFT Windows key|
 |<kbd>Modkey</kbd><kbd>k</kbd>|focus on the prev client in current tag|"k" is easy to reach|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Tab</kbd>|focus on the prev client in current tag|MSFT Windows key|
-|<kbd>Modkey</kbd><kbd>u</kbd>|jump to the urgent client|"u" for urgent|
+|<kbd>Modkey</kbd><kbd>y</kbd>|jump to the urgent client|"y" next to "u" (taken by universal argument) for urgent|
 
 #### swap order/select master
 

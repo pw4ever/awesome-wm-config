@@ -1,13 +1,15 @@
 package.path = package.path .. ";./?/init.lua;"
 
+local math = require("math")
 local gears = require("gears")
 local awful = require("awful")
+awful.keygrabber = require("awful.keygrabber")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
+awful.ewmh = require("awful.ewmh")
 require("awful.autofocus")
 require("awful.dbus")
 require("awful.remote")
-awful.ewmh = require("awful.ewmh")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
@@ -18,6 +20,9 @@ local bashets = require("bashets")
 
 -- utilities
 local util = require("util")
+
+-- universal arguments
+local uniarg = require("uniarg")
 
 local capi = {
     tag = tag,
@@ -42,7 +47,7 @@ customization.default = {}
 customization.option = {}
 customization.timer = {}
 
-customization.config.version = "1.6.9"
+customization.config.version = "1.7.0"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -56,6 +61,8 @@ customization.default.property = {
     low_naughty_opacity = 0.90,
     normal_naughty_opacity = 0.95,
     critical_naughty_opacity = 1,
+    minimal_client_width = 50,
+    minimal_client_height = 50,
 }
 
 customization.default.compmgr = 'xcompmgr'
@@ -575,84 +582,126 @@ do
     client_status[c].sidelined = not client_status[c].sidelined
   end
 
-  customization.func.client_sideline_extend_left = function (c)
+  customization.func.client_sideline_extend_left = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.x/7)
-    if delta ~= 0 then
-      cg.x = cg.x - delta
-      cg.width = cg.width + delta
-      c:geometry(cg)
+    if by then
+      cg.x = cg.x - by
+      cg.width = cg.width + by
+    else -- use heuristics
+      local delta = math.floor(cg.x/7)
+      if delta ~= 0 then
+        cg.x = cg.x - delta
+        cg.width = cg.width + delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_extend_right = function (c)
+  customization.func.client_sideline_extend_right = function (c, by)
     local cg = c:geometry()
-    local workarea = screen[mouse.screen].workarea
-    local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
-    local delta = math.floor(rmargin/7)
-    if delta ~= 0 then
-      cg.width = cg.width + delta
-      c:geometry(cg)
+    if by then
+      cg.width = cg.width + by
+    else
+      local workarea = screen[mouse.screen].workarea
+      local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
+      local delta = math.floor(rmargin/7)
+      if delta ~= 0 then
+        cg.width = cg.width + delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_extend_top = function (c)
+  customization.func.client_sideline_extend_top = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.y/7)
-    if delta ~= 0 then
-      cg.y = cg.y - delta
-      cg.height = cg.height + delta
-      c:geometry(cg)
+    if by then
+      cg.y = cg.y - by
+      cg.height = cg.height + by
+    else
+      local delta = math.floor(cg.y/7)
+      if delta ~= 0 then
+        cg.y = cg.y - delta
+        cg.height = cg.height + delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_extend_bottom = function (c)
+  customization.func.client_sideline_extend_bottom = function (c, by)
     local cg = c:geometry()
+    if by then
+      cg.height = cg.height + by
+      else
     local workarea = screen[mouse.screen].workarea
     local bmargin = math.max( (workarea.y + workarea.height - cg.y - cg.height), 0)
     local delta = math.floor(bmargin/7)
     if delta ~= 0 then
       cg.height = cg.height + delta
-      c:geometry(cg)
     end
+      end
+      c:geometry(cg)
   end
 
-  customization.func.client_sideline_shrink_left = function (c)
+  customization.func.client_sideline_shrink_left = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.width/11)
-    if delta ~= 0 and cg.width > 256 then
-      cg.width = cg.width - delta
-      c:geometry(cg)
+    local min = customization.default.property.minimal_client_width
+    if by then
+      cg.width = math.max(cg.width - by, min)
+    else
+      local delta = math.floor(cg.width/11)
+      if delta ~= 0 and cg.width > min then
+        cg.width = cg.width - delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_shrink_right = function (c)
+  customization.func.client_sideline_shrink_right = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.width/11)
-    if delta ~= 0 and cg.width > 256 then
-      cg.x = cg.x + delta
-      cg.width = cg.width - delta
-      c:geometry(cg)
+    local min = customization.default.property.minimal_client_width
+    if by then
+      local t = cg.x + cg.width
+      cg.width = math.max(cg.width - by, min)
+      cg.x = t - cg.width
+    else
+      local delta = math.floor(cg.width/11)
+      if delta ~= 0 and cg.width > min then
+        cg.x = cg.x + delta
+        cg.width = cg.width - delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_shrink_top = function (c)
+  customization.func.client_sideline_shrink_top = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.height/11)
-    if delta ~= 0 and cg.height > 256 then
-      cg.height = cg.height - delta
-      c:geometry(cg)
+    local min = customization.default.property.minimal_client_height
+    if by then
+      cg.height = math.max(cg.height - by, min)
+    else
+      local delta = math.floor(cg.height/11)
+      if delta ~= 0 and cg.height > min then
+        cg.height = cg.height - delta
+      end
     end
+    c:geometry(cg)
   end
 
-  customization.func.client_sideline_shrink_bottom = function (c)
+  customization.func.client_sideline_shrink_bottom = function (c, by)
     local cg = c:geometry()
-    local delta = math.floor(cg.height/11)
-    if delta ~= 0 and cg.height > 256 then
-      cg.y = cg.y + delta
-      cg.height = cg.height - delta
-      c:geometry(cg)
+    local min = customization.default.property.minimal_client_height
+    if by then
+      local t = cg.y + cg.width
+      cg.height = math.max(cg.height - by, min)
+      cg.y = t - cg.height
+    else
+      local delta = math.floor(cg.height/11)
+      if delta ~= 0 and cg.height > min then
+        cg.y = cg.y + delta
+        cg.height = cg.height - delta
+      end
     end
+    c:geometry(cg)
   end
 
 end
@@ -1315,6 +1364,7 @@ mytextclock = wibox.widget.textbox()
 bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"})
 
 -- Create a wibox for each screen and add it
+myuniarg = {}
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
@@ -1393,6 +1443,8 @@ for s = 1, screen.count() do
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
+    -- Create a textbox showing current universal argument
+    myuniarg[s] = wibox.widget.textbox()
     -- Create a tasklist widget
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
@@ -1403,6 +1455,7 @@ for s = 1, screen.count() do
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
+    left_layout:add(myuniarg[s])
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
@@ -1514,7 +1567,50 @@ awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
 notifylist = {}
 -- {{{ Key bindings
+
+local globalkeys = nil
+local clientkeys = nil
+
+uniarg:init(myuniarg)
+
 globalkeys = awful.util.table.join(
+
+-- universal arguments
+
+awful.key({ modkey }, "u",
+function ()
+  uniarg:activate()
+  awful.prompt.run({prompt = "Universal Argument: ", text='' .. uniarg.arg, selectall=true},
+    mypromptbox[mouse.screen].widget,
+    function (t)
+      uniarg.persistent = false
+      local n = t:match("%d+")
+      if n then
+        uniarg:set(n)
+        uniarg:update_textbox()
+        if uniarg.arg>1 then
+          return
+        end
+      end
+      uniarg:deactivate()
+    end)
+end),
+
+-- persistent universal arguments
+awful.key({ modkey, "Shift" }, "u",
+function ()
+  uniarg:activate()
+  awful.prompt.run({prompt = "Persistent Universal Argument: ", text='' .. uniarg.arg, selectall=true},
+    mypromptbox[mouse.screen].widget,
+    function (t)
+      uniarg.persistent = true
+      local n = t:match("%d+")
+      if n then
+        uniarg:set(n)
+      end
+      uniarg:update_textbox()
+    end)
+end),
 
 -- window management
 
@@ -1530,17 +1626,17 @@ awful.key({modkey}, "F1", customization.func.help),
 
 --- Layout
 
-awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+uniarg:key_repeat({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
 
-awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+uniarg:key_repeat({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
 --- multiple screens/multi-head/RANDR
 
-awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
+uniarg:key_repeat({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
 
-awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+uniarg:key_repeat({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
 
-awful.key({ modkey,           }, "o", awful.client.movetoscreen),
+uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
 
 --- misc
 
@@ -1603,9 +1699,9 @@ awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end)
 
 awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end),
 
-awful.key({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
+uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
-awful.key({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
+uniarg:key_repeat({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
 
 -- dynamic tagging
 
@@ -1621,9 +1717,9 @@ awful.key({modkey, "Shift"}, "r", customization.func.tag_rename),
 
 --- view
 
-awful.key({modkey,}, "p", customization.func.tag_view_prev),
+uniarg:key_repeat({modkey,}, "p", customization.func.tag_view_prev),
 
-awful.key({modkey,}, "n", customization.func.tag_view_next),
+uniarg:key_repeat({modkey,}, "n", customization.func.tag_view_next),
 
 awful.key({modkey,}, "z", customization.func.tag_last),
 
@@ -1631,35 +1727,35 @@ awful.key({modkey,}, "g", customization.func.tag_goto),
 
 --- move
 
-awful.key({modkey, "Control"}, "p", customization.func.tag_move_backward), 
+uniarg:key_repeat({modkey, "Control"}, "p", customization.func.tag_move_backward), 
 
-awful.key({modkey, "Control"}, "n", customization.func.tag_move_forward), 
+uniarg:key_repeat({modkey, "Control"}, "n", customization.func.tag_move_forward), 
 
 -- client management
 
 --- change focus
 
-awful.key({ modkey,           }, "j", customization.func.client_focus_next),
+uniarg:key_repeat({ modkey,           }, "j", customization.func.client_focus_next),
 
-awful.key({ modkey,           }, "Tab", customization.func.client_focus_next),
+uniarg:key_repeat({ modkey,           }, "Tab", customization.func.client_focus_next),
 
-awful.key({ modkey,           }, "k", customization.func.client_focus_prev),
+uniarg:key_repeat({ modkey,           }, "k", customization.func.client_focus_prev),
 
-awful.key({ modkey, "Shift"   }, "Tab", customization.func.client_focus_prev),
+uniarg:key_repeat({ modkey, "Shift"   }, "Tab", customization.func.client_focus_prev),
 
-awful.key({ modkey,           }, "u", customization.func.client_focus_urgent),
+awful.key({ modkey,           }, "y", customization.func.client_focus_urgent),
 
 --- swap order/select master
 
-awful.key({ modkey, "Shift"   }, "j", customization.func.client_swap_next),
+uniarg:key_repeat({ modkey, "Shift"   }, "j", customization.func.client_swap_next),
 
-awful.key({ modkey, "Shift"   }, "k", customization.func.client_swap_prev),
+uniarg:key_repeat({ modkey, "Shift"   }, "k", customization.func.client_swap_prev),
 
 --- move/copy to tag
 
-awful.key({modkey, "Shift"}, "n", customization.func.client_move_next),
+uniarg:key_repeat({modkey, "Shift"}, "n", customization.func.client_move_next),
 
-awful.key({modkey, "Shift"}, "p", customization.func.client_move_prev),
+uniarg:key_repeat({modkey, "Shift"}, "p", customization.func.client_move_prev),
 
 awful.key({modkey, "Shift"}, "g", customization.func.client_move_to_tag),
 
@@ -1673,13 +1769,13 @@ awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)
 
 awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05) end),
 
-awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster( 1) end),
+uniarg:key_repeat({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster( 1) end),
 
-awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster(-1) end),
+uniarg:key_repeat({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster(-1) end),
 
-awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol( 1) end),
+uniarg:key_repeat({ modkey, "Control" }, "l",     function () awful.tag.incncol( 1) end),
 
-awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end),
+uniarg:key_repeat({ modkey, "Control" }, "h",     function () awful.tag.incncol(-1) end),
 
 --- misc
 
@@ -1707,57 +1803,57 @@ awful.key({ modkey, }, "/", customization.func.app_finder),
 
 --- everyday
 
-awful.key({ modkey, "Mod1", }, "l", function ()
+uniarg:key_repeat({ modkey, "Mod1", }, "l", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
 
-awful.key({ modkey,  }, "e", function ()
+uniarg:key_repeat({ modkey,  }, "e", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
 
-awful.key({ modkey,  }, "E", function ()
+uniarg:key_repeat({ modkey,  }, "E", function ()
     awful.util.spawn(tools.system.filemanager)
 end),
 
-awful.key({ modkey, "Mod1", }, "p", function ()
+uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("putty")
 end),
 
-awful.key({ modkey, "Mod1", }, "r", function ()
+uniarg:key_repeat({ modkey, "Mod1", }, "r", function ()
     awful.util.spawn("remmina")
 end),
 
-awful.key({ modkey, }, "i", function ()
+uniarg:key_repeat({ modkey, }, "i", function ()
     awful.util.spawn(tools.editor.primary)
 end),
 
-awful.key({ modkey, "Shift" }, "i", function ()
+uniarg:key_repeat({ modkey, "Shift" }, "i", function ()
     awful.util.spawn(tools.editor.secondary)
 end),
 
-awful.key({ modkey, }, "b", function ()
+uniarg:key_repeat({ modkey, }, "b", function ()
     awful.util.spawn(tools.browser.primary)
 end),
 
-awful.key({ modkey, "Shift" }, "b", function ()
+uniarg:key_repeat({ modkey, "Shift" }, "b", function ()
     awful.util.spawn(tools.browser.secondary)
 end),
 
-awful.key({ modkey, "Mod1", }, "v", function ()
+uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
 end),
 
-awful.key({modkey, "Shift" }, "\\", function() 
+uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
     awful.util.spawn("kmag")
 end),
 
 --- the rest
 
-awful.key({}, "XF86AudioPrev", function ()
+uniarg:key_repeat({}, "XF86AudioPrev", function ()
     awful.util.spawn("mpc prev")
 end),
 
-awful.key({}, "XF86AudioNext", function ()
+uniarg:key_repeat({}, "XF86AudioNext", function ()
     awful.util.spawn("mpc next")
 end),
 
@@ -1769,16 +1865,20 @@ awful.key({}, "XF86AudioStop", function ()
     awful.util.spawn("mpc stop")
 end),
 
-awful.key({}, "XF86AudioRaiseVolume", function ()
-    awful.util.spawn("amixer sset Master 5%+")
+uniarg:key_numarg({}, "XF86AudioRaiseVolume",
+function ()
+  awful.util.spawn("amixer sset Master 5%+")
+end,
+function (n)
+  awful.util.spawn("amixer sset Master " .. n .. "%+")
 end),
 
-awful.key({ modkey }, "XF86AudioRaiseVolume", function ()
-    awful.util.spawn("amixer sset Mic 5%+")
-end),
-
-awful.key({}, "XF86AudioLowerVolume", function ()
-    awful.util.spawn("amixer sset Master 5%-")
+uniarg:key_numarg({}, "XF86AudioLowerVolume",
+function ()
+  awful.util.spawn("amixer sset Master 5%-")
+end,
+function (n)
+  awful.util.spawn("amixer sset Master " .. n .. "%-")
 end),
 
 awful.key({}, "XF86AudioMute", function ()
@@ -1797,12 +1897,20 @@ awful.key({}, "XF86WebCam", function ()
     awful.util.spawn("cheese")
 end),
 
-awful.key({}, "XF86MonBrightnessUp", function ()
-    awful.util.spawn("xbacklight -inc 10")
+uniarg:key_numarg({}, "XF86MonBrightnessUp",
+function ()
+  awful.util.spawn("xbacklight -inc 10")
+end,
+function (n)
+  awful.util.spawn("xbacklight -inc " .. n)
 end),
 
-awful.key({}, "XF86MonBrightnessDown", function ()
-    awful.util.spawn("xbacklight -dec 10")
+uniarg:key_numarg({}, "XF86MonBrightnessDown",
+function ()
+  awful.util.spawn("xbacklight -dec 10")
+end,
+function (n)
+  awful.util.spawn("xbacklight -dec " .. n)
 end),
 
 awful.key({}, "XF86WLAN", function ()
@@ -1817,7 +1925,7 @@ awful.key({}, "Print", function ()
     awful.util.spawn("xfce4-screenshooter")
 end),
 
-awful.key({}, "XF86Launch1", function ()
+uniarg:key_repeat({}, "XF86Launch1", function ()
     awful.util.spawn(tools.terminal)
 end),
 
@@ -1832,7 +1940,7 @@ end),
 
 --- hacks for Thinkpad W530 FN mal-function
 
-awful.key({ modkey }, "F10", function ()
+uniarg:key_repeat({ modkey }, "F10", function ()
     awful.util.spawn("mpc prev")
 end),
 
@@ -1840,11 +1948,11 @@ awful.key({ modkey }, "F11", function ()
     awful.util.spawn("mpc toggle")
 end),
 
-awful.key({ modkey }, "F12", function ()
+uniarg:key_repeat({ modkey }, "F12", function ()
     awful.util.spawn("mpc next")
 end),
 
-awful.key({ modkey, "Control" }, "Left", function ()
+uniarg:key_repeat({ modkey, "Control" }, "Left", function ()
     awful.util.spawn("mpc prev")
 end),
 
@@ -1852,7 +1960,7 @@ awful.key({ modkey, "Control" }, "Down", function ()
     awful.util.spawn("mpc toggle")
 end),
 
-awful.key({ modkey, "Control" }, "Right", function ()
+uniarg:key_repeat({ modkey, "Control" }, "Right", function ()
     awful.util.spawn("mpc next")
 end),
 
@@ -1860,20 +1968,36 @@ awful.key({ modkey, "Control" }, "Up", function ()
     awful.util.spawn("gnome-alsamixer")
 end),
 
-awful.key({ modkey, "Shift" }, "Left", function ()
-    awful.util.spawn("mpc seek -1%")
+uniarg:key_numarg({ modkey, "Shift" }, "Left",
+function ()
+  awful.util.spawn("mpc seek -1%")
+end,
+function (n)
+  awful.util.spawn("mpc seek -" .. n .. "%")
 end),
 
-awful.key({ modkey, "Shift" }, "Right", function ()
-    awful.util.spawn("mpc seek +1%")
+uniarg:key_numarg({ modkey, "Shift" }, "Right",
+function ()
+  awful.util.spawn("mpc seek +1%")
+end,
+function (n)
+  awful.util.spawn("mpc seek +" .. n .. "%")
 end),
 
-awful.key({ modkey, "Shift" }, "Down", function ()
-    awful.util.spawn("mpc seek -10%")
+uniarg:key_numarg({ modkey, "Shift" }, "Down",
+function ()
+  awful.util.spawn("mpc seek -10%")
+end,
+function (n)
+  awful.util.spawn("mpc seek -" .. n .. "%")
 end),
 
-awful.key({ modkey, "Shift" }, "Up", function ()
-    awful.util.spawn("mpc seek +10%")
+uniarg:key_numarg({ modkey, "Shift" }, "Up",
+function ()
+  awful.util.spawn("mpc seek +10%")
+end,
+function (n)
+  awful.util.spawn("mpc seek +" .. n .. "%")
 end),
 
 nil
@@ -1905,23 +2029,59 @@ awful.key({ modkey,           }, "Down", customization.func.client_sideline_bott
 
 -- extend client sides
 
-awful.key({ modkey, "Mod1"    }, "Left", customization.func.client_sideline_extend_left),
+uniarg:key_numarg({ modkey, "Mod1"    }, "Left",
+customization.func.client_sideline_extend_left,
+function (n, c)
+customization.func.client_sideline_extend_left(c, n)
+end),
 
-awful.key({ modkey, "Mod1"    }, "Right", customization.func.client_sideline_extend_right),
+uniarg:key_numarg({ modkey, "Mod1"    }, "Right",
+customization.func.client_sideline_extend_right,
+function (n, c)
+customization.func.client_sideline_extend_right(c, n)
+end),
 
-awful.key({ modkey, "Mod1"    }, "Up", customization.func.client_sideline_extend_top),
+uniarg:key_numarg({ modkey, "Mod1"    }, "Up",
+customization.func.client_sideline_extend_top,
+function (n, c)
+customization.func.client_sideline_extend_top(c, n)
+end),
 
-awful.key({ modkey, "Mod1"    }, "Down", customization.func.client_sideline_extend_bottom),
+uniarg:key_numarg({ modkey, "Mod1"    }, "Down",
+customization.func.client_sideline_extend_bottom,
+function (n, c)
+customization.func.client_sideline_extend_bottom(c, n)
+end),
 
 -- shrink client sides
 
-awful.key({ modkey, "Mod1", "Shift" }, "Left", customization.func.client_sideline_shrink_left),
+uniarg:key_numarg({ modkey, "Mod1", "Shift" }, "Left",
+customization.func.client_sideline_shrink_left,
+function (n, c)
+customization.func.client_sideline_shrink_left(c, n)
+end
+),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Right", customization.func.client_sideline_shrink_right),
+uniarg:key_numarg({ modkey, "Mod1", "Shift" }, "Right",
+customization.func.client_sideline_shrink_right,
+function (n, c)
+customization.func.client_sideline_shrink_right(c, n)
+end
+),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Up", customization.func.client_sideline_shrink_top),
+uniarg:key_numarg({ modkey, "Mod1", "Shift" }, "Up",
+customization.func.client_sideline_shrink_top,
+function (n, c)
+customization.func.client_sideline_shrink_top(c, n)
+end
+),
 
-awful.key({ modkey, "Mod1", "Shift" }, "Down", customization.func.client_sideline_shrink_bottom),
+uniarg:key_numarg({ modkey, "Mod1", "Shift" }, "Down",
+customization.func.client_sideline_shrink_bottom,
+function (n, c)
+customization.func.client_sideline_shrink_bottom(c, n)
+end
+),
 
 -- maximize/minimize
 
