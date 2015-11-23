@@ -1,7 +1,9 @@
-package.path = package.path .. ";./?/init.lua;"
+local awful = require("awful")
+local config_path = awful.util.getdir("config")
+package.path = config_path .. "/?/init.lua;" .. package.path
+package.path = config_path .. "/widgets/?/init.lua;" .. package.path
 
 local gears = require("gears")
-local awful = require("awful")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
 require("awful.autofocus")
@@ -26,7 +28,7 @@ local capi = {
 }
 
 -- widgets
-local audio_volume_widget = require("audio_volume_widget")
+local widgets = require("widgets")
 
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
@@ -1411,7 +1413,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(audio_volume_widget.widget)
+    right_layout:add(widgets.audio_volume.widget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
