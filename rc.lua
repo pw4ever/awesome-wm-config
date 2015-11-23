@@ -52,8 +52,9 @@ customization.func = {}
 customization.default = {}
 customization.option = {}
 customization.timer = {}
+customization.widgets = {}
 
-customization.config.version = "1.7.2"
+customization.config.version = "1.7.3"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -134,7 +135,7 @@ do
     awesome.quit = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Quit (type 'yes' to confirm)? "},
-        mypromptbox[scr].widget,
+        customization.widgets.promptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
                 customization.orig.quit()
@@ -196,7 +197,7 @@ do
     awesome.restart = function ()
         local scr = mouse.screen
         awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
-        mypromptbox[scr].widget,
+        customization.widgets.promptbox[scr].widget,
         function (t)
             if string.lower(t) == 'yes' then
                 customization.orig.restart()
@@ -359,7 +360,7 @@ end
 customization.func.system_hibernate = function ()
   local scr = mouse.screen
   awful.prompt.run({prompt = "Hibernate (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
       awful.util.spawn("systemctl hibernate")
@@ -373,7 +374,7 @@ end
 customization.func.system_hybrid_sleep = function ()
   local scr = mouse.screen
   awful.prompt.run({prompt = "Hybrid Sleep (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
       awful.util.spawn("systemctl hybrid-sleep")
@@ -387,7 +388,7 @@ end
 customization.func.system_reboot = function ()
   local scr = mouse.screen
   awful.prompt.run({prompt = "Reboot (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
       awful.util.spawn("systemctl reboot")
@@ -401,7 +402,7 @@ end
 customization.func.system_power_off = function ()
   local scr = mouse.screen
   awful.prompt.run({prompt = "Power Off (type 'yes' to confirm)? "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
       awful.util.spawn("systemctl poweroff")
@@ -445,7 +446,7 @@ customization.func.client_move_to_tag = function ()
     table.insert(keywords, t.name)
   end
   awful.prompt.run({prompt = "Move client to tag: "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     local tag = util.tag.name2tag(t)
     if tag then
@@ -466,7 +467,7 @@ customization.func.client_toggle_tag = function (c)
   end
   local c = c or client.focus
   awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     local tag = util.tag.name2tag(t)
     if tag then
@@ -1011,7 +1012,7 @@ customization.func.tag_goto = function ()
     table.insert(keywords, t.name)
   end
   awful.prompt.run({prompt = "Goto tag: "},
-  mypromptbox[scr].widget,
+  customization.widgets.promptbox[scr].widget,
   function (t)
     awful.tag.viewonly(util.tag.name2tag(t))
   end,
@@ -1158,7 +1159,7 @@ customization.func.clients_on_tag_prompt = function ()
     end
     if next(clients) ~= nil then
       awful.prompt.run({prompt = "Focus on client on current tag: "},
-      mypromptbox[scr].widget,
+      customization.widgets.promptbox[scr].widget,
       function (t)
         local c = clients[t]
         if c then
@@ -1225,7 +1226,7 @@ customization.func.all_clients_prompt = function ()
   end
   if next(clients) ~= nil then
     awful.prompt.run({prompt = "Focus on client from global list: "},
-    mypromptbox[scr].widget,
+    customization.widgets.promptbox[scr].widget,
     function (t)
       local c = clients[t]
       if c then
@@ -1358,22 +1359,23 @@ mymainmenu = awful.menu({
   }
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+customization.widgets.launcher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menu = mymainmenu })
 
 -- }}}
 
 -- {{{ Wibox
-local mytextclock = wibox.widget.textbox()
-bashets.register("date.sh", {widget=mytextclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"}) -- http://awesome.naquadah.org/wiki/Bashets
+customization.widgets.textclock = wibox.widget.textbox()
+bashets.register("date.sh", {widget=customization.widgets.textclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"}) -- http://awesome.naquadah.org/wiki/Bashets
 
 -- vicious widgets: http://awesome.naquadah.org/wiki/Vicious
-local mymemusage = wibox.widget.textbox()
-vicious.register(mymemusage, vicious.widgets.mem, "<span fgcolor='yellow'>|<small>Mem:</small>$1% ($2MB/$3MB)</span>", 1)
 
-local mympdstatus = wibox.widget.textbox()
-mympdstatus:set_ellipsize("end")
-vicious.register(mympdstatus, vicious.widgets.mpd,
+customization.widgets.memusage = wibox.widget.textbox()
+vicious.register(customization.widgets.memusage, vicious.widgets.mem, "<span fgcolor='yellow'>|<small>Mem:</small>$1% ($2MB/$3MB)</span>", 1)
+
+customization.widgets.mpdstatus = wibox.widget.textbox()
+customization.widgets.mpdstatus:set_ellipsize("end")
+vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
   function (mpdwidget, args)
     local text = nil
     if args["{state}"] == "Stop" then 
@@ -1384,23 +1386,28 @@ vicious.register(mympdstatus, vicious.widgets.mpd,
     return '<span fgcolor="light green">|<small>MPD:</small>' .. text .. '</span>'
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
-mympdstatus = wibox.layout.constraint(mympdstatus, "exact", 250, nil)
+customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "exact", 250, nil)
 
-local mycpuusage = awful.widget.graph()
-mycpuusage:set_width(50)
-mycpuusage:set_background_color("#494B4F")
-mycpuusage:set_color({ 
+customization.widgets.cpuusage = awful.widget.graph()
+customization.widgets.cpuusage:set_width(50)
+customization.widgets.cpuusage:set_background_color("#494B4F")
+customization.widgets.cpuusage:set_color({ 
   type = "linear", from = { 0, 0 }, to = { 10,0 }, 
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-vicious.register(mycpuusage, vicious.widgets.cpu, "$1")                   
+vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1")                   
+
+-- my widgets
+
+customization.widgets.audio_volume = widgets.audio_volume.widget
 
 -- Create a wibox for each screen and add it
-myuniarg = {}
-mywibox = {}
-mypromptbox = {}
-mylayoutbox = {}
-mytaglist = {}
-mytaglist.buttons = awful.util.table.join(
+
+customization.widgets.uniarg = {}
+customization.widgets.wibox = {}
+customization.widgets.promptbox = {}
+customization.widgets.layoutbox = {}
+customization.widgets.taglist = {}
+customization.widgets.taglist.buttons = awful.util.table.join(
 awful.button({ }, 1, awful.tag.viewonly),
 awful.button({ modkey }, 1, awful.client.movetotag),
 awful.button({ }, 2, awful.tag.viewtoggle),
@@ -1413,8 +1420,8 @@ awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 awful.button({ }, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end)
 )
 
-mytasklist = {}
-mytasklist.buttons = awful.util.table.join(
+customization.widgets.tasklist = {}
+customization.widgets.tasklist.buttons = awful.util.table.join(
 
 awful.button({ }, 1, function (c)
     if c == client.focus then
@@ -1460,11 +1467,11 @@ bashets.start()
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt()
+    customization.widgets.promptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
-    mylayoutbox[s] = awful.widget.layoutbox(s)
-    mylayoutbox[s]:buttons(awful.util.table.join(
+    customization.widgets.layoutbox[s] = awful.widget.layoutbox(s)
+    customization.widgets.layoutbox[s]:buttons(awful.util.table.join(
     awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
     awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
     awful.button({ }, 4, function () awful.layout.inc(layouts, -1) end),
@@ -1472,43 +1479,43 @@ for s = 1, screen.count() do
     nil
     ))
     -- Create a taglist widget
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+    customization.widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, customization.widgets.taglist.buttons)
 
     -- Create a textbox showing current universal argument
-    myuniarg[s] = wibox.widget.textbox()
+    customization.widgets.uniarg[s] = wibox.widget.textbox()
     -- Create a tasklist widget
-    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
+    customization.widgets.tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customization.widgets.tasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    customization.widgets.wibox[s] = awful.wibox({ position = "top", screen = s })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
-    left_layout:add(mytaglist[s])
-    left_layout:add(myuniarg[s])
-    left_layout:add(mypromptbox[s])
+    left_layout:add(customization.widgets.launcher)
+    left_layout:add(customization.widgets.taglist[s])
+    left_layout:add(customization.widgets.uniarg[s])
+    left_layout:add(customization.widgets.promptbox[s])
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mycpuusage)
-    right_layout:add(mymemusage)
-    right_layout:add(mympdstatus)
-    right_layout:add(widgets.audio_volume.widget)
-    right_layout:add(mytextclock)
-    right_layout:add(mylayoutbox[s])
+    right_layout:add(customization.widgets.cpuusage)
+    right_layout:add(customization.widgets.memusage)
+    right_layout:add(customization.widgets.mpdstatus)
+    right_layout:add(customization.widgets.audio_volume)
+    right_layout:add(customization.widgets.textclock)
+    right_layout:add(customization.widgets.layoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
-    layout:set_middle(mytasklist[s])
+    layout:set_middle(customization.widgets.tasklist[s])
     layout:set_right(right_layout)
 
-    mywibox[s]:set_widget(layout)
+    customization.widgets.wibox[s]:set_widget(layout)
 end
 
-util.taglist.set_taglist(mytaglist)
+util.taglist.set_taglist(customization.widgets.taglist)
 -- }}}
 
 do
@@ -1606,7 +1613,7 @@ notifylist = {}
 local globalkeys = nil
 local clientkeys = nil
 
-uniarg:init(myuniarg)
+uniarg:init(customization.widgets.uniarg)
 
 globalkeys = awful.util.table.join(
 
@@ -1616,7 +1623,7 @@ awful.key({ modkey }, "u",
 function ()
   uniarg:activate()
   awful.prompt.run({prompt = "Universal Argument: ", text='' .. uniarg.arg, selectall=true},
-    mypromptbox[mouse.screen].widget,
+    customization.widgets.promptbox[mouse.screen].widget,
     function (t)
       uniarg.persistent = false
       local n = t:match("%d+")
@@ -1636,7 +1643,7 @@ awful.key({ modkey, "Shift" }, "u",
 function ()
   uniarg:activate()
   awful.prompt.run({prompt = "Persistent Universal Argument: ", text='' .. uniarg.arg, selectall=true},
-    mypromptbox[mouse.screen].widget,
+    customization.widgets.promptbox[mouse.screen].widget,
     function (t)
       uniarg.persistent = true
       local n = t:match("%d+")
@@ -1678,7 +1685,7 @@ uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
 awful.key({modkey}, "F2", function()
     awful.prompt.run(
     {prompt = "Run: "},
-    mypromptbox[mouse.screen].widget,
+    customization.widgets.promptbox[mouse.screen].widget,
     awful.util.spawn, awful.completion.shell,
     awful.util.getdir("cache") .. "/history"
     )
@@ -1687,7 +1694,7 @@ end),
 awful.key({modkey}, "r", function()
     awful.prompt.run(
     {prompt = "Run: "},
-    mypromptbox[mouse.screen].widget,
+    customization.widgets.promptbox[mouse.screen].widget,
     awful.util.spawn, awful.completion.shell,
     awful.util.getdir("cache") .. "/history"
     )
@@ -1701,7 +1708,7 @@ end),
 awful.key({modkey}, "F4", function()
     awful.prompt.run(
     {prompt = "Run Lua code: "},
-    mypromptbox[mouse.screen].widget,
+    customization.widgets.promptbox[mouse.screen].widget,
     awful.util.eval, nil,
     awful.util.getdir("cache") .. "/history_eval"
     )
@@ -2165,7 +2172,7 @@ for i = 1, 10 do
         else
             local scr = mouse.screen
             awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-            mypromptbox[scr].widget,
+            customization.widgets.promptbox[scr].widget,
             function (text)
                 if #text>0 then
                     tag = awful.tag.add(text)
@@ -2190,7 +2197,7 @@ for i = 1, 10 do
         else
             local scr = mouse.screen
             awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-            mypromptbox[scr].widget,
+            customization.widgets.promptbox[scr].widget,
             function (text)
                 if #text>0 then
                     tag = awful.tag.add(text)
@@ -2218,7 +2225,7 @@ for i = 1, 10 do
             else
                 local scr = mouse.screen
                 awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-                mypromptbox[scr].widget,
+                customization.widgets.promptbox[scr].widget,
                 function (text)
                     if #text>0 then
                         tag = awful.tag.add(text)
@@ -2247,7 +2254,7 @@ for i = 1, 10 do
             else
                 local scr = mouse.screen
                 awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
-                mypromptbox[scr].widget,
+                customization.widgets.promptbox[scr].widget,
                 function (text)
                     if #text>0 then
                         tag = awful.tag.add(text)
