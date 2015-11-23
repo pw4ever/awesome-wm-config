@@ -116,11 +116,11 @@ Some keybinding requires further input (e.g., rename a tag), which will grab the
 
 ### **universal argument**
 
-Universal Argument (UniArg), inspired by the [namesake Emacs feature](https://www.gnu.org/software/emacs/manual/html_node/emacs/Arguments.html), supplies a positive numeric argument to the following command. Depending on the context, the number can be the number of repetitions or percentage of adjustment. For example, with the UniArg being 3, "open terminal" operation (<kbd>Modkey</kbd><kbd>Enter</kbd> by default) will open 3 terminals.
+Universal Argument (UniArg), inspired by the [namesake Emacs feature](https://www.gnu.org/software/emacs/manual/html_node/emacs/Arguments.html), supplies a positive numeric argument to the following command. Depending on the context, it may supply a number of repetitions (search for `uniarg:key_repeat` in `rc.lua`) or a numeric argument (search for `uniarg:key_numarg` in `rc.lua`) such as percentage of volume adjustment or pixels to resize the client window.   For example, with the UniArg being 3, "open terminal" operation (<kbd>Modkey</kbd><kbd>Enter</kbd> by default) will open 3 terminals.
 
-Universal argument is activated by inputing a greater-than-1 number, and is deactivated by a less-than-2 number or a non-number.
+Universal argument is activated when inputing a great-than-1 integer, and is deactivated when inputing a less-than-2 integer or a non-number. When universal argument is deactivated, the default behavior kicks in, which follows some heuristics to do sensible things such as the "extend client by 1/7 of the margin" and "shrink client by 1/11 of client width and leave client width at least 50 pixels" behavior for client window side expansion/shrinking documented below.
 
-There are two modes of universal argument: Regular and persistent. Regular universal argument only applies to the next operation, while persistent universal argument applies to all following operations until changes or deactivated.
+There are two modes of universal argument: Regular and persistent. Regular universal argument only applies to the next operation, while persistent universal argument applies to all following operations until changed or deactivated.
 
 | key combo | function | comment |
 | --- | --- | --- |
