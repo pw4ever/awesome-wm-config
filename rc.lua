@@ -32,7 +32,7 @@ local capi = {
 }
 
 -- widgets
-local widgets = require("widgets")
+--local widgets = require("widgets")
 
 local vicious = require("vicious")
 
@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.3"
+customization.config.version = "1.7.4"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1365,28 +1365,10 @@ menu = mymainmenu })
 -- }}}
 
 -- {{{ Wibox
-customization.widgets.textclock = wibox.widget.textbox()
-bashets.register("date.sh", {widget=customization.widgets.textclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"}) -- http://awesome.naquadah.org/wiki/Bashets
+--customization.widgets.textclock = wibox.widget.textbox()
+--bashets.register("date.sh", {widget=customization.widgets.textclock, update_time=1, format="$1 <span fgcolor='red'>$2</span> <small>$3$4</small> <b>$5<small>$6</small></b>"}) -- http://awesome.naquadah.org/wiki/Bashets
 
 -- vicious widgets: http://awesome.naquadah.org/wiki/Vicious
-
-customization.widgets.memusage = wibox.widget.textbox()
-vicious.register(customization.widgets.memusage, vicious.widgets.mem, "<span fgcolor='yellow'>|<small>Mem:</small>$1% ($2MB/$3MB)</span>", 1)
-
-customization.widgets.mpdstatus = wibox.widget.textbox()
-customization.widgets.mpdstatus:set_ellipsize("end")
-vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
-  function (mpdwidget, args)
-    local text = nil
-    if args["{state}"] == "Stop" then 
-      text = " - "
-    else 
-      text = "[" .. args["{state}"] .. "] " .. args["{Artist}"]..' - '.. args["{Title}"]
-    end
-    return '<span fgcolor="light green">|<small>MPD:</small>' .. text .. '</span>'
-  end, 1)
--- http://git.sysphere.org/vicious/tree/README
-customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "exact", 250, nil)
 
 customization.widgets.cpuusage = awful.widget.graph()
 customization.widgets.cpuusage:set_width(50)
@@ -1394,11 +1376,49 @@ customization.widgets.cpuusage:set_background_color("#494B4F")
 customization.widgets.cpuusage:set_color({ 
   type = "linear", from = { 0, 0 }, to = { 10,0 }, 
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1")                   
+vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)                   
+
+customization.widgets.memusage = wibox.widget.textbox()
+vicious.register(customization.widgets.memusage, vicious.widgets.mem,
+  "<span fgcolor='yellow'>$1% ($2MB/$3MB)</span>", 3)
+
+customization.widgets.bat0 = awful.widget.progressbar()
+customization.widgets.bat0:set_width(8)
+customization.widgets.bat0:set_height(10)
+customization.widgets.bat0:set_vertical(true)
+customization.widgets.bat0:set_background_color("#494B4F")
+customization.widgets.bat0:set_border_color(nil)
+customization.widgets.bat0:set_color({ type = "linear", from = { 0, 0 }, to = { 0, 10 },
+  stops = { { 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}})
+vicious.register(customization.widgets.bat0, vicious.widgets.bat, "$2", 61, "BAT0")
+
+customization.widgets.mpdstatus = wibox.widget.textbox()
+customization.widgets.mpdstatus:set_ellipsize("end")
+vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
+  function (mpdwidget, args)
+    local text = nil
+    local symmap = {["Stop"] = "◾", ["Pause"] = "▮▮", ["Play"] = "▶"}
+    local state = args["{state}"]
+    if state == "Stop" then 
+      text = ""
+    else 
+      text = args["{Artist}"]..' - '.. args["{Title}"]
+    end
+    return '<span fgcolor="light green">' .. symmap[state] .. '<small>' .. text .. '</small></span>'
+  end, 1)
+-- http://git.sysphere.org/vicious/tree/README
+customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 130, nil)
+
+customization.widgets.volume = wibox.widget.textbox()
+vicious.register(customization.widgets.volume, vicious.widgets.volume,
+  "<span fgcolor='cyan'>$1%$2</span>", 1, "Master")
+
+customization.widgets.date = wibox.widget.textbox()
+vicious.register(customization.widgets.date, vicious.widgets.date, "%x %X%Z", 1)
 
 -- my widgets
 
-customization.widgets.audio_volume = widgets.audio_volume.widget
+--customization.widgets.audio_volume = widgets.audio_volume.widget
 
 -- Create a wibox for each screen and add it
 
@@ -1501,9 +1521,12 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(customization.widgets.cpuusage)
     right_layout:add(customization.widgets.memusage)
+    right_layout:add(customization.widgets.bat0)
     right_layout:add(customization.widgets.mpdstatus)
-    right_layout:add(customization.widgets.audio_volume)
-    right_layout:add(customization.widgets.textclock)
+    --right_layout:add(customization.widgets.audio_volume)
+    right_layout:add(customization.widgets.volume)
+    right_layout:add(customization.widgets.date)
+    --right_layout:add(customization.widgets.textclock)
     right_layout:add(customization.widgets.layoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
