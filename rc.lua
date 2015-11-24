@@ -1386,7 +1386,7 @@ vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
     return '<span fgcolor="light green">|<small>MPD:</small>' .. text .. '</span>'
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
-customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "exact", 250, nil)
+customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "exact", 200, nil)
 
 customization.widgets.cpuusage = awful.widget.graph()
 customization.widgets.cpuusage:set_width(50)
