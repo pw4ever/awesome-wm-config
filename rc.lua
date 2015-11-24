@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.5"
+customization.config.version = "1.7.6"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1404,12 +1404,12 @@ vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
       else 
         text = args["{Artist}"]..' - '.. args["{Title}"]
       end
-      return '<span fgcolor="light green"><small>[' .. state .. ']' .. text .. '</small></span>'
+      return '<span fgcolor="light green"><b>[' .. state .. ']</b> <small>' .. text .. '</small></span>'
     end
     return ""
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
-customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 130, nil)
+customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 180, nil)
 
 customization.widgets.volume = wibox.widget.textbox()
 vicious.register(customization.widgets.volume, vicious.widgets.volume,
