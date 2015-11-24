@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.4"
+customization.config.version = "1.7.5"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1397,14 +1397,16 @@ customization.widgets.mpdstatus:set_ellipsize("end")
 vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
   function (mpdwidget, args)
     local text = nil
-    local symmap = {["Stop"] = "◾", ["Pause"] = "▮▮", ["Play"] = "▶"}
     local state = args["{state}"]
-    if state == "Stop" then 
-      text = ""
-    else 
-      text = args["{Artist}"]..' - '.. args["{Title}"]
+    if state then
+      if state == "Stop" then 
+        text = ""
+      else 
+        text = args["{Artist}"]..' - '.. args["{Title}"]
+      end
+      return '<span fgcolor="light green"><small>[' .. state .. ']' .. text .. '</small></span>'
     end
-    return '<span fgcolor="light green">' .. symmap[state] .. '<small>' .. text .. '</small></span>'
+    return ""
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
 customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 130, nil)
