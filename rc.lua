@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.6"
+customization.config.version = "1.7.7"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -64,7 +64,7 @@ customization.default.property = {
     ncol = 1,
     min_opacity = 0.4,
     max_opacity = 1,
-    default_naughty_opacity = 0.90,
+    default_naughty_opacity = 1,
     low_naughty_opacity = 0.90,
     normal_naughty_opacity = 0.95,
     critical_naughty_opacity = 1,
