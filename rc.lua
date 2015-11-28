@@ -270,15 +270,15 @@ tools.browser.primary = os.getenv("BROWSER") or "firefox"
 tools.browser.secondary = ({chromium="firefox", firefox="chromium"})[tools.browser.primary]
 
 -- alternative: override
---tools.browser.primary = "google-chrome-stable"
---tools.browser.secondary = "firefox"
+tools.browser.primary = "google-chrome-stable"
+tools.browser.secondary = "firefox"
 
 tools.editor.primary = os.getenv("EDITOR") or "gvim"
 tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
 
 -- alternative: override
---tools.editor.primary = "gvim"
---tools.editor.secondary = "emacs"
+tools.editor.primary = "gvim"
+tools.editor.secondary = "emacs"
 
 local myapp = nil
 do
@@ -1898,6 +1898,10 @@ end),
 
 uniarg:key_repeat({ modkey, "Shift" }, "i", function ()
     awful.util.spawn(tools.editor.secondary)
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Ctrl" }, "i", function ()
+    awful.util.spawn("emacsclient -c")
 end),
 
 uniarg:key_repeat({ modkey, }, "b", function ()
