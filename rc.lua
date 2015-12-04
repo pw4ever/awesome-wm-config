@@ -1900,6 +1900,10 @@ uniarg:key_repeat({ modkey, "Shift" }, "i", function ()
     awful.util.spawn(tools.editor.secondary)
 end),
 
+uniarg:key_repeat({ modkey, "Shift", "Ctrl" }, "i", function ()
+    awful.util.spawn("emacs")
+end),
+
 uniarg:key_repeat({ modkey, }, "b", function ()
     awful.util.spawn(tools.browser.primary)
 end),
