@@ -278,7 +278,7 @@ tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
 
 -- alternative: override
 tools.editor.primary = "gvim"
-tools.editor.secondary = "emacs"
+tools.editor.secondary = "emacsclient -c -a emacs"
 
 local myapp = nil
 do
