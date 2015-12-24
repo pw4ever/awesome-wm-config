@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.7"
+customization.config.version = "1.7.8"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -391,6 +391,7 @@ customization.func.system_reboot = function ()
   customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
+      awesome.emit_signal("exit", nil)
       awful.util.spawn("systemctl reboot")
     end
   end,
@@ -405,6 +406,7 @@ customization.func.system_power_off = function ()
   customization.widgets.promptbox[scr].widget,
   function (t)
     if string.lower(t) == 'yes' then
+      awesome.emit_signal("exit", nil)
       awful.util.spawn("systemctl poweroff")
     end
   end,
