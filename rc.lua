@@ -1,7 +1,9 @@
 local awful = require("awful")
 local config_path = awful.util.getdir("config")
+package.path = config_path .. "/?.lua;" .. package.path
 package.path = config_path .. "/?/init.lua;" .. package.path
-package.path = config_path .. "/widgets/?/init.lua;" .. package.path
+package.path = config_path .. "/modules/?.lua;" .. package.path
+package.path = config_path .. "/modules/?/init.lua;" .. package.path
 
 local math = require("math")
 local gears = require("gears")
@@ -15,6 +17,9 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
+
+-- vicious widgets
+local vicious = require("vicious")
 
 -- bashets config: https://gitorious.org/bashets/pages/Brief_Introduction
 local bashets = require("bashets")
@@ -30,11 +35,6 @@ local capi = {
     screen = screen,
     client = client,
 }
-
--- widgets
---local widgets = require("widgets")
-
-local vicious = require("vicious")
 
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
@@ -54,7 +54,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.8"
+customization.config.version = "1.7.9-dev"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -83,7 +83,7 @@ naughty.config.presets.critical.opacity = customization.default.property.critica
 
 do
     local config_path = awful.util.getdir("config")
-    bashets.set_script_path(config_path .. "/bashets/")
+    bashets.set_script_path(config_path .. "/modules/bashets/")
 end
 
 -- {{{ Error handling
@@ -1419,10 +1419,6 @@ vicious.register(customization.widgets.volume, vicious.widgets.volume,
 
 customization.widgets.date = wibox.widget.textbox()
 vicious.register(customization.widgets.date, vicious.widgets.date, "%x %X%Z", 1)
-
--- my widgets
-
---customization.widgets.audio_volume = widgets.audio_volume.widget
 
 -- Create a wibox for each screen and add it
 
