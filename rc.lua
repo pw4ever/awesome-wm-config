@@ -7,6 +7,7 @@ package.path = config_path .. "/modules/?/init.lua;" .. package.path
 
 local math = require("math")
 local gears = require("gears")
+awful.client = require("awful.client")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
 awful.ewmh = require("awful.ewmh")
@@ -54,7 +55,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.9"
+customization.config.version = "1.7.10"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2299,7 +2300,12 @@ for i = 1, 10 do
 end
 
 clientbuttons = awful.util.table.join(
-awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+awful.button({ }, 1, function (c)
+  if awful.client.focus.filter(c) then
+    client.focus = c
+    c:raise()
+  end
+end),
 awful.button({ modkey }, 1, awful.mouse.client.move),
 awful.button({ modkey }, 3, awful.mouse.client.resize))
 
