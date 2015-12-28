@@ -63,6 +63,7 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
   * persistent means tags and the clients/programs associated with each tag is preserved across [awesome][awesome] restart.
     * [apparently, I am not the only one who desire this](https://awesome.naquadah.org/bugs/index.php?do=details&task_id=687)
   * this is **the** feature I have desired for that is lacking in current default configuration.
+* [Emacs-inspired universal argument](#universal-argument): Specify a numeric argument for, e.g., repetition or precise resizing. Idea/prototype credit: @AnthonyAaronHughWong in #3.
 * confirmation before quit/restart to minimize data loss accidents.
   * you have to type "yes" (case insensitive) before quitting/restarting.
   * this minimizes the chance that you lose your work by accidents.
@@ -76,14 +77,12 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 
 ### install on Linux
 
-* install [awesome][awesome] with either:
-  * your preferred package manager (`sudo pacman -S awesome --needed --noconfirm` on [Arch Linux][archlinux]) or
-  * manually: [my awesome fork](https://github.com/pw4ever/awesome/tree/bugfix) has an [installation shell script](https://raw.githubusercontent.com/pw4ever/awesome/bugfix/00make-in-archlinux.sh).
-* Clone to `$HOME/.config/awesome`.
+* Install [awesome][awesome] with your preferred package manager. Example: `sudo pacman -S awesome --needed --noconfirm` on [Arch Linux][archlinux].
+* Clone this repo to `$HOME/.config/awesome`.
 ```bash
 cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git awesome
 ```
-* setup .xinitrc or Display Manager accordingly
+* Setup .xinitrc or Display Manager accordingly.
 
 ### dependencies
 
