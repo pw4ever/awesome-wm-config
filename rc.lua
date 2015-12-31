@@ -55,7 +55,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.12"
+customization.config.version = "1.7.13"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -74,9 +74,11 @@ customization.default.property = {
 }
 
 customization.default.compmgr = 'xcompmgr'
+customization.default.compmgr_args = '-f -c -s'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
+customization.option.tag_persistent_p = true
 
 naughty.config.presets.low.opacity = customization.default.property.low_naughty_opacity
 naughty.config.presets.normal.opacity = customization.default.property.normal_naughty_opacity
@@ -120,15 +122,62 @@ end
 -- * only "rm" this file when awesome.quit
 
 local cachedir = awful.util.getdir("cache")
+local awesome_tags_fname = cachedir .. "/awesome-tags"
 local awesome_autostart_once_fname = cachedir .. "/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
-local awesome_restart_tags_fname = cachedir .. "/awesome-restart-tags-" .. os.getenv("XDG_SESSION_ID")
+local awesome_client_tags_fname = cachedir .. "/awesome-client-tags-" .. os.getenv("XDG_SESSION_ID")
 
 do
+
     awesome.connect_signal("exit", function (restart)
+        local scrcount = screen.count()
+        -- save number of screens, used for check proper tag recording
+        do
+            local f = io.open(awesome_tags_fname .. ".0", "w+")
+            if f then
+                f:write(string.format("%d", scrcount) .. "\n")
+                f:close()
+            end
+        end
+        -- save current tags
+        for s = 1, scrcount do
+            local f = io.open(awesome_tags_fname .. "." .. s, "w+")
+            if f then
+                local tags = awful.tag.gettags(s)
+                for _, tag in ipairs(tags) do
+                    f:write(tag.name .. "\n")
+                end
+                f:close()
+            end
+            f = io.open(awesome_tags_fname .. "-selected." .. s, "w+")
+            if f then
+                f:write(awful.tag.getidx() .. "\n")
+                f:close()
+            end
+        end
+        customization.func.client_opaque_off(nil) -- prevent compmgr glitches
         if not restart then
             awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
-            awful.util.spawn_with_shell("rm -rf " .. awesome_restart_tags_fname .. '*')
+            awful.util.spawn_with_shell("rm -rf " .. awesome_client_tags_fname)
+            if not customization.option.tag_persistent_p then
+                awful.util.spawn_with_shell("rm -rf " .. awesome_tags_fname .. '*')
+            end
             bashets.stop()
+        else -- if restart, save client tags
+            -- save tags for each client
+            awful.util.mkdir(awesome_client_tags_fname)
+            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_client_tags_fname) 
+            -- race condition (whether awesome_client_tags_fname is created) due to asynchrony of "spawn_with_shell"
+            for _, c in ipairs(client.get()) do
+                local client_id = c.pid .. '-' .. c.window
+                local f = io.open(awesome_client_tags_fname .. '/' .. client_id, 'w+')
+                if f then
+                    for _, t in ipairs(c:tags()) do
+                        f:write(t.name .. "\n")
+                    end
+                    f:close()
+                end
+            end
+
         end
     end)
 
@@ -149,50 +198,6 @@ do
 end
 
 do
-    awesome.connect_signal("exit", function (restart)
-        if restart then
-            -- save number of screens, used for check proper tag recording
-            do
-                local f = io.open(awesome_restart_tags_fname .. ".0", "w+")
-                if f then
-                    f:write(string.format("%d", screen.count()) .. "\n")
-                    f:close()
-                end
-            end
-
-            -- save current tags
-            for s = 1, screen.count() do
-                local f = io.open(awesome_restart_tags_fname .. "." .. s, "w+")
-                if f then
-                    local tags = awful.tag.gettags(s)
-                    for _, tag in ipairs(tags) do
-                        f:write(tag.name .. "\n")
-                    end
-                    f:close()
-                end
-                f = io.open(awesome_restart_tags_fname .. "-selected." .. s, "w+")
-                if f then
-                    f:write(awful.tag.getidx() .. "\n")
-                    f:close()
-                end
-            end
-
-            -- save tags for each client
-            awful.util.mkdir(awesome_restart_tags_fname)
-            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_restart_tags_fname) 
-            -- race condition (whether awesome_restart_tags_fname is created) due to asynchrony of "spawn_with_shell"
-            for _, c in ipairs(client.get()) do
-                local client_id = c.pid .. '-' .. c.window
-                local f = io.open(awesome_restart_tags_fname .. '/' .. client_id, 'w+')
-                if f then
-                    for _, t in ipairs(c:tags()) do
-                        f:write(t.name .. "\n")
-                    end
-                    f:close()
-                end
-            end
-        end
-    end)
 
     customization.orig.restart = awesome.restart
     awesome.restart = function ()
@@ -735,7 +740,7 @@ customization.func.client_opaque_off = function (c)
 end
 
 customization.func.client_opaque_on = function (c)
-  awful.util.spawn_with_shell(customization.default.compmgr)
+  awful.util.spawn_with_shell(customization.default.compmgr.. " " .. customization.default.compmgr_args)
 end
 
 customization.func.client_swap_with_master = function (c) 
@@ -1544,11 +1549,11 @@ util.taglist.set_taglist(customization.widgets.taglist)
 
 do
     -- test whether screen 1 tag file exists
-    local f = io.open(awesome_restart_tags_fname .. ".0", "r")
+    local f = io.open(awesome_tags_fname .. ".0", "r")
     if f then
         local old_scr_count = tonumber(f:read("*l"))
         f:close()
-        os.remove(awesome_restart_tags_fname .. ".0")
+        os.remove(awesome_tags_fname .. ".0")
 
         local new_scr_count = screen.count()
 
@@ -1563,7 +1568,7 @@ do
 
             for s = 1, old_scr_count do
                 local count_index = math.min(s, scr_count)
-                local fname = awesome_restart_tags_fname .. "." .. s
+                local fname = awesome_tags_fname .. "." .. s
                 for tagname in io.lines(fname) do
                     local tag = awful.tag.add(tagname,
                     {
@@ -1583,7 +1588,7 @@ do
         end
 
         for s = 1, screen.count() do
-            local fname = awesome_restart_tags_fname .. "-selected." .. s 
+            local fname = awesome_tags_fname .. "-selected." .. s 
             f = io.open(fname, "r")
             if f then
                 local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
@@ -1770,6 +1775,23 @@ uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(
 uniarg:key_repeat({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
 
 -- dynamic tagging
+
+awful.key({ modkey, "Ctrl", "Mod1" }, "t", function () 
+  customization.option.tag_persistent_p = not customization.option.tag_persistent_p
+  local msg = nil
+  if customization.option.tag_persistent_p then
+    msg = "Tags will persist across exit/restart."
+  else
+    msg = "Tags will <span fgcolor='red'>NOT</span> persist across exit/restart."
+  end
+  naughty.notify({
+    preset = naughty.config.presets.normal,
+    title="Tag persistence",
+    text=msg,
+    timeout = 1,
+    screen = mouse.screen,
+    })
+end),
 
 --- add/delete/rename
 
@@ -2465,7 +2487,7 @@ customization.func.client_manage_tag = function (c, startup)
     if startup then
         local client_id = c.pid .. '-' .. c.window
 
-        local fname = awesome_restart_tags_fname .. '/' .. client_id
+        local fname = awesome_client_tags_fname .. '/' .. client_id
         local f = io.open(fname, 'r')
 
         if f then
@@ -2502,3 +2524,4 @@ end
 -- XDG style autostart with "dex"
 -- HACK continue
 awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e awesome; touch " .. awesome_autostart_once_fname .. "; fi")
+customization.func.client_opaque_on(nil) -- start xcompmgr

@@ -15,7 +15,8 @@
       - [**layout**](#layout)
       - [multiple screens/multi-head/RANDR](#multiple-screensmulti-headrandr)
       - [misc](#misc)
-    - [**dynamic tagging**](#dynamic-tagging)
+    - [**persistent dynamic tagging**](#persistent-dynamic-tagging)
+      - [tag persistence](#tag-persistence)
       - [**add/delete/rename**](#adddeleterename)
       - [view](#view)
       - [move](#move)
@@ -198,7 +199,13 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Enter</kbd>|launch user terminal||
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>|launch root terminal||
 
-### **dynamic tagging**
+### **persistent dynamic tagging**
+
+#### tag persistence
+
+| key combo | function | comment |
+| --- | --- | --- |
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>t</kbd>|toggle tag persistence|tags persist across exit/restart by default|
 
 #### **add/delete/rename**
 
