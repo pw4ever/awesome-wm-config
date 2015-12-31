@@ -86,7 +86,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`terminator`), and screen setup (`arandr`), etc..
 
 On [Arch Linux][archlinux]:
 
@@ -95,7 +95,7 @@ sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr
 sudo pacman -S --needed --noconfirm alsa-utils gnome-alsamixer xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession lxappearance xarchiver 
-sudo pacman -S --needed --noconfirm sakura conky gksu launchy
+sudo pacman -S --needed --noconfirm terminator conky gksu launchy
 sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina synergy
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 ```
@@ -317,7 +317,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd> | root terminal | gksudo sakura |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd> | root terminal | gksudo terminator |
 |<kbd>Modkey</kbd><kbd>`</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |
@@ -334,7 +334,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| file manager | pcmanfm |
 |<kbd>Modkey</kbd><kbd>e</kbd>| file manager | pcmanfm; MSFT Windows key |
 |<kbd>Modkey</kbd><kbd>E</kbd>| file manager | pcmanfm; MSFT Windows key |
-|<kbd>Modkey</kbd><kbd>Enter</kbd>| user terminal | sakura |
+|<kbd>Modkey</kbd><kbd>Enter</kbd>| user terminal | terminator |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| remote terminal | putty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
