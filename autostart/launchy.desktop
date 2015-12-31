@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Launchy
+TryExec=launchy
+Exec=launchy
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome
