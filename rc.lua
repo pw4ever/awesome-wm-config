@@ -262,7 +262,7 @@ end
 
 --{{
 local tools = {
-    terminal = "terminator",
+    terminal = "sakura",
     system = {
         filemanager = "pcmanfm",
     },
