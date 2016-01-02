@@ -55,7 +55,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.13"
+customization.config.version = "1.7.14"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -262,7 +262,7 @@ end
 
 --{{
 local tools = {
-    terminal = "terminator",
+    terminal = "sakura",
     system = {
         filemanager = "pcmanfm",
     },
