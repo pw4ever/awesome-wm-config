@@ -87,7 +87,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), task manager (`lxtask`), and screen setup (`arandr`), etc..
 
 On [Arch Linux][archlinux]:
 
@@ -137,6 +137,7 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>q</kbd>|quit|"q" for quit; used for apply updated "rc.lua" config file|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
+|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|lxtask|
 
 #### **layout**
 

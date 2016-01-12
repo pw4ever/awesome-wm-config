@@ -1387,7 +1387,7 @@ customization.widgets.cpuusage:set_color({
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
 vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)                   
 do
-    local prog="lxtask"
+    local prog=tools.system.taskmanager
     local started=false
     customization.widgets.cpuusage:buttons(awful.util.table.join(
     awful.button({ }, 1, function ()
@@ -1806,6 +1806,10 @@ awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 awful.key({ modkey }, "\\", customization.func.systeminfo),
 
 awful.key({modkey}, "F1", customization.func.help),
+
+awful.key({ "Ctrl", "Shift" }, "Escape", function ()
+    awful.util.spawn(tools.system.taskmanager)
+end),
 
 --- Layout
 
