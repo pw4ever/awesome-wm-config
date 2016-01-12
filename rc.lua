@@ -55,7 +55,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.14"
+customization.config.version = "1.7.15-dev"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -265,6 +265,7 @@ local tools = {
     terminal = "sakura",
     system = {
         filemanager = "pcmanfm",
+        taskmanager = "lxtask",
     },
     browser = {
     },
@@ -1385,10 +1386,38 @@ customization.widgets.cpuusage:set_color({
   type = "linear", from = { 0, 0 }, to = { 10,0 }, 
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
 vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)                   
+do
+    local prog="lxtask"
+    local started=false
+    customization.widgets.cpuusage:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        if started then
+            awful.util.spawn("pkill -f '" .. prog .. "'")
+        else
+            awful.util.spawn(prog)
+        end
+        started=not started
+    end)
+    ))
+end
 
 customization.widgets.memusage = wibox.widget.textbox()
 vicious.register(customization.widgets.memusage, vicious.widgets.mem,
   "<span fgcolor='yellow'>$1% ($2MB/$3MB)</span>", 3)
+do
+    local prog=tools.system.taskmanager
+    local started=false
+    customization.widgets.memusage:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        if started then
+            awful.util.spawn("pkill -f '" .. prog .. "'")
+        else
+            awful.util.spawn(prog)
+        end
+        started=not started
+    end)
+    ))
+end
 
 customization.widgets.bat0 = awful.widget.progressbar()
 customization.widgets.bat0:set_width(8)
@@ -1399,6 +1428,20 @@ customization.widgets.bat0:set_border_color(nil)
 customization.widgets.bat0:set_color({ type = "linear", from = { 0, 0 }, to = { 0, 10 },
   stops = { { 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}})
 vicious.register(customization.widgets.bat0, vicious.widgets.bat, "$2", 61, "BAT0")
+do
+    local prog="gnome-control-center power"
+    local started=false
+    customization.widgets.bat0:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        if started then
+            awful.util.spawn("pkill -f '" .. prog .. "'")
+        else
+            awful.util.spawn(prog)
+        end
+        started=not started
+    end)
+    ))
+end
 
 customization.widgets.mpdstatus = wibox.widget.textbox()
 customization.widgets.mpdstatus:set_ellipsize("end")
@@ -1418,13 +1461,82 @@ vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
 customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 180, nil)
+do
+    customization.widgets.mpdstatus:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        awful.util.spawn("mpc toggle")
+    end),
+    awful.button({ }, 2, function ()
+        awful.util.spawn("mpc prev")
+    end),
+    awful.button({ }, 3, function ()
+        awful.util.spawn("mpc next")
+    end),
+    awful.button({ }, 4, function ()
+        awful.util.spawn("mpc seek -1%")
+    end),
+    awful.button({ }, 5, function ()
+        awful.util.spawn("mpc seek +1%")
+    end)
+    ))
+end
 
 customization.widgets.volume = wibox.widget.textbox()
 vicious.register(customization.widgets.volume, vicious.widgets.volume,
   "<span fgcolor='cyan'>$1%$2</span>", 1, "Master")
+do
+    local prog="gnome-alsamixer"
+    local started=false
+    customization.widgets.volume:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        if started then
+            awful.util.spawn("pkill -f '" .. prog .. "'")
+        else
+            awful.util.spawn(prog)
+        end
+        started=not started
+    end),
+    awful.button({ }, 2, function ()
+        awful.util.spawn("amixer sset Mic toggle")
+    end),
+    awful.button({ }, 3, function ()
+        awful.util.spawn("amixer sset Master toggle")
+    end),
+    awful.button({ }, 4, function ()
+        awful.util.spawn("amixer sset Master 1%-")
+    end),
+    awful.button({ }, 5, function ()
+        awful.util.spawn("amixer sset Master 1%+")
+    end)
+    ))
+end
 
 customization.widgets.date = wibox.widget.textbox()
 vicious.register(customization.widgets.date, vicious.widgets.date, "%x %X%Z", 1)
+do
+    local prog1="gnome-control-center datetime"
+    local started1=false
+    local prog2="gnome-control-center region"
+    local started2=false
+    customization.widgets.date:buttons(awful.util.table.join(
+    awful.button({ }, 1, function ()
+        if started1 then
+            awful.util.spawn("pkill -f '" .. prog1 .. "'")
+        else
+            awful.util.spawn(prog1)
+        end
+        started1=not started1
+    end),
+    awful.button({ }, 3, function ()
+        if started2 then
+            awful.util.spawn("pkill -f '" .. prog2 .. "'")
+        else
+            awful.util.spawn(prog2)
+        end
+        started2=not started2
+    end)
+    ))
+end
 
 -- Create a wibox for each screen and add it
 
