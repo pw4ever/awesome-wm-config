@@ -87,14 +87,14 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), task manager (`lxtask`), and screen setup (`arandr`), etc..
 
 On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname
 sudo pacman -S --needed --noconfirm alsa-utils gnome-alsamixer xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
-sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter
+sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession lxappearance xarchiver 
 sudo pacman -S --needed --noconfirm sakura terminator conky gksu launchy
 sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina synergy
@@ -137,6 +137,7 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>q</kbd>|quit|"q" for quit; used for apply updated "rc.lua" config file|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
+|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|lxtask|
 
 #### **layout**
 
