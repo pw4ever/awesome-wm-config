@@ -56,7 +56,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.16"
+customization.config.version = "1.7.17-dev"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1031,9 +1031,13 @@ customization.func.tag_goto = function ()
   end)
 end
 
-customization.func.tag_move_forward = function () util.tag.rel_move(awful.tag.selected(), 1) end
+customization.func.tag_move_forward = function () 
+    util.tag.rel_move(awful.tag.selected(), 1) 
+end
 
-customization.func.tag_move_backward = function () util.tag.rel_move(awful.tag.selected(), -1) end
+customization.func.tag_move_backward = function () 
+    util.tag.rel_move(awful.tag.selected(), -1) 
+end
 
 customization.func.tag_move_screen = function (scrdelta) 
     local seltag = awful.tag.selected()
@@ -1045,6 +1049,14 @@ customization.func.tag_move_screen = function (scrdelta)
         awful.tag.viewonly(seltag)
         awful.screen.focus(s)
     end
+end
+
+customization.func.tag_move_screen_prev = function ()
+    customization.func.tag_move_screen(-1)
+end
+
+customization.func.tag_move_screen_next = function ()
+    customization.func.tag_move_screen(1)
 end
 
 do
@@ -1115,6 +1127,17 @@ do
           {
             "move tag &backward", function () 
               customization.func.tag_move_backward()
+            end
+          },
+          { "--- screen ---" },
+          {
+            "move tag to pre&vious window", function () 
+                customization.func.tag_move_screen_prev()
+            end
+          },
+          {
+            "move tag to ne&xt window", function () 
+                customization.func.tag_move_screen_next()
             end
           },
         }
@@ -1838,13 +1861,9 @@ uniarg:key_repeat({ modkey, "Control" }, "k", function () awful.screen.focus_rel
 
 uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
 
-uniarg:key_repeat({ modkey, "Control" }, "o", function ()
-    customization.func.tag_move_screen(1)
-end),
+uniarg:key_repeat({ modkey, "Control" }, "o", customization.func.tag_move_screen_next),
 
-uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", function ()
-    customization.func.tag_move_screen(-1)
-end),
+uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", customization.func.tag_move_screen_prev),
 
 --- misc
 
