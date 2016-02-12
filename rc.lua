@@ -8,6 +8,7 @@ package.path = config_path .. "/modules/?/init.lua;" .. package.path
 local math = require("math")
 local gears = require("gears")
 awful.client = require("awful.client")
+awful.screen = require("awful.screen")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
 awful.ewmh = require("awful.ewmh")
@@ -55,7 +56,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.15"
+customization.config.version = "1.7.16"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1034,6 +1035,18 @@ customization.func.tag_move_forward = function () util.tag.rel_move(awful.tag.se
 
 customization.func.tag_move_backward = function () util.tag.rel_move(awful.tag.selected(), -1) end
 
+customization.func.tag_move_screen = function (scrdelta) 
+    local seltag = awful.tag.selected()
+    local scrcount = capi.screen.count()
+    if seltag then
+        local s = awful.tag.getscreen(seltag) + scrdelta
+        if s > scrcount then s = 1 elseif s < 1 then s = scrcount end
+        awful.tag.setscreen(seltag, s)
+        awful.tag.viewonly(seltag)
+        awful.screen.focus(s)
+    end
+end
+
 do
   local instance = nil
   customization.func.tag_action_menu = function (t)
@@ -1824,6 +1837,14 @@ uniarg:key_repeat({ modkey, "Control" }, "j", function () awful.screen.focus_rel
 uniarg:key_repeat({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
 
 uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
+
+uniarg:key_repeat({ modkey, "Control" }, "o", function ()
+    customization.func.tag_move_screen(1)
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", function ()
+    customization.func.tag_move_screen(-1)
+end),
 
 --- misc
 
