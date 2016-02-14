@@ -56,7 +56,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.17"
+customization.config.version = "1.7.18-dev"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -770,7 +770,7 @@ do
                 instance = nil
             end
         end
-        if instance then
+        if instance and instance.wibox.visible then
             clear_instance()
             return
         end
@@ -1141,7 +1141,7 @@ do
                 instance = nil
             end
         end
-        if instance then
+        if instance and instance.wibox.visible then
             clear_instance()
             return
         end
@@ -1274,7 +1274,7 @@ do
                 instance = nil
             end
         end
-        if instance then
+        if instance and instance.wibox.visible then
             clear_instance()
             return
         end
@@ -1348,7 +1348,7 @@ do
                 instance = nil
             end
         end
-        if instance then
+        if instance and instance.wibox.visible then
             clear_instance()
             return
         end
