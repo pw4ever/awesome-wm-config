@@ -2221,6 +2221,10 @@ uniarg:key_repeat({modkey, "Shift" }, "\\", function()
     awful.util.spawn("kmag")
 end),
 
+uniarg:key_repeat({modkey, "Mod1" }, ";", function() 
+    awful.util.spawn("hotrecoll.py")
+end),
+
 --- the rest
 
 uniarg:key_repeat({}, "XF86AudioPrev", function ()
