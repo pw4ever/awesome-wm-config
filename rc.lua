@@ -2225,6 +2225,15 @@ uniarg:key_repeat({modkey, "Mod1" }, ";", function()
     awful.util.spawn("hotrecoll.py")
 end),
 
+-- Negate/invert screen color.
+awful.key({modkey, "Mod1", "Shift", "Control" }, "n", function() 
+    awful.util.spawn("xcalib -i -a")
+end),
+
+awful.key({modkey, "Mod1", "Shift", "Control" }, "N", function() 
+    awful.util.spawn("xcalib -i -a")
+end),
+
 --- the rest
 
 uniarg:key_repeat({}, "XF86AudioPrev", function ()
