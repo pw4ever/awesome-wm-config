@@ -2227,11 +2227,11 @@ end),
 
 -- Negate/invert screen color.
 awful.key({modkey, "Mod1", "Shift", "Control" }, "n", function() 
-    awful.util.spawn("xcalib -i -a")
+    awful.util.spawn("xcalib -i -a -s " .. ((screen[mouse.screen].index-1)))
 end),
 
 awful.key({modkey, "Mod1", "Shift", "Control" }, "N", function() 
-    awful.util.spawn("xcalib -i -a")
+    awful.util.spawn("xcalib -i -a -s " .. ((screen[mouse.screen].index-1)))
 end),
 
 --- the rest
