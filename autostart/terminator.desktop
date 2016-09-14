@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Terminator
+TryExec=terminator
+Exec=terminator
+Terminal=false
+Type=Application
+StartupNotify=false
+OnlyShowIn=awesome
