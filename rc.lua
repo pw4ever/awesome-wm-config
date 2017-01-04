@@ -56,7 +56,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.18"
+customization.config.version = "1.7.19-dev"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -80,6 +80,7 @@ customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
 customization.option.tag_persistent_p = true
+customization.option.low_battery_notification = true
 
 naughty.config.presets.low.opacity = customization.default.property.low_naughty_opacity
 naughty.config.presets.normal.opacity = customization.default.property.normal_naughty_opacity
@@ -1581,19 +1582,50 @@ do
     ))
 end
 
-customization.widgets.bat0 = awful.widget.progressbar()
-customization.widgets.bat0:set_width(8)
-customization.widgets.bat0:set_height(10)
-customization.widgets.bat0:set_vertical(true)
-customization.widgets.bat0:set_background_color("#494B4F")
-customization.widgets.bat0:set_border_color(nil)
-customization.widgets.bat0:set_color({ type = "linear", from = { 0, 0 }, to = { 0, 10 },
-  stops = { { 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}})
-vicious.register(customization.widgets.bat0, vicious.widgets.bat, "$2", 61, "BAT0")
+customization.widgets.bat = awful.widget.progressbar()
+customization.widgets.bat.last_perc = nil
+customization.widgets.bat.warning_threshold = 10
+customization.widgets.bat.instance = "BAT0"
+customization.widgets.bat:set_width(8)
+customization.widgets.bat:set_height(10)
+customization.widgets.bat:set_vertical(true)
+customization.widgets.bat:set_background_color("#494B4F")
+customization.widgets.bat:set_border_color(nil)
+customization.widgets.bat:set_color({
+    type = "linear", from = { 0, 0 }, to = { 0, 10 },
+    stops = {{ 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}
+})
+vicious.register(customization.widgets.bat, vicious.widgets.bat, 
+    function (bat, args)
+        local perc = args[2]
+        if customization.option.low_battery_notification and perc <= bat.warning_threshold then
+            if (not bat.last_perc) or (perc < bat.last_perc) then
+                -- discharging
+                naughty.notify({
+                    preset = naughty.config.presets.critical,
+                    title = "Low battery: " .. perc .. "%.",
+                    text = "Please connect an AC adapter.",
+                    timeout = 60
+                })
+            elseif perc > bat.last_perc then
+                -- charging
+                naughty.notify({
+                    preset = naughty.config.presets.low,
+                    title = "Battery is charging.",
+                    text = "Current: " .. perc .. "%; warning threshold: " .. bat.warning_threshold .. "%.",
+                    timeout = 5
+                })
+            end
+            bat.last_perc = perc
+        else
+            bat.last_perc = nil
+        end
+        return perc
+    end, 61, customization.widgets.bat.instance)
 do
     local prog="gnome-control-center power"
     local started=false
-    customization.widgets.bat0:buttons(awful.util.table.join(
+    customization.widgets.bat:buttons(awful.util.table.join(
     awful.button({ }, 1, function ()
         if started then
             awful.util.spawn("pkill -f '" .. prog .. "'")
@@ -1801,7 +1833,7 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(customization.widgets.cpuusage)
     right_layout:add(customization.widgets.memusage)
-    right_layout:add(customization.widgets.bat0)
+    right_layout:add(customization.widgets.bat)
     right_layout:add(customization.widgets.mpdstatus)
     --right_layout:add(customization.widgets.audio_volume)
     right_layout:add(customization.widgets.volume)
