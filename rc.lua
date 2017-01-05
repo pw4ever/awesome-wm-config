@@ -1598,7 +1598,8 @@ customization.widgets.bat:set_color({
 vicious.register(customization.widgets.bat, vicious.widgets.bat, 
     function (bat, args)
         local perc = args[2]
-        if customization.option.low_battery_notification_p and perc <= bat.warning_threshold then
+        -- "perc>0" checks for "no battery" (e.g., desktop computer).
+        if customization.option.low_battery_notification_p and perc > 0 and perc <= bat.warning_threshold then
             if (not bat.last_perc) or (perc < bat.last_perc) then
                 -- discharging
                 naughty.notify({
