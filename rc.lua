@@ -56,7 +56,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "1.7.19"
+customization.config.version = "1.7.20"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -80,7 +80,7 @@ customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
 customization.option.tag_persistent_p = true
-customization.option.low_battery_notification = true
+customization.option.low_battery_notification_p = true
 
 naughty.config.presets.low.opacity = customization.default.property.low_naughty_opacity
 naughty.config.presets.normal.opacity = customization.default.property.normal_naughty_opacity
@@ -1598,7 +1598,8 @@ customization.widgets.bat:set_color({
 vicious.register(customization.widgets.bat, vicious.widgets.bat, 
     function (bat, args)
         local perc = args[2]
-        if customization.option.low_battery_notification and perc <= bat.warning_threshold then
+        -- "perc>0" checks for "no battery" (e.g., desktop computer).
+        if customization.option.low_battery_notification_p and perc > 0 and perc <= bat.warning_threshold then
             if (not bat.last_perc) or (perc < bat.last_perc) then
                 -- discharging
                 naughty.notify({
