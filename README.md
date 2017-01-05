@@ -422,8 +422,12 @@ customization.timer.change_wallpaper.timeout=7.5 -- choose a wallpaper every 7.5
 
 | value | type | meaning | default value |
 | --- | --- | --- | --- |
-|customization.option.wallpaper_change_p|boolean|random wallpaper choosing enabled?|true|
-|customization.timer.change_wallpaper.timeout|number|randomly choose a wallpaper from the "wallpaper" directory after every *this number of* seconds|15|
+|`customization.option.wallpaper_change_p`|boolean|random wallpaper choosing enabled?|`true`|
+|`customization.timer.change_wallpaper.timeout`|number|randomly choose a wallpaper from the "wallpaper" directory after every *this number of* seconds|`15`|
+|`customization.option.tag_persistent_p`|boolean|tag persistent across restart? `false` for clean slate|`true`|
+|`customization.option.low_battery_notification_p`|boolean|warn about low battery condition|`true`|
+|`customization.widgets.bat.warning_threshold`|number|low battery notification threshold in percentage|`10`|
+|`customization.widgets.bat.instance`|string|battery under monitor for low battery notification|`"BAT0"`|
 
 ## todo
 
