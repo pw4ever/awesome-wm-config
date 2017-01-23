@@ -1700,7 +1700,7 @@ customization.widgets.volume = wibox.widget.textbox()
 vicious.register(customization.widgets.volume, vicious.widgets.volume,
   "<span fgcolor='cyan'>$1%$2</span>", 1, "Master")
 do
-    local prog="gnome-alsamixer"
+    local prog="pavucontrol"
     local started=false
     customization.widgets.volume:buttons(awful.util.table.join(
     awful.button({ }, 1, function ()
@@ -2437,7 +2437,7 @@ uniarg:key_repeat({ modkey, "Control" }, "Right", function ()
 end),
 
 awful.key({ modkey, "Control" }, "Up", function ()
-    awful.util.spawn("gnome-alsamixer")
+    awful.util.spawn("pavucontrol")
 end),
 
 uniarg:key_numarg({ modkey, "Shift" }, "Left",
