@@ -39,7 +39,7 @@ function uniarg:set (arg)
 end
 
 function uniarg:update_textbox ()
-    local textbox = self.textbox[awful.screen.focused().index]
+    local textbox = self.textbox[awful.screen.focused()]
     if self.active then
         textbox.markup = ('<span fgcolor="red" weight="bold"> UniArg: ' .. self.arg .. ' </span>')
     else

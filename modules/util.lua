@@ -2,7 +2,6 @@ local beautiful = require("beautiful")
 local awful = require("awful")
 local wibox = require("wibox")
 local naughty = require("naughty")
-local timer = require("gears.timer")
 local capi = {
     client = client,
     tag = tag,
@@ -12,6 +11,8 @@ local capi = {
     root = root,
     timer = timer
 }
+
+local timer = require("gears.timer")
 
 -- some of the routines are inspired by Shifty (https://github.com/bioe007/awesome-shifty.git)
 local util = {}
@@ -154,7 +155,7 @@ function util.tag.rename(tag, newp)
         selectall = true
     },
     -- taglist internals -- found with the debug code above
-    util.taglist.taglist[scr.index].children[t.index].widget.children[2].widget,
+    util.taglist.taglist[scr].children[t.index].widget.children[2].widget,
     function (name)
         if name:len() > 0 then
             t.name = name;

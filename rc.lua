@@ -38,7 +38,10 @@ local capi = {
     tag = tag,
     screen = screen,
     client = client,
+    timer = timer,
 }
+
+local timer = require("gears.timer")
 
 -- do not use letters, which shadow access key to menu entry
 awful.menu.menu_keys.down = { "Down", ".", ">", "'", "\"", }
@@ -187,7 +190,7 @@ do
 
     customization.orig.quit = awesome.quit
     awesome.quit = function ()
-        local scr = awful.screen.focused().index
+        local scr = awful.screen.focused()
         awful.prompt.run({prompt = "Quit (type 'yes' to confirm)? "},
         customization.widgets.promptbox[scr].widget,
         function (t)
@@ -205,7 +208,7 @@ do
 
     customization.orig.restart = awesome.restart
     awesome.restart = function ()
-        local scr = awful.screen.focused().index
+        local scr = awful.screen.focused()
         awful.prompt.run({prompt = "Restart (type 'yes' to confirm)? "},
         customization.widgets.promptbox[scr].widget,
         function (t)
@@ -369,7 +372,7 @@ customization.func.system_suspend = function ()
 end
 
 customization.func.system_hibernate = function ()
-    local scr = awful.screen.focused().index
+    local scr = awful.screen.focused()
     awful.prompt.run({prompt = "Hibernate (type 'yes' to confirm)? "},
     customization.widgets.promptbox[scr].widget,
     function (t)
@@ -383,7 +386,7 @@ customization.func.system_hibernate = function ()
 end
 
 customization.func.system_hybrid_sleep = function ()
-    local scr = awful.screen.focused().index
+    local scr = awful.screen.focused()
     awful.prompt.run({prompt = "Hybrid Sleep (type 'yes' to confirm)? "},
     customization.widgets.promptbox[scr].widget,
     function (t)
@@ -397,7 +400,7 @@ customization.func.system_hybrid_sleep = function ()
 end
 
 customization.func.system_reboot = function ()
-    local scr = awful.screen.focused().index
+    local scr = awful.screen.focused()
     awful.prompt.run({prompt = "Reboot (type 'yes' to confirm)? "},
     customization.widgets.promptbox[scr].widget,
     function (t)
@@ -412,7 +415,7 @@ customization.func.system_reboot = function ()
 end
 
 customization.func.system_power_off = function ()
-    local scr = awful.screen.focused().index
+    local scr = awful.screen.focused()
     awful.prompt.run({prompt = "Power Off (type 'yes' to confirm)? "},
     customization.widgets.promptbox[scr].widget,
     function (t)
@@ -454,7 +457,7 @@ customization.func.client_move_prev = function () util.client.rel_send(-1) end
 
 customization.func.client_move_to_tag = function () 
   local keywords = {}
-  local scr = awful.screen.focused().index
+  local scr = awful.screen.focused()
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
     table.insert(keywords, t.name)
   end
@@ -474,7 +477,7 @@ end
 
 customization.func.client_toggle_tag = function (c) 
   local keywords = {}
-  local scr = awful.screen.focused().index
+  local scr = awful.screen.focused()
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
     table.insert(keywords, t.name)
   end
@@ -529,7 +532,7 @@ do
   local client_status = {}
 
   customization.func.client_sideline_left = function (c)
-    local scr = screen[awful.screen.focused().index]
+    local scr = screen[awful.screen.focused()]
     local workarea = scr.workarea
     if client_status[c] == nil then
       client_status[c] = {sidelined=false, geometry=nil}
@@ -547,7 +550,7 @@ do
   end
 
   customization.func.client_sideline_right = function (c)
-    local scr = screen[awful.screen.focused().index]
+    local scr = screen[awful.screen.focused()]
     local workarea = scr.workarea
     if client_status[c] == nil then
       client_status[c] = {sidelined=false, geometry=nil}
@@ -566,7 +569,7 @@ do
   end
 
   customization.func.client_sideline_top = function (c)
-    local scr = screen[awful.screen.focused().index]
+    local scr = screen[awful.screen.focused()]
     local workarea = scr.workarea
     if client_status[c] == nil then
       client_status[c] = {sidelined=false, geometry=nil}
@@ -584,7 +587,7 @@ do
   end
 
   customization.func.client_sideline_bottom = function (c)
-    local scr = screen[awful.screen.focused().index]
+    local scr = screen[awful.screen.focused()]
     local workarea = scr.workarea
     if client_status[c] == nil then
       client_status[c] = {sidelined=false, geometry=nil}
@@ -622,7 +625,7 @@ do
     if by then
       cg.width = cg.width + by
     else
-      local workarea = screen[awful.screen.focused().index].workarea
+      local workarea = screen[awful.screen.focused()].workarea
       local rmargin = math.max( (workarea.x + workarea.width - cg.x - cg.width), 0)
       local delta = math.floor(rmargin/7)
       if delta ~= 0 then
@@ -652,7 +655,7 @@ do
     if by then
       cg.height = cg.height + by
       else
-    local workarea = screen[awful.screen.focused().index].workarea
+    local workarea = screen[awful.screen.focused()].workarea
     local bmargin = math.max( (workarea.y + workarea.height - cg.y - cg.height), 0)
     local delta = math.floor(bmargin/7)
     if delta ~= 0 then
@@ -1052,7 +1055,7 @@ end
 customization.func.tag_add_after = function ()
     local focused = awful.screen.focused()
     local scr = focused
-    local sel_idx = focused.selected_tag.index
+    local sel_idx = focused.selected_tag and focused.selected_tag.index or 0
     local t = util.tag.add(nil, 
     {
         screen = scr,
@@ -1067,7 +1070,7 @@ end
 customization.func.tag_add_before = function ()
     local focused = awful.screen.focused()
     local scr = focused.index
-    local sel_idx = focused.selected_tag.index
+    local sel_idx = focused.selected_tag and focused.selected_tag.index or 1
     local t = util.tag.add(nil, 
     {
         screen = scr,
@@ -1080,7 +1083,8 @@ customization.func.tag_add_before = function ()
 end
 
 customization.func.tag_delete = function ()
-    awful.screen.focused().selected_tag:delete()
+    local sel = awful.screen.focused().selected_tag
+    if sel then sel:delete() end
 end
 
 customization.func.tag_rename = function ()
@@ -1097,7 +1101,7 @@ customization.func.tag_last = awful.tag.history.restore
 
 customization.func.tag_goto = function () 
   local keywords = {}
-  local scr = awful.screen.focused().index
+  local scr = awful.screen.focused()
   for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
     table.insert(keywords, t.name)
   end
@@ -1319,7 +1323,7 @@ customization.func.clients_on_tag_prompt = function ()
   local t = awful.tag.selected()
   if t then
     local keywords = {}
-    local scr = awful.screen.focused().index
+    local scr = awful.screen.focused()
     for _, c in pairs(t:clients()) do
       if c.focusable and c.pid ~= 0 then
         local k = c.name .. " ~" .. tostring(c.pid) or ""
@@ -1392,7 +1396,7 @@ customization.func.all_clients_prompt = function ()
   local clients = {}
   local next = next
   local keywords = {}
-  local scr = awful.screen.focused().index
+  local scr = awful.screen.focused()
   for _, c in pairs(client.get()) do
     if c.focusable and c.pid ~= 0 then
       local k = c.name .. " ~" .. tostring(c.pid) or ""
@@ -1455,7 +1459,7 @@ do
             title="awesome info",
             text=info,
             timeout = 10,
-            screen = awful.screen.focused().index,
+            screen = awful.screen.focused(),
         })
         awesome.composite_manager_running = tmp
     end
@@ -1479,7 +1483,7 @@ do
             title="help about configuration",
             text=text,
             timeout = 20,
-            screen = awful.screen.focused().index,
+            screen = awful.screen.focused(),
         })
         awful.util.spawn_with_shell(tools.browser.primary .. " '" .. customization.config.help_url .. "'")
     end
@@ -1805,7 +1809,42 @@ end))
 -- start bashets
 bashets.start()
 
-for s = 1, screen.count() do
+local function set_wallpaper(s)
+    -- Wallpaper
+    if beautiful.wallpaper then
+        local wallpaper = beautiful.wallpaper
+        -- If wallpaper is a function, call it with the screen
+        if type(wallpaper) == "function" then
+            wallpaper = wallpaper(s)
+        end
+        gears.wallpaper.maximized(wallpaper, s, true)
+    end
+end
+
+-- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+screen.connect_signal("property::geometry", set_wallpaper)
+
+local prev_scr_count = nil
+awful.screen.connect_for_each_screen(
+function(s)
+    -- Wallpaper
+    set_wallpaper(s)
+    -- Set a default tag is there is none.
+    timer.delayed_call(function () 
+        local si = s.index
+        if #s.tags < 1 then
+            local tag = awful.tag.add("main" .. si,
+            {
+                screen = si,
+                layout = customization.default.property.layout,
+                mwfact = customization.default.property.mwfact,
+                nmaster = customization.default.property.nmaster,
+                ncol = customization.default.property.ncol, 
+            } 
+            )
+            awful.tag.viewonly(tag)
+        end
+    end)
     -- Create a promptbox for each screen
     customization.widgets.promptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -1857,6 +1896,7 @@ for s = 1, screen.count() do
 
     customization.widgets.wibox[s]:set_widget(layout)
 end
+)
 
 util.taglist.set_taglist(customization.widgets.taglist)
 -- }}}
@@ -1883,59 +1923,71 @@ do
             for s = 1, old_scr_count do
                 local count_index = math.min(s, scr_count)
                 local fname = awesome_tags_fname .. "." .. s
-                for tagname in io.lines(fname) do
-                    local tag = awful.tag.add(tagname,
-                    {
-                        screen = count_index,
-                        layout = customization.default.property.layout,
-                        mwfact = customization.default.property.mwfact,
-                        nmaster = customization.default.property.nmaster,
-                        ncol = customization.default.property.ncol,
-                    }
-                    )
-                    awful.tag.move(count[count_index], tag)
-
-                    count[count_index] = count[count_index]+1
+                local f = io.open(fname, "r")
+                if f then 
+                    f:close()
+                    for tagname in io.lines(fname) do
+                        local tag = awful.tag.add(tagname,
+                        {
+                            screen = count_index,
+                            layout = customization.default.property.layout,
+                            mwfact = customization.default.property.mwfact,
+                            nmaster = customization.default.property.nmaster,
+                            ncol = customization.default.property.ncol,
+                        }
+                        )
+                        awful.tag.move(count[count_index], tag)
+                        count[count_index] = count[count_index]+1
+                    end
                 end
                 os.remove(fname)
             end
         end
 
         for s = 1, screen.count() do
-            local fname = awesome_tags_fname .. "-selected." .. s 
-            f = io.open(fname, "r")
-            if f then
-                local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
-                if tag then
-                    awful.tag.viewonly(tag)
+            local tags = awful.tag.gettags(s)
+            if #tags >= 1 then
+                local fname = awesome_tags_fname .. "-selected." .. s 
+                f = io.open(fname, "r")
+                if f then
+                    local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
+                    if tag then
+                        awful.tag.viewonly(tag)
+                    end
+                    f:close()
                 end
-                f:close()
+                os.remove(fname)
+            else
+                local tag = awful.tag.add("main" .. s,
+                {
+                    screen = s,
+                    layout = customization.default.property.layout,
+                    mwfact = customization.default.property.mwfact,
+                    nmaster = customization.default.property.nmaster,
+                    ncol = customization.default.property.ncol, 
+                } 
+                )
+                awful.tag.viewonly(tag)
             end
-            os.remove(fname)
         end
 
     else
 
-        local tag = awful.tag.add("genesis",
-        {
-            screen = 1,
-            layout = customization.default.property.layout,
-            mwfact = customization.default.property.mwfact,
-            nmaster = customization.default.property.nmaster,
-            ncol = customization.default.property.ncol, 
-        } 
-        )
-        awful.tag.viewonly(tag)
-
-        awful.tag.add("nil",
-        {
-            screen = 2,
-            layout = customization.default.property.layout,
-            mwfact = customization.default.property.mwfact,
-            nmaster = customization.default.property.nmaster,
-            ncol = customization.default.property.ncol, 
-        } 
-        ) 
+        for s = 1, screen.count() do
+            local tags = awful.tag.gettags(s)
+            if #tags < 1 then
+                local tag = awful.tag.add("main" .. s,
+                {
+                    screen = s,
+                    layout = customization.default.property.layout,
+                    mwfact = customization.default.property.mwfact,
+                    nmaster = customization.default.property.nmaster,
+                    ncol = customization.default.property.ncol, 
+                } 
+                )
+                awful.tag.viewonly(tag)
+            end
+        end
 
     end
 end
@@ -1966,7 +2018,7 @@ awful.key({ modkey }, "u",
 function ()
   uniarg:activate()
   awful.prompt.run({prompt = "Universal Argument: ", text='' .. uniarg.arg, selectall=true},
-    customization.widgets.promptbox[awful.screen.focused().index].widget,
+    customization.widgets.promptbox[awful.screen.focused()].widget,
     function (t)
       uniarg.persistent = false
       local n = t:match("%d+")
@@ -1986,7 +2038,7 @@ awful.key({ modkey, "Shift" }, "u",
 function ()
   uniarg:activate()
   awful.prompt.run({prompt = "Persistent Universal Argument: ", text='' .. uniarg.arg, selectall=true},
-    customization.widgets.promptbox[awful.screen.focused().index].widget,
+    customization.widgets.promptbox[awful.screen.focused()].widget,
     function (t)
       uniarg.persistent = true
       local n = t:match("%d+")
@@ -2038,7 +2090,7 @@ uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", customization.func.tag_mo
 awful.key({modkey}, "F2", function()
     awful.prompt.run(
     {prompt = "Run: "},
-    customization.widgets.promptbox[awful.screen.focused().index].widget,
+    customization.widgets.promptbox[awful.screen.focused()].widget,
     awful.util.spawn, awful.completion.shell,
     awful.util.getdir("cache") .. "/history"
     )
@@ -2047,7 +2099,7 @@ end),
 awful.key({modkey}, "r", function()
     awful.prompt.run(
     {prompt = "Run: "},
-    customization.widgets.promptbox[awful.screen.focused().index].widget,
+    customization.widgets.promptbox[awful.screen.focused()].widget,
     awful.util.spawn, awful.completion.shell,
     awful.util.getdir("cache") .. "/history"
     )
@@ -2061,7 +2113,7 @@ end),
 awful.key({modkey}, "F4", function()
     awful.prompt.run(
     {prompt = "Run Lua code: "},
-    customization.widgets.promptbox[awful.screen.focused().index].widget,
+    customization.widgets.promptbox[awful.screen.focused()].widget,
     awful.util.eval, nil,
     awful.util.getdir("cache") .. "/history_eval"
     )
@@ -2113,7 +2165,7 @@ awful.key({ modkey, "Ctrl", "Mod1" }, "t", function ()
     title="Tag persistence",
     text=msg,
     timeout = 1,
-    screen = awful.screen.focused().index,
+    screen = awful.screen.focused(),
     })
 end),
 
@@ -2536,11 +2588,11 @@ for i = 1, 10 do
     awful.key({ modkey }, keycode,
     function ()
         local tag
-        local tags = awful.tag.gettags(awful.screen.focused().index)
+        local tags = awful.tag.gettags(awful.screen.focused())
         if i <= #tags then
             tag = tags[i]
         else
-            local scr = awful.screen.focused().index
+            local scr = awful.screen.focused()
             awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
             customization.widgets.promptbox[scr].widget,
             function (text)
@@ -2561,11 +2613,11 @@ for i = 1, 10 do
     awful.key({ modkey, "Control" }, keycode,
     function ()
         local tag
-        local tags = awful.tag.gettags(awful.screen.focused().index)
+        local tags = awful.tag.gettags(awful.screen.focused())
         if i <= #tags then
             tag = tags[i]
         else
-            local scr = awful.screen.focused().index
+            local scr = awful.screen.focused()
             awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
             customization.widgets.promptbox[scr].widget,
             function (text)
@@ -2593,7 +2645,7 @@ for i = 1, 10 do
             if i <= #tags then
                 tag = tags[i]
             else
-                local scr = awful.screen.focused().index
+                local scr = awful.screen.focused()
                 awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
                 customization.widgets.promptbox[scr].widget,
                 function (text)
@@ -2622,7 +2674,7 @@ for i = 1, 10 do
             if i <= #tags then
                 tag = tags[i]
             else
-                local scr = awful.screen.focused().index
+                local scr = awful.screen.focused()
                 awful.prompt.run({prompt = "<span fgcolor='red'>new tag: </span>"},
                 customization.widgets.promptbox[scr].widget,
                 function (text)
