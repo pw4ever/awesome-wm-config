@@ -61,7 +61,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.1"
+customization.config.version = "4.0.2"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2726,6 +2726,8 @@ awful.rules.rules = {
             keys = clientkeys,
             buttons = clientbuttons,
             opacity = customization.default.property.default_naughty_opacity,
+            screen = awful.screen.preferred,
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
         }
     },
 
