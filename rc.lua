@@ -2726,6 +2726,8 @@ awful.rules.rules = {
             keys = clientkeys,
             buttons = clientbuttons,
             opacity = customization.default.property.default_naughty_opacity,
+            screen = awful.screen.preferred,
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
         }
     },
 
