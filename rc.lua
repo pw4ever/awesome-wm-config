@@ -61,7 +61,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.2"
+customization.config.version = "4.0.3"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1542,8 +1542,17 @@ mymainmenu = awful.menu({
   }
 })
 
-customization.widgets.launcher = awful.widget.launcher({ image = beautiful.awesome_icon,
-menu = mymainmenu })
+-- Keyboard map indicator and switcher
+customization.widgets.keyboardlayout = awful.widget.keyboardlayout()
+
+-- Create a textclock widget
+customization.widgets.textclock = wibox.widget.textclock()
+
+-- Launcher
+customization.widgets.launcher = awful.widget.launcher({ 
+    image = beautiful.awesome_icon,
+    menu = mymainmenu,
+})
 
 -- }}}
 
@@ -1691,7 +1700,7 @@ customization.widgets.volume = wibox.widget.textbox()
 vicious.register(customization.widgets.volume, vicious.widgets.volume,
   "<span fgcolor='cyan'>$1%$2</span>", 1, "Master")
 do
-    local prog="gnome-alsamixer"
+    local prog="pavucontrol"
     local started=false
     customization.widgets.volume:buttons(awful.util.table.join(
     awful.button({ }, 1, function ()
@@ -1851,11 +1860,11 @@ function(s)
     -- We need one layoutbox per screen.
     customization.widgets.layoutbox[s] = awful.widget.layoutbox(s)
     customization.widgets.layoutbox[s]:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-    awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-    awful.button({ }, 4, function () awful.layout.inc(layouts, -1) end),
-    awful.button({ }, 5, function () awful.layout.inc(layouts, 1) end),
-    nil
+        awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+        awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+        awful.button({ }, 4, function () awful.layout.inc(layouts, -1) end),
+        awful.button({ }, 5, function () awful.layout.inc(layouts, 1) end),
+        nil
     ))
     -- Create a taglist widget
     customization.widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, customization.widgets.taglist.buttons)
@@ -1863,38 +1872,37 @@ function(s)
     -- Create a textbox showing current universal argument
     customization.widgets.uniarg[s] = wibox.widget.textbox()
     -- Create a tasklist widget
-    customization.widgets.tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customization.widgets.tasklist.buttons)
+    customization.widgets.tasklist[s] = awful.widget.tasklist(
+        s, awful.widget.tasklist.filter.currenttags, customization.widgets.tasklist.buttons
+        )
 
     -- Create the wibox
     customization.widgets.wibox[s] = awful.wibox({ position = "top", screen = s })
 
-    -- Widgets that are aligned to the left
-    local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(customization.widgets.launcher)
-    left_layout:add(customization.widgets.taglist[s])
-    left_layout:add(customization.widgets.uniarg[s])
-    left_layout:add(customization.widgets.promptbox[s])
+    customization.widgets.wibox[s]:setup {
+        layout = wibox.layout.align.horizontal,
+        { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            customization.widgets.launcher,
+            customization.widgets.taglist[s],
+            customization.widgets.uniarg[s],
+            customization.widgets.promptbox[s],
+        },
+        customization.widgets.tasklist[s], -- Middle widget
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            customization.widgets.keyboardlayout,
+            wibox.widget.systray(),
+            customization.widgets.cpuusage,
+            customization.widgets.memusage,
+            customization.widgets.bat,
+            customization.widgets.mpdstatus,
+            customization.widgets.volume,
+            customization.widgets.textclock,
+            s.mylayoutbox,
+        },
+    }
 
-    -- Widgets that are aligned to the right
-    local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(customization.widgets.cpuusage)
-    right_layout:add(customization.widgets.memusage)
-    right_layout:add(customization.widgets.bat)
-    right_layout:add(customization.widgets.mpdstatus)
-    --right_layout:add(customization.widgets.audio_volume)
-    right_layout:add(customization.widgets.volume)
-    right_layout:add(customization.widgets.date)
-    --right_layout:add(customization.widgets.textclock)
-    right_layout:add(customization.widgets.layoutbox[s])
-
-    -- Now bring it all together (with the tasklist in the middle)
-    local layout = wibox.layout.align.horizontal()
-    layout:set_left(left_layout)
-    layout:set_middle(customization.widgets.tasklist[s])
-    layout:set_right(right_layout)
-
-    customization.widgets.wibox[s]:set_widget(layout)
 end
 )
 
@@ -2429,7 +2437,7 @@ uniarg:key_repeat({ modkey, "Control" }, "Right", function ()
 end),
 
 awful.key({ modkey, "Control" }, "Up", function ()
-    awful.util.spawn("gnome-alsamixer")
+    awful.util.spawn("pavucontrol")
 end),
 
 uniarg:key_numarg({ modkey, "Shift" }, "Left",
