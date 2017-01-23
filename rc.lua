@@ -1877,7 +1877,7 @@ function(s)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
+    if s.index == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(customization.widgets.cpuusage)
     right_layout:add(customization.widgets.memusage)
     right_layout:add(customization.widgets.bat)
