@@ -20,6 +20,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
+local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- vicious widgets
 local vicious = require("vicious")
@@ -1504,6 +1505,7 @@ mysystemmenu = {
 -- Create a launcher widget and a main menu
 myawesomemenu = {
     --{ "manual", tools.terminal .. " -e man awesome" },
+    { "hotkeys", function() return false, hotkeys_popup.show_help end},
     { "&edit config", tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
     { "&restart", awesome.restart },
     { "&quit", awesome.quit }
@@ -2005,7 +2007,9 @@ awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
 awful.key({ modkey }, "\\", customization.func.systeminfo),
 
-awful.key({modkey}, "F1", customization.func.help),
+awful.key({ modkey }, "F1", customization.func.help),
+
+awful.key({ modkey, "Shift" }, "F1", hotkeys_popup.show_help),
 
 awful.key({ "Ctrl", "Shift" }, "Escape", function ()
     awful.util.spawn(tools.system.taskmanager)
