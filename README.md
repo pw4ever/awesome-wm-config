@@ -42,6 +42,10 @@
 
 # [awesome Window Manager][awesome] configuration
 
+Please use the branch that **matches your Awesome version**:
+* [Awesome 3.x](https://github.com/pw4ever/awesome-wm-config/tree/awesome-3.x).
+* [Awesome 4.x](https://github.com/pw4ever/awesome-wm-config/tree/awesome-4.x).
+
 <img alt="a screenshot of it in action" src="https://raw.githubusercontent.com/pw4ever/awesome-wm-config/master/screenshot/pengw-awesome-screenshot-20150215.png" width="960px" />
 
 ## intro

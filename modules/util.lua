@@ -2,6 +2,7 @@ local beautiful = require("beautiful")
 local awful = require("awful")
 local wibox = require("wibox")
 local naughty = require("naughty")
+local timer = require("gears.timer")
 local capi = {
     client = client,
     tag = tag,
@@ -28,10 +29,11 @@ util.client = {}
 
 function util.client.rel_send(rel_idx)
     local client = capi.client.focus
+    local focused = awful.screen.focused()
     if client then 
-        local scr = capi.client.focus.screen or capi.mouse.screen
-        local sel = awful.tag.selected(scr)
-        local sel_idx = awful.tag.getidx(sel)
+        local scr = client.screen or focused.index
+        local sel = focused.selected_tag
+        local sel_idx = sel.index
         local tags = awful.tag.gettags(scr)
         local target = awful.util.cycle(#tags, sel_idx + rel_idx)
         awful.client.movetotag(tags[target], client)
@@ -82,22 +84,22 @@ end
 function util.tag.add(name, props)
     props = props or 
     { 
-        screen = capi.mouse.screen,
+        screen = awful.screen.focused(),
         index = 1,
     }
 
-    local index=props.index
-
     local t = awful.tag.add(name or " ", props)
     if t then
-        awful.tag.move(index or 1, t)
-        awful.tag.setscreen(t, props.screen)
-        awful.tag.viewonly(t)
+        t.index = props.index
+        t.screen = props.screen
+        t:view_only()
     end
 
     -- if add the tag interactively
     if not name then
-        util.tag.rename(t, true)
+        -- !!! awful.wdiget.taglist update logic mandates this
+        -- !!! lib/awful/widget/taglist.lua: taglist.new > w._do_taglist_update()
+        timer.delayed_call(function () util.tag.rename(t, true) end)
     end
 
     return t
@@ -108,16 +110,16 @@ end
 --@param newp: boolean; true if the tag is new
 function util.tag.rename(tag, newp)
     local theme = beautiful.get()
-    local t = tag or awful.tag.selected(capi.mouse.screen)
+    local t = tag
     if not t then return end
-    local scr = t.screen or capi.mouse.screen
+    local scr = t.screen or awful.screen.focused()
     if not scr then return end
     local bg = nil
     local fg = nil
     local text = t.name
     local before = t.name
 
-    if t == awful.tag.selected(scr) then
+    if t == scr.selected_tag then
         bg = theme.bg_focus or '#535d6c'
         fg = theme.fg_urgent or '#ffffff'
     else
@@ -129,17 +131,18 @@ function util.tag.rename(tag, newp)
     --[[
     do
         local key = ""
-        for k, _ in pairs(util.taglist.taglist[scr].widgets[awful.tag.getidx(t)].widget.widgets[2].widget) do
+        for k, _ in pairs(util.taglist.taglist[scr.index].children[t.index].widget.children[2].widget) do
             key = key .. "\n" .. k
         end
         naughty.notify(
         {
-            title=scr,
             text=key,
-            timeout=20,
+            timeout=300,
         }
         ) 
     end
+
+    naughty.notify({text = "rename: " .. t.index .. " " .. #t.screen.tags .. " " .. #util.taglist.taglist[t.screen.index].children})
     --]]
 
     awful.prompt.run(
@@ -151,7 +154,7 @@ function util.tag.rename(tag, newp)
         selectall = true
     },
     -- taglist internals -- found with the debug code above
-    util.taglist.taglist[scr].widgets[awful.tag.getidx(t)].widget.widgets[2].widget,
+    util.taglist.taglist[scr.index].children[t.index].widget.children[2].widget,
     function (name)
         if name:len() > 0 then
             t.name = name;
@@ -163,13 +166,22 @@ function util.tag.rename(tag, newp)
     function ()
         if t.name == before then
             if newp then
-                awful.tag.delete(t)
+                t:delete()
             end
         else
             t:emit_signal("property::name")
         end
     end
     )
+end
+
+--pread
+--@param cmd: string; Shell command whose output will be piped in.
+function util.pread(cmd)
+    local fp = io.popen(cmd, "r")
+    local result = fp:read("*a")
+    fp:close()
+    return result
 end
 
 return util
