@@ -61,7 +61,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.3"
+customization.config.version = "4.0.4"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1898,7 +1898,7 @@ function(s)
             customization.widgets.bat,
             customization.widgets.mpdstatus,
             customization.widgets.volume,
-            customization.widgets.textclock,
+            customization.widgets.date,
             s.mylayoutbox,
         },
     }
