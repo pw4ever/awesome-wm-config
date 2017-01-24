@@ -1898,7 +1898,7 @@ function(s)
             customization.widgets.bat,
             customization.widgets.mpdstatus,
             customization.widgets.volume,
-            customization.widgets.textclock,
+            customization.widgets.date,
             s.mylayoutbox,
         },
     }
