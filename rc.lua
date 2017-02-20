@@ -1899,7 +1899,7 @@ function(s)
             customization.widgets.mpdstatus,
             customization.widgets.volume,
             customization.widgets.date,
-            s.mylayoutbox,
+            customization.widgets.layoutbox[s],
         },
     }
 
