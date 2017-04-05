@@ -456,44 +456,44 @@ customization.func.client_move_next = function () util.client.rel_send(1) end
 customization.func.client_move_prev = function () util.client.rel_send(-1) end
 
 customization.func.client_move_to_tag = function () 
-  local keywords = {}
-  local scr = awful.screen.focused()
-  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-    table.insert(keywords, t.name)
-  end
-  awful.prompt.run({prompt = "Move client to tag: "},
-  customization.widgets.promptbox[scr].widget,
-  function (t)
-    local tag = util.tag.name2tag(t)
-    if tag then
-      awful.client.movetotag(tag)
+    local keywords = {}
+    local scr = awful.screen.focused()
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+        table.insert(keywords, t.name)
     end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, keywords)
-  end,
-  nil)
+    awful.prompt.run({prompt = "Move client to tag: "},
+    customization.widgets.promptbox[scr].widget,
+    function (t)
+        local tag = util.tag.name2tag(t)
+        if tag then
+            awful.client.movetotag(tag)
+        end
+    end,
+    function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+    end,
+    nil)
 end
 
 customization.func.client_toggle_tag = function (c) 
-  local keywords = {}
-  local scr = awful.screen.focused()
-  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-    table.insert(keywords, t.name)
-  end
-  local c = c or client.focus
-  awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
-  customization.widgets.promptbox[scr].widget,
-  function (t)
-    local tag = util.tag.name2tag(t)
-    if tag then
-      awful.client.toggletag(tag)
+    local keywords = {}
+    local scr = awful.screen.focused()
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+        table.insert(keywords, t.name)
     end
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, keywords)
-  end,
-  nil)
+    local c = c or client.focus
+    awful.prompt.run({prompt = "Toggle tag for " .. c.name .. ": "},
+    customization.widgets.promptbox[scr].widget,
+    function (t)
+        local tag = util.tag.name2tag(t)
+        if tag then
+            awful.client.toggletag(tag)
+        end
+    end,
+    function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+    end,
+    nil)
 end
 
 customization.func.client_toggle_titlebar = function ()  
@@ -1100,19 +1100,22 @@ customization.func.tag_view_next = awful.tag.viewnext
 customization.func.tag_last = awful.tag.history.restore
 
 customization.func.tag_goto = function () 
-  local keywords = {}
-  local scr = awful.screen.focused()
-  for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
-    table.insert(keywords, t.name)
-  end
-  awful.prompt.run({prompt = "Goto tag: "},
-  customization.widgets.promptbox[scr].widget,
-  function (t)
-    awful.tag.viewonly(util.tag.name2tag(t))
-  end,
-  function (t, p, n)
-    return awful.completion.generic(t, p, n, keywords)
-  end)
+    local keywords = {}
+    local scr = awful.screen.focused()
+    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+        table.insert(keywords, t.name)
+    end
+    awful.prompt.run({prompt = "Goto tag: "},
+    customization.widgets.promptbox[scr].widget,
+    function (t)
+        local tag = util.tag.name2tag(t)
+        if tag then
+            awful.tag.viewonly(tag)
+        end
+    end,
+    function (t, p, n)
+        return awful.completion.generic(t, p, n, keywords)
+    end)
 end
 
 customization.func.tag_move_forward = function () 
@@ -2024,36 +2027,36 @@ globalkeys = awful.util.table.join(
 
 awful.key({ modkey }, "u",
 function ()
-  uniarg:activate()
-  awful.prompt.run({prompt = "Universal Argument: ", text='' .. uniarg.arg, selectall=true},
+    uniarg:activate()
+    awful.prompt.run({prompt = "Universal Argument: ", text='' .. uniarg.arg, selectall=true},
     customization.widgets.promptbox[awful.screen.focused()].widget,
     function (t)
-      uniarg.persistent = false
-      local n = t:match("%d+")
-      if n then
-        uniarg:set(n)
-        uniarg:update_textbox()
-        if uniarg.arg>1 then
-          return
+        uniarg.persistent = false
+        local n = t:match("%d+")
+        if n then
+            uniarg:set(n)
+            uniarg:update_textbox()
+            if uniarg.arg>1 then
+                return
+            end
         end
-      end
-      uniarg:deactivate()
+        uniarg:deactivate()
     end)
 end),
 
 -- persistent universal arguments
 awful.key({ modkey, "Shift" }, "u",
 function ()
-  uniarg:activate()
-  awful.prompt.run({prompt = "Persistent Universal Argument: ", text='' .. uniarg.arg, selectall=true},
+    uniarg:activate()
+    awful.prompt.run({prompt = "Persistent Universal Argument: ", text='' .. uniarg.arg, selectall=true},
     customization.widgets.promptbox[awful.screen.focused()].widget,
     function (t)
-      uniarg.persistent = true
-      local n = t:match("%d+")
-      if n then
-        uniarg:set(n)
-      end
-      uniarg:update_textbox()
+        uniarg.persistent = true
+        local n = t:match("%d+")
+        if n then
+            uniarg:set(n)
+        end
+        uniarg:update_textbox()
     end)
 end),
 
