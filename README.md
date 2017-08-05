@@ -101,7 +101,7 @@ sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udisks udiskie lxsession lxappearance xarchiver 
 sudo pacman -S --needed --noconfirm sakura terminator conky gksu launchy
-sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina synergy
+sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty zeal remmina synergy
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 ```
 
@@ -356,6 +356,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | chromium |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| secondary browser | virtualbox |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>z</kbd>| doc viewer | zeal |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>|screen magnifier | kmag |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 

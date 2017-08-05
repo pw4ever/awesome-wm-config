@@ -2322,6 +2322,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "z", function ()
+    awful.util.spawn("zeal")
+end),
+
 uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
     awful.util.spawn("kmag")
 end),
