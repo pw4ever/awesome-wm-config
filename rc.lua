@@ -2393,6 +2393,7 @@ awful.key({}, "XF86WebCam", function ()
     awful.util.spawn("cheese")
 end),
 
+--[[
 uniarg:key_numarg({}, "XF86MonBrightnessUp",
 function ()
   awful.util.spawn("xbacklight -inc 10")
@@ -2408,6 +2409,7 @@ end,
 function (n)
   awful.util.spawn("xbacklight -dec " .. n)
 end),
+--]]
 
 awful.key({}, "XF86WLAN", function ()
     awful.util.spawn("nm-connection-editor")
