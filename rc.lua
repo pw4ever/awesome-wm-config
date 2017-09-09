@@ -517,8 +517,7 @@ customization.func.client_maximize_vertical = function (c)
 end
 
 customization.func.client_maximize = function (c) 
-  customization.func.client_maximize_horizontal(c)
-  customization.func.client_maximize_vertical(c)
+  c.maximized = not c.maximized
 end
 
 customization.func.client_minimize = function (c) 
