@@ -61,7 +61,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.7"
+customization.config.version = "4.0.8"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -517,8 +517,7 @@ customization.func.client_maximize_vertical = function (c)
 end
 
 customization.func.client_maximize = function (c) 
-  customization.func.client_maximize_horizontal(c)
-  customization.func.client_maximize_vertical(c)
+  c.maximized = not c.maximized
 end
 
 customization.func.client_minimize = function (c) 
