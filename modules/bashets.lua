@@ -279,7 +279,7 @@ end
 --- Start widget updates
 function bashets.start()
 	-- Create timers table if not initialized or empty
-	if (not timers) or table.maxn(timers) == 0 then
+	if (not timers) or #timers == 0 then
 		util.create_timers_table()
 	end
 	-- Start all timers
