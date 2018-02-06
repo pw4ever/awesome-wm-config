@@ -61,7 +61,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.10"
+customization.config.version = "4.0.11"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1514,7 +1514,9 @@ myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end},
     { "&edit config", tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua"  },
     { "&restart", awesome.restart },
-    { "&quit", awesome.quit }
+    { "forcibly restart", customization.orig.restart },
+    { "&quit", awesome.quit },
+    { "forcibly quit", function () customization.orig.quit() end },
 }
 
 mymainmenu = awful.menu({
@@ -2065,7 +2067,11 @@ end),
 
 awful.key({ modkey, "Control" }, "r", awesome.restart),
 
+awful.key({ modkey, "Control", "Shift" }, "r", customization.orig.restart),
+
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+
+awful.key({ modkey, "Shift", "Control" }, "q", customization.orig.quit),
 
 awful.key({ modkey }, "\\", customization.func.systeminfo),
 

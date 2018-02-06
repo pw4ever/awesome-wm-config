@@ -138,7 +138,9 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 | key combo | function | comment |
 | --- | --- | --- |
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>r</kbd>|restart|"r" for restart; used for apply updated "rc.lua" config file|
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>q</kbd>|quit|"q" for quit; used for apply updated "rc.lua" config file|
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>r</kbd>|restart|"r" for restart; restart without confirming with user|
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>q</kbd>|quit|"q" for quit; exit the current Awesome session|
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>q</kbd>|forcibly quit|"q" for quit; quit without confirming with user|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
 |<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|lxtask|
