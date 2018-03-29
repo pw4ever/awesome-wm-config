@@ -1,4 +1,8 @@
 local edid = require('foggy.edid')
+---[[ debug
+local naughty = require("naughty")
+--]] debug
+
 local cmd
 
 local status, cmd_fun = pcall(function()
@@ -146,6 +150,14 @@ function xrandr.info(fp)
       local res 
       res = {line:find(pat)}
       if #res > 0 then
+        ---[[ debug
+        naughty.notify({
+            preset = naughty.config.presets.normal,
+            title=pat,
+            text=line,
+            timeout = 600
+        })
+        --]] debug
         table.remove(res, 1)
         table.remove(res, 1)
         func(res)

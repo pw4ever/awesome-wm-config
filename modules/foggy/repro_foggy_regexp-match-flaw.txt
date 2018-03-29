@@ -1,0 +1,79 @@
+Screen 0: minimum 8 x 8, current 1080 x 1920, maximum 32767 x 32767
+DP1 disconnected primary (normal left inverted right x axis y axis)
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+DP2 disconnected (normal left inverted right x axis y axis)
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+DP3 disconnected (normal left inverted right x axis y axis)
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+HDMI1 connected 1080x1920+0+0 left (normal left inverted right x axis y axis) 530mm x 300mm
+	EDID: 
+		00ffffffffffff0010ac9ba042343231
+		0719010380351e78eaa0a5a656529d27
+		0f5054a54b00714f8180a9c0d1c00101
+		010101010101023a801871382d40582c
+		45000f292100001e000000ff00353234
+		4e33353243313234420a000000fc0044
+		454c4c205032343134480a20000000fd
+		00384c1e5311000a20202020202000b7
+	aspect ratio: Automatic 
+		supported: Automatic, 4:3, 16:9
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+   1920x1080     60.00*+
+   1600x900      60.00  
+   1280x1024     75.02    60.02  
+   1152x864      75.00  
+   1024x768      75.03    60.00  
+   800x600       75.00    60.32  
+   640x480       75.00    59.94  
+   720x400       70.08  
+HDMI2 disconnected (normal left inverted right x axis y axis)
+	aspect ratio: Automatic 
+		supported: Automatic, 4:3, 16:9
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+HDMI3 disconnected (normal left inverted right x axis y axis)
+	aspect ratio: Automatic 
+		supported: Automatic, 4:3, 16:9
+	Broadcast RGB: Automatic 
+		supported: Automatic, Full, Limited 16:235
+	audio: auto 
+		supported: force-dvi, off, auto, on
+	non-desktop: 0 
+		range: (0, 1)
+	link-status: Good 
+		supported: Good, Bad
+VIRTUAL1 disconnected (normal left inverted right x axis y axis)
