@@ -21,6 +21,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local xrandr = require("xrandr")
+local foggy = require("foggy")
 
 -- vicious widgets
 local vicious = require("vicious")
@@ -61,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.11"
+customization.config.version = "4.0.12"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2100,6 +2102,10 @@ uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
 uniarg:key_repeat({ modkey, "Control" }, "o", customization.func.tag_move_screen_next),
 
 uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", customization.func.tag_move_screen_prev),
+
+uniarg:key_repeat({ modkey, "Shift", "Control" }, "\\", xrandr.xrandr),
+
+uniarg:key_repeat({ modkey, "Mod1", "Control" }, "\\", foggy.menu),
 
 --- misc
 
