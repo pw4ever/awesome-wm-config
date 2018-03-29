@@ -1,0 +1,49 @@
+image: philcryer/min-jessie
+services: []
+
+before_script: 
+  - sed -i -e s/jessie/testing/ /etc/apt/sources.list
+  - apt-get -qq update
+  - apt-get -qq -y --no-install-recommends install gcc libc-dev unzip curl make
+  - curl -L -o /tmp/luarocks.tar.gz http://luarocks.org/releases/luarocks-2.3.0.tar.gz
+  - pushd /tmp && tar xzf luarocks.tar.gz && popd
+
+
+stages:
+  - test
+
+"spec/5.1":
+  stage: test
+  script: 
+    - apt-get install -qq -y --no-install-recommends lua5.1 lua5.1-dev 
+    - pushd /tmp/luarocks-2.3.0 && ./configure --lua-version=5.1 --versioned-rocks-dir && make build && make install
+    - luarocks --local install busted
+    - luarocks --local install luacov
+    - popd
+    - ~/.luarocks/bin/busted --coverage --helper spec/helper.lua spec/*_spec.lua
+    - ~/.luarocks/bin/luacov *.lua
+    - "echo Coverage: `tail -1 luacov.report.out`"
+
+"spec/5.2":
+  stage: test
+  script: 
+    - apt-get install -qq -y --no-install-recommends lua5.2 lua5.2-dev
+    - pushd /tmp/luarocks-2.3.0 && ./configure --lua-version=5.2 --versioned-rocks-dir && make build && make install
+    - luarocks --local install busted
+    - luarocks --local install luacov
+    - popd
+    - ~/.luarocks/bin/busted --coverage --helper spec/helper.lua spec/*_spec.lua
+    - ~/.luarocks/bin/luacov *.lua
+    - "echo Coverage: `tail -1 luacov.report.out`"
+
+"spec/5.3":
+  stage: test
+  script: 
+    - apt-get install -qq -y --no-install-recommends lua5.3 lua5.3-dev
+    - pushd /tmp/luarocks-2.3.0 && ./configure --lua-version=5.3 --versioned-rocks-dir && make build && make install
+    - luarocks --local install busted
+    - luarocks --local install luacov
+    - popd
+    - ~/.luarocks/bin/busted --coverage --helper spec/helper.lua spec/*_spec.lua
+    - ~/.luarocks/bin/luacov *.lua
+    - "echo Coverage: `tail -1 luacov.report.out`"
