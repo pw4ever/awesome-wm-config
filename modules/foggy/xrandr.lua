@@ -87,7 +87,7 @@ function xrandr.info(fp)
       }
       info.outputs[matches[1]] = current_output
     end,
-    ['^([-%a%d]+) disconnected %(([%a%s]+)%)$'] = function(matches)
+    ['^([-%a%d]+) disconnected .*%(([%a%s]+)%)$'] = function(matches)
       -- Match disconnected outputs
       current_output = {
         available_transformations = parse_transformations(matches[2], false),
