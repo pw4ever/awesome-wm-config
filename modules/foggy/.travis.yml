@@ -1,0 +1,12 @@
+sudo: false
+addons:
+  apt:
+    packages:
+      - lua5.1
+      - lua5.1-0-dev
+      - luarocks
+before_script:
+  - luarocks --local install busted
+script:
+  - "~/.luarocks/bin/busted --helper spec/helper.lua spec/*_spec.lua"
+

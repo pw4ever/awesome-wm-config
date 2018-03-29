@@ -186,6 +186,7 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>o</kbd>|send tag to next screen||
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>o</kbd>|send tag to prev screen||
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>\\</kbd>|select next display arrangement|<https://awesomewm.org/recipes/xrandr/>|
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>\\</kbd>|XRandR config popup|<https://github.com/k3rni/foggy>|
 
 #### misc
 

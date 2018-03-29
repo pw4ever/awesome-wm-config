@@ -22,6 +22,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local xrandr = require("xrandr")
+local foggy = require("foggy")
 
 -- vicious widgets
 local vicious = require("vicious")
@@ -2103,6 +2104,8 @@ uniarg:key_repeat({ modkey, "Control" }, "o", customization.func.tag_move_screen
 uniarg:key_repeat({ modkey, "Shift", "Control" }, "o", customization.func.tag_move_screen_prev),
 
 uniarg:key_repeat({ modkey, "Shift", "Control" }, "\\", xrandr.xrandr),
+
+uniarg:key_repeat({ modkey, "Mod1", "Control" }, "\\", foggy.menu),
 
 --- misc
 

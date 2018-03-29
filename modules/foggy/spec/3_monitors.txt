@@ -1,0 +1,105 @@
+Screen 0: minimum 320 x 200, current 4800 x 1200, maximum 16384 x 16384
+DisplayPort-0 connected 1600x1200+0+0 (normal left inverted right x axis y axis) 367mm x 275mm
+	EDID: 
+		00ffffffffffff0010ac08a04c564a30
+		2a0f010380291f78ee6390a3574b9b25
+		115054a54b008180a940714f01010101
+		010101010101483f403062b0324040c0
+		13006f131100001e000000ff00433038
+		3831354143304a564c20000000fc0044
+		454c4c203230303146500a20000000fd
+		00384c1f5010000a20202020202000f9
+	dither: off 
+		supported: off, on
+	audio: auto 
+		supported: off, on, auto
+	underscan vborder: 0 
+		range: (0, 128)
+	underscan hborder: 0 
+		range: (0, 128)
+	underscan: off 
+		supported: off, on, auto
+	coherent: 1 
+		range: (0, 1)
+   1600x1200     60.00*+
+   1280x1024     75.02    60.02  
+   1152x864      75.00  
+   1024x768      75.08    60.00  
+   800x600       75.00    60.32  
+   640x480       75.00    60.00  
+   720x400       70.08  
+HDMI-0 connected primary 1600x1200+3200+0 (normal left inverted right x axis y axis) 367mm x 275mm
+	EDID: 
+		00ffffffffffff0010ac08a04c4a4732
+		2a0f010380291f78ee6390a3574b9b25
+		115054a54b008180a940714f01010101
+		010101010101483f403062b0324040c0
+		13006f131100001e000000ff00433038
+		383135414232474a4c20000000fc0044
+		454c4c203230303146500a20000000fd
+		00384c1f5010000a2020202020200014
+	dither: off 
+		supported: off, on
+	audio: auto 
+		supported: off, on, auto
+	underscan vborder: 0 
+		range: (0, 128)
+	underscan hborder: 0 
+		range: (0, 128)
+	underscan: off 
+		supported: off, on, auto
+	coherent: 1 
+		range: (0, 1)
+   1600x1200     60.00*+
+   1280x1024     75.02    60.02  
+   1152x864      75.00  
+   1024x768      75.08    60.00  
+   800x600       75.00    60.32  
+   640x480       75.00    60.00  
+   720x400       70.08  
+DVI-0 disconnected (normal left inverted right x axis y axis)
+	load detection: 1 
+		range: (0, 1)
+	dither: off 
+		supported: off, on
+	audio: auto 
+		supported: off, on, auto
+	underscan vborder: 0 
+		range: (0, 128)
+	underscan hborder: 0 
+		range: (0, 128)
+	underscan: off 
+		supported: off, on, auto
+	coherent: 1 
+		range: (0, 1)
+DVI-1 connected 1600x1200+1600+0 (normal left inverted right x axis y axis) 367mm x 275mm
+	EDID: 
+		00ffffffffffff0010ac08a04c444630
+		2a0f010380291f78ee6390a3574b9b25
+		115054a54b008180a940714f01010101
+		010101010101483f403062b0324040c0
+		13006f131100001e000000ff00433038
+		38313541433046444c20000000fc0044
+		454c4c203230303146500a20000000fd
+		00384c1f5010000a2020202020200025
+	load detection: 1 
+		range: (0, 1)
+	dither: off 
+		supported: off, on
+	audio: auto 
+		supported: off, on, auto
+	underscan vborder: 0 
+		range: (0, 128)
+	underscan hborder: 0 
+		range: (0, 128)
+	underscan: off 
+		supported: off, on, auto
+	coherent: 1 
+		range: (0, 1)
+   1600x1200     60.00*+
+   1280x1024     75.02    60.02  
+   1152x864      75.00  
+   1024x768      75.08    60.00  
+   800x600       75.00    60.32  
+   640x480       75.00    60.00  
+   720x400       70.08  
