@@ -1119,6 +1119,20 @@ customization.func.tag_goto = function ()
     end)
 end
 
+customization.func.client_move_screen_by_direction = function (dir)
+    -- dir: enum{ "up", "down", "left", "right" }
+    local cur = capi.client.focus
+    if cur then -- if has a focused client
+        local scr = cur.screen
+        if scr then
+            local next_scr = scr:get_next_in_direction(dir)
+            if next_scr then
+                cur.screen = next_scr
+            end
+        end
+    end
+end
+
 customization.func.tag_move_forward = function () 
     util.tag.rel_move(awful.tag.selected(), 1) 
 end
@@ -2098,6 +2112,22 @@ uniarg:key_repeat({ modkey, "Control" }, "j", function () awful.screen.focus_rel
 uniarg:key_repeat({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
 
 uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Right", function ()
+    customization.func.client_move_screen_by_direction("right")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Left", function ()
+    customization.func.client_move_screen_by_direction("left")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Up", function ()
+    customization.func.client_move_screen_by_direction("up")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Down", function ()
+    customization.func.client_move_screen_by_direction("down")
+end),
 
 uniarg:key_repeat({ modkey, "Control" }, "o", customization.func.tag_move_screen_next),
 
