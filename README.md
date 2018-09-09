@@ -182,7 +182,12 @@ in the floating mode, the following mouse actions *on client window* are enabled
 | --- | --- | --- |
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>j</kbd>|focus on the next screen|"j" is easy to reach|
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>k</kbd>|focus on the prev screen|"k" is easy to reach|
-|<kbd>Modkey</kbd><kbd>o</kbd>|send client to the other screen||
+|<kbd>Modkey</kbd><kbd>o</kbd>|send client to next screen by index||
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>o</kbd>|send client to previous screen by index||
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Right</kbd>|send tag to next right screen||
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Left</kbd>|send tag to next left screen||
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Up</kbd>|send tag to next up screen||
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>Down</kbd>|send tag to next down screen||
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>o</kbd>|send tag to next screen||
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>o</kbd>|send tag to prev screen||
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>\\</kbd>|select next display arrangement|<https://awesomewm.org/recipes/xrandr/>|
