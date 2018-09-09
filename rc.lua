@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.12"
+customization.config.version = "4.0.13"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1119,6 +1119,42 @@ customization.func.tag_goto = function ()
     end)
 end
 
+customization.func.client_move_screen_by_direction = function (dir)
+    -- dir: enum{ "up", "down", "left", "right" }
+    local cur = capi.client.focus
+    if cur then -- if has a focused client
+        local scr = cur.screen
+        if scr then
+            local next_scr = scr:get_next_in_direction(dir)
+            if next_scr then
+                cur.screen = next_scr
+            end
+        end
+    end
+end
+
+customization.func.client_move_screen_relatively = function (index_offset)
+    -- index_offset: Index offset
+    local cur = capi.client.focus
+    if cur then -- if has a focused client
+        local sc = capi.screen.count()
+        local s = cur.screen
+        if s and sc > 1 then -- current client is on a screen, and there is >1 screens
+            index_offset = math.fmod(index_offset, sc)
+            if index_offset < 0 then
+                index_offset = index_offset + sc
+            end
+            -- nsi: New screen index (screen index from 1 to sc)
+            local nsi = math.fmod(s.index - 1 + index_offset, sc) + 1
+            -- ns: New screen
+            local ns = capi.screen[nsi]
+            if ns then
+                cur.screen = ns
+            end
+        end
+    end
+end
+
 customization.func.tag_move_forward = function () 
     util.tag.rel_move(awful.tag.selected(), 1) 
 end
@@ -2097,7 +2133,29 @@ uniarg:key_repeat({ modkey, "Control" }, "j", function () awful.screen.focus_rel
 
 uniarg:key_repeat({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
 
-uniarg:key_repeat({ modkey,           }, "o", awful.client.movetoscreen),
+uniarg:key_repeat({ modkey,           }, "o", function ()
+    customization.func.client_move_screen_relatively( 1)
+end),
+
+uniarg:key_repeat({ modkey, "Shift"   }, "o", function ()
+    customization.func.client_move_screen_relatively(-1)
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Right", function ()
+    customization.func.client_move_screen_by_direction("right")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Left", function ()
+    customization.func.client_move_screen_by_direction("left")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Up", function ()
+    customization.func.client_move_screen_by_direction("up")
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Control", "Mod1" }, "Down", function ()
+    customization.func.client_move_screen_by_direction("down")
+end),
 
 uniarg:key_repeat({ modkey, "Control" }, "o", customization.func.tag_move_screen_next),
 
