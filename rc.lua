@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.13"
+customization.config.version = "4.0.14"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1951,13 +1951,11 @@ end
 util.taglist.set_taglist(customization.widgets.taglist)
 -- }}}
 
-do
-    -- test whether screen 1 tag file exists
+customization.func.restore_tag_to_screen = function ()
     local f = io.open(awesome_tags_fname .. ".0", "r")
     if f then
         local old_scr_count = tonumber(f:read("*l"))
         f:close()
-        os.remove(awesome_tags_fname .. ".0")
 
         local new_scr_count = screen.count()
 
@@ -1968,29 +1966,28 @@ do
         if scr_count>0 then
             for s = 1, scr_count do
                 count[s] = 1
-            end
-
-            for s = 1, old_scr_count do
-                local count_index = math.min(s, scr_count)
+                local count_index = s
                 local fname = awesome_tags_fname .. "." .. s
                 local f = io.open(fname, "r")
                 if f then 
                     f:close()
                     for tagname in io.lines(fname) do
-                        local tag = awful.tag.add(tagname,
-                        {
-                            screen = count_index,
-                            layout = customization.default.property.layout,
-                            mwfact = customization.default.property.mwfact,
-                            nmaster = customization.default.property.nmaster,
-                            ncol = customization.default.property.ncol,
-                        }
-                        )
+                        local tag
+                        tag = awful.tag.find_by_name(screen[s], tagname)
+                        if tag == nil then
+                            tag = awful.tag.add(tagname,
+                            {
+                                screen = count_index,
+                                layout = customization.default.property.layout,
+                                mwfact = customization.default.property.mwfact,
+                                nmaster = customization.default.property.nmaster,
+                                ncol = customization.default.property.ncol,
+                            })
+                        end
                         awful.tag.move(count[count_index], tag)
                         count[count_index] = count[count_index]+1
                     end
                 end
-                os.remove(fname)
             end
         end
 
@@ -1999,14 +1996,18 @@ do
             if #tags >= 1 then
                 local fname = awesome_tags_fname .. "-selected." .. s 
                 f = io.open(fname, "r")
+                local tagnum
                 if f then
-                    local tag = awful.tag.gettags(s)[tonumber(f:read("*l"))]
-                    if tag then
-                        awful.tag.viewonly(tag)
+                    tagnum = tonumber(f:read("*l"))
+                    if tagnum == nil or tagnum > #tags then
+                        tagnum = 1
                     end
                     f:close()
+                else 
+                    tagnum = 1
                 end
-                os.remove(fname)
+                local tag = awful.tag.gettags(s)[tagnum]
+                awful.tag.viewonly(tag)
             else
                 local tag = awful.tag.add("main" .. s,
                 {
@@ -2021,7 +2022,7 @@ do
             end
         end
 
-    else
+    else -- if f then
 
         for s = 1, screen.count() do
             local tags = awful.tag.gettags(s)
@@ -2041,6 +2042,11 @@ do
 
     end
 end
+
+capi.screen.connect_signal("list", customization.func.restore_tag_to_screen)
+
+-- initial run
+customization.func.restore_tag_to_screen()
 
 
 -- {{{ Mouse bindings
