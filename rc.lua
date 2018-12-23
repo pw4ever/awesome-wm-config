@@ -2377,6 +2377,10 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "r", function ()
     awful.util.spawn("rstudio-bin")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
+    awful.util.spawn("goldendict")
+end),
+
 uniarg:key_repeat({ modkey, }, "i", function ()
     awful.util.spawn(tools.editor.primary)
 end),

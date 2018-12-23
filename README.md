@@ -101,8 +101,11 @@ sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver
 sudo pacman -S --needed --noconfirm sakura terminator conky gksu launchy
-sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty zeal remmina synergy
+sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty zeal remmina synergy goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
+
+sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
+sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-foldoc
 ```
 
 ### miscellaneous
@@ -361,6 +364,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| remote terminal | putty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>r</kbd>| R studio | rstudio-bin |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| dictionary | goldendict |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>i</kbd>| secondary editor | emacs |
 |<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | chromium |
