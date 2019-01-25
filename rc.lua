@@ -293,7 +293,7 @@ tools.editor.primary = os.getenv("EDITOR") or "gvim"
 tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
 
 -- alternative: override
-tools.editor.primary = "gvim"
+tools.editor.primary = "nvim-qt"
 tools.editor.secondary = "emacsclient -c -a emacs"
 
 local myapp = nil
