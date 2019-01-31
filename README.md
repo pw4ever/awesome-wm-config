@@ -6,7 +6,7 @@
   - [intro](#intro)
   - [setup](#setup)
     - [install on Linux](#install-on-linux)
-    - [dependencies](#dependencies)
+    - [dependencies and nice-to-haves](#dependencies-and-nice-to-haves)
     - [miscellaneous](#miscellaneous)
   - [usage](#usage)
     - [**universal argument**](#universal-argument)
@@ -89,9 +89,11 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 ```
 * Setup .xinitrc or Display Manager accordingly.
 
-### dependencies
+### dependencies and nice-to-haves
 
 These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), task manager (`lxtask`), and screen setup (`arandr`), etc..
+
+Although not strictly dependencies, some of the packages are, in my opinion, nice to have.
 
 On [Arch Linux][archlinux]:
 
@@ -100,10 +102,16 @@ sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver
-sudo pacman -S --needed --noconfirm sakura terminator conky gksu launchy
+sudo pacman -S --needed --noconfirm sakura terminator conky polkit launchy
 sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim python2-neovim emacs firefox chromium putty zeal remmina synergy goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
+sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc openjdk-src
+sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
+sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
+sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
+sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
 
+sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
 sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-foldoc
 ```
@@ -343,7 +351,6 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd> | root terminal | gksudo sakura |
 |<kbd>Modkey</kbd><kbd>`</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |
