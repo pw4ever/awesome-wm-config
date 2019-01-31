@@ -100,7 +100,7 @@ sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver
-sudo pacman -S --needed --noconfirm sakura terminator conky gksu launchy
+sudo pacman -S --needed --noconfirm sakura terminator conky launchy
 sudo pacman -S --needed --noconfirm gvim emacs firefox chromium putty remmina synergy
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 ```
@@ -340,7 +340,6 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd> | root terminal | gksudo sakura |
 |<kbd>Modkey</kbd><kbd>`</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |

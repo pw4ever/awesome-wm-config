@@ -2234,8 +2234,6 @@ awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end)
 
 uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
-uniarg:key_repeat({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
-
 -- dynamic tagging
 
 awful.key({ modkey, "Ctrl", "Mod1" }, "t", function () 
