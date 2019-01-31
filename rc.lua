@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.14"
+customization.config.version = "4.0.15"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2233,8 +2233,6 @@ awful.key({ modkey, }, "x", function() mymainmenu:toggle({keygrabber=true}) end)
 awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end),
 
 uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
-
-uniarg:key_repeat({ modkey, "Mod1" }, "Return", function () awful.util.spawn("gksudo " .. tools.terminal) end),
 
 -- dynamic tagging
 
