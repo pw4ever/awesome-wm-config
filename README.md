@@ -114,6 +114,7 @@ sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
 sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-foldoc
+sudo aura -Ax --needed --noconfirm devdocs-desktop
 ```
 
 ### miscellaneous

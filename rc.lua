@@ -2379,6 +2379,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
     awful.util.spawn("goldendict")
 end),
 
+uniarg:key_repeat({ modkey, }, "d", function ()
+    awful.util.spawn("devdocs-desktop")
+end),
+
 uniarg:key_repeat({ modkey, }, "i", function ()
     awful.util.spawn(tools.editor.primary)
 end),
