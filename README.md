@@ -375,8 +375,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| dictionary | goldendict |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>i</kbd>| secondary editor | emacs |
-|<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | chromium |
-|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | chromium --incognito |
+|<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | google-chrome-stable |
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | google-chrome-stable --incognito |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| secondary browser | virtualbox |
