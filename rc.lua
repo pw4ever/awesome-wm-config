@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.15"
+customization.config.version = "4.0.16"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -282,15 +282,19 @@ local tools = {
     },
 }
 
-tools.browser.primary = os.getenv("BROWSER") or "firefox"
-tools.browser.secondary = ({chromium="firefox", firefox="chromium"})[tools.browser.primary]
+tools.browser.primary = "chromium"
+tools.browser.primary_private = tools.browser.primary .. " --incognito"
+tools.browser.secondary = "firefox"
+tools.browser.secondary_private = tools.browser.secondary .. " --private"
 
 -- alternative: override
 tools.browser.primary = "google-chrome-stable"
-tools.browser.secondary = "firefox"
+tools.browser.primary_private = tools.browser.primary .. " --incognito"
+--tools.browser.secondary = "firefox"
+--tools.browser.secondary_private = tools.browser.secondary .. " --private"
 
-tools.editor.primary = os.getenv("EDITOR") or "gvim"
-tools.editor.secondary = ({emacs="gvim", gvim="emacs"})[tools.editor.primary]
+tools.editor.primary = "gvim"
+tools.editor.secondary = "emacs"
 
 -- alternative: override
 tools.editor.primary = "nvim-qt"
@@ -2399,8 +2403,16 @@ uniarg:key_repeat({ modkey, }, "b", function ()
     awful.util.spawn(tools.browser.primary)
 end),
 
-uniarg:key_repeat({ modkey, "Shift" }, "b", function ()
+uniarg:key_repeat({ modkey, "Ctrl", }, "b", function ()
+    awful.util.spawn(tools.browser.primary_private)
+end),
+
+uniarg:key_repeat({ modkey, "Shift", }, "b", function ()
     awful.util.spawn(tools.browser.secondary)
+end),
+
+uniarg:key_repeat({ modkey, "Shift", "Ctrl", }, "b", function ()
+    awful.util.spawn(tools.browser.secondary_private)
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
