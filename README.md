@@ -110,6 +110,7 @@ sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
 sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
+sudo pacman -S --needed --noconfirm xclip xsel xfce4-clipman-plugin
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
