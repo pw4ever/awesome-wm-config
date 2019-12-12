@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.16"
+customization.config.version = "4.0.17"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2415,6 +2415,10 @@ uniarg:key_repeat({ modkey, "Shift", "Ctrl", }, "b", function ()
     awful.util.spawn(tools.browser.secondary_private)
 end),
 
+uniarg:key_repeat({ modkey, }, "v", function ()
+    awful.util.spawn("clipmenu")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
 end),
@@ -3026,5 +3030,5 @@ end
 
 -- XDG style autostart with "dex"
 -- HACK continue
-awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a -e awesome; touch " .. awesome_autostart_once_fname .. "; fi")
+awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
 --customization.func.client_opaque_on(nil) -- start xcompmgr
