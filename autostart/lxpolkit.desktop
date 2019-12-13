@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=LXDE policykit authentication agent
-TryExec=lxpolkit
-Exec=lxpolkit
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome

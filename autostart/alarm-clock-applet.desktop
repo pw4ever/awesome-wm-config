@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=alarm clock applet
-TryExec=alarm-clock-applet
-Exec=alarm-clock-applet --hidden
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome
