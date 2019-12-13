@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.19"
+customization.config.version = "4.0.20"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -86,6 +86,7 @@ customization.default.compmgr_args = '-f -c -s'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
+customization.option.launch_compmgr_p = false
 customization.option.tag_persistent_p = true
 customization.option.low_battery_notification_p = true
 
@@ -2239,6 +2240,10 @@ awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end)
 
 uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
+uniarg:key_repeat({ modkey, "Mod1"    }, "Return", function ()
+    awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
+end),
+
 -- dynamic tagging
 
 awful.key({ modkey, "Ctrl", "Mod1" }, "t", function () 
@@ -2366,6 +2371,10 @@ end),
 
 uniarg:key_repeat({ modkey,  }, "E", function ()
     awful.util.spawn(tools.system.filemanager)
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
+    awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
@@ -2999,4 +3008,7 @@ end
 -- XDG style autostart with "dex"
 -- HACK continue
 awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
-customization.func.client_opaque_on(nil) -- start xcompmgr
+
+if customization.option.launch_compmgr_p then
+    customization.func.client_opaque_on(nil) -- start xcompmgr
+end
