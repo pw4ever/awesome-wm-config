@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Whatsapp
-TryExec=Whatsapp
-Exec=Whatsapp
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome
