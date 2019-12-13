@@ -271,16 +271,17 @@ end
 
 --{{
 local tools = {
-    terminal = "sakura",
+    terminal = "kitty",
     system = {
-        filemanager = "pcmanfm",
-        taskmanager = "lxtask",
     },
     browser = {
     },
     editor = {
     },
 }
+
+tools.system.filemanager = tools.terminal .. " -e ranger"
+tools.system.filemanager = "lxtask"
 
 tools.browser.primary = "chromium"
 tools.browser.primary_private = tools.browser.primary .. " --incognito"
