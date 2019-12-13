@@ -2999,4 +2999,4 @@ end
 -- XDG style autostart with "dex"
 -- HACK continue
 awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
-customization.func.client_opaque_on(nil) -- start xcompmgr
+--customization.func.client_opaque_on(nil) -- start xcompmgr
