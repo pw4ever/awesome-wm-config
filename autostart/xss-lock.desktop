@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=xsslock
-TryExec=xss-lock
-Exec=xss-lock -- xscreensaver-command -lock
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome

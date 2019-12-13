@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=fcitx
-TryExec=fcitx
-Exec=fcitx
-Terminal=false
-Type=Application
-StartupNotify=false
-OnlyShowIn=awesome
