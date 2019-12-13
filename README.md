@@ -100,8 +100,8 @@ On [Arch Linux][archlinux]:
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname gnome-keyring seahorse
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
-sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
-sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver
+sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter lxtask
+sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver mc ranger
 sudo pacman -S --needed --noconfirm sakura terminator conky polkit launchy
 sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim python2-neovim emacs firefox chromium putty zeal remmina synergy goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
@@ -111,6 +111,7 @@ sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu t
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
 sudo pacman -S --needed --noconfirm xclip xsel clipmenu xfce4-clipman-plugin
+sudo pacman -S --needed --noconfirm xfce4
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
