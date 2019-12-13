@@ -86,6 +86,7 @@ customization.default.compmgr_args = '-f -c -s'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
+customization.option.launch_compmgr_p = false
 customization.option.tag_persistent_p = true
 customization.option.low_battery_notification_p = true
 
@@ -2999,4 +3000,7 @@ end
 -- XDG style autostart with "dex"
 -- HACK continue
 awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
---customization.func.client_opaque_on(nil) -- start xcompmgr
+
+if customization.option.launch_compmgr_p then
+    customization.func.client_opaque_on(nil) -- start xcompmgr
+end
