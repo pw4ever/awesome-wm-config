@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.17"
+customization.config.version = "4.0.19"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -271,16 +271,17 @@ end
 
 --{{
 local tools = {
-    terminal = "sakura",
+    terminal = "kitty",
     system = {
-        filemanager = "pcmanfm",
-        taskmanager = "lxtask",
     },
     browser = {
     },
     editor = {
     },
 }
+
+tools.system.filemanager = tools.terminal .. " -e ranger"
+tools.system.taskmanager = "lxtask"
 
 tools.browser.primary = "chromium"
 tools.browser.primary_private = tools.browser.primary .. " --incognito"

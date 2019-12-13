@@ -100,17 +100,18 @@ On [Arch Linux][archlinux]:
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname gnome-keyring seahorse
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
-sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet mate-power-manager arandr xfce4-appfinder xfce4-screenshooter gnome-control-center lxtask
-sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie lxsession lxappearance xarchiver
-sudo pacman -S --needed --noconfirm sakura terminator conky polkit launchy
-sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim python2-neovim emacs firefox chromium putty zeal remmina synergy goldendict
+sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet arandr lxtask
+sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
+sudo pacman -S --needed --noconfirm kitty polkit
+sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina synergy goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc openjdk-src
 sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
 sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
-sudo pacman -S --needed --noconfirm xclip xsel clipmenu xfce4-clipman-plugin
+sudo pacman -S --needed --noconfirm xclip xsel clipmenu
+sudo pacman -S --needed --noconfirm xfce4
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
