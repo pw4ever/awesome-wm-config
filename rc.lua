@@ -2240,6 +2240,10 @@ awful.key({ modkey, }, "X", function() mymainmenu:toggle({keygrabber=true}) end)
 
 uniarg:key_repeat({ modkey,           }, "Return", function () awful.util.spawn(tools.terminal) end),
 
+uniarg:key_repeat({ modkey, "Mod1"    }, "Return", function ()
+    awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
+end),
+
 -- dynamic tagging
 
 awful.key({ modkey, "Ctrl", "Mod1" }, "t", function () 
@@ -2367,6 +2371,10 @@ end),
 
 uniarg:key_repeat({ modkey,  }, "E", function ()
     awful.util.spawn(tools.system.filemanager)
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
+    awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()

@@ -91,7 +91,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies and nice-to-haves
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`sakura`), task manager (`lxtask`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`kitty`), task manager (`lxtask`), and screen setup (`arandr`), etc..
 
 Although not strictly dependencies, some of the packages are, in my opinion, nice to have.
 
@@ -102,7 +102,7 @@ sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
 sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet arandr lxtask
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
-sudo pacman -S --needed --noconfirm kitty polkit
+sudo pacman -S --needed --noconfirm kitty tmux polkit
 sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina synergy goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc openjdk-src
@@ -224,9 +224,9 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>'</kbd>|prompt to choose from clients on current tag|| 
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>'</kbd>|choose from all clients||
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>'</kbd>|prompt to choose from all clients||
-|<kbd>Modkey</kbd><kbd>`</kbd>|lock screen with screensaver||
+|<kbd>Modkey</kbd><kbd>\`</kbd>|lock screen with screensaver||
 |<kbd>Modkey</kbd><kbd>Enter</kbd>|launch user terminal||
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>|launch root terminal||
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>|attach/launch terminal multiplexer||
 
 ### **persistent dynamic tagging**
 
@@ -343,7 +343,7 @@ all these keys work on the single **currently focused client**
 
 | key combo | function | comment |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>`</kbd>| toggle the visibility of current client's titlebar | |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\`</kbd>| toggle the visibility of current client's titlebar | |
 
 ### app bindings
 
@@ -353,7 +353,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>`</kbd> | screen saver/locker | xscreensaver |
+|<kbd>Modkey</kbd><kbd>\`</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xscreensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Home</kbd> | hibernate (will confirm) | systemctl hibernate |
@@ -369,7 +369,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| file manager | ranger |
 |<kbd>Modkey</kbd><kbd>e</kbd>| file manager | ranger; MSFT Windows key |
 |<kbd>Modkey</kbd><kbd>E</kbd>| file manager | ranger; MSFT Windows key |
-|<kbd>Modkey</kbd><kbd>Enter</kbd>| user terminal | sakura |
+|<kbd>Modkey</kbd><kbd>Enter</kbd>| terminal | kitty |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>| terminal multiplexer | tmux |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| remote terminal | putty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
