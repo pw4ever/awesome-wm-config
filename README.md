@@ -366,9 +366,9 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| file manager | pcmanfm |
-|<kbd>Modkey</kbd><kbd>e</kbd>| file manager | pcmanfm; MSFT Windows key |
-|<kbd>Modkey</kbd><kbd>E</kbd>| file manager | pcmanfm; MSFT Windows key |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| file manager | ranger |
+|<kbd>Modkey</kbd><kbd>e</kbd>| file manager | ranger; MSFT Windows key |
+|<kbd>Modkey</kbd><kbd>E</kbd>| file manager | ranger; MSFT Windows key |
 |<kbd>Modkey</kbd><kbd>Enter</kbd>| user terminal | sakura |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| remote terminal | putty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
