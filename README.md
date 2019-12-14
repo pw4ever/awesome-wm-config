@@ -91,7 +91,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies and nice-to-haves
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xscreensaver`), network management (`network-manager-applet`), terminal (`kitty`), task manager (`lxtask`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xfce4-screensaver`), network management (`network-manager-applet`), terminal (`kitty`), task manager (`xfce4-taskmanager`), and screen setup (`arandr`), etc..
 
 Although not strictly dependencies, some of the packages are, in my opinion, nice to have.
 
@@ -100,7 +100,7 @@ On [Arch Linux][archlinux]:
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname gnome-keyring seahorse
 sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
-sudo pacman -S --needed --noconfirm xscreensaver networkmanager network-manager-applet arandr lxtask
+sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
 sudo pacman -S --needed --noconfirm kitty tmux polkit
 sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina synergy goldendict
@@ -111,7 +111,7 @@ sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu t
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
 sudo pacman -S --needed --noconfirm xclip xsel clipmenu
-sudo pacman -S --needed --noconfirm xfce4
+sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -156,7 +156,7 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>q</kbd>|forcibly quit|"q" for quit; quit without confirming with user|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
-|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|lxtask|
+|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|xfce4-taskmanager|
 
 #### **layout**
 
@@ -353,8 +353,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>\`</kbd> | screen saver/locker | xscreensaver |
-|<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xscreensaver |
+|<kbd>Modkey</kbd><kbd>\`</kbd> | screen saver/locker | xfce4-screensaver |
+|<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xfce4-screensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Home</kbd> | hibernate (will confirm) | systemctl hibernate |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>End</kbd> | hybrid sleep (will confirm) | systemctl hybrid-sleep |
