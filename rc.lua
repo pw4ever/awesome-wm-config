@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.20"
+customization.config.version = "4.0.21"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -282,7 +282,7 @@ local tools = {
 }
 
 tools.system.filemanager = tools.terminal .. " -e ranger"
-tools.system.taskmanager = "lxtask"
+tools.system.taskmanager = "xfce4-taskmanager"
 
 tools.browser.primary = "chromium"
 tools.browser.primary_private = tools.browser.primary .. " --incognito"
@@ -372,7 +372,7 @@ end
 -- {{{ Customized functions
 
 customization.func.system_lock = function ()
-    awful.util.spawn("xscreensaver-command -l")
+    awful.util.spawn("xfce4-screensaver-command -l")
 end
 
 customization.func.system_suspend = function ()
@@ -2497,7 +2497,7 @@ awful.key({}, "XF86AudioMicMute", function ()
 end),
 
 awful.key({}, "XF86ScreenSaver", function ()
-    awful.util.spawn("xscreensaver-command -l")
+    awful.util.spawn("xfce4-screensaver-command -l")
 end),
 
 awful.key({}, "XF86WebCam", function ()
