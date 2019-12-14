@@ -282,7 +282,7 @@ local tools = {
 }
 
 tools.system.filemanager = tools.terminal .. " -e ranger"
-tools.system.taskmanager = "lxtask"
+tools.system.taskmanager = "xfce4-taskmanager"
 
 tools.browser.primary = "chromium"
 tools.browser.primary_private = tools.browser.primary .. " --incognito"
