@@ -372,7 +372,7 @@ end
 -- {{{ Customized functions
 
 customization.func.system_lock = function ()
-    awful.util.spawn("xscreensaver-command -l")
+    awful.util.spawn("xfce4-screensaver-command -l")
 end
 
 customization.func.system_suspend = function ()
@@ -2464,7 +2464,7 @@ awful.key({}, "XF86AudioMicMute", function ()
 end),
 
 awful.key({}, "XF86ScreenSaver", function ()
-    awful.util.spawn("xscreensaver-command -l")
+    awful.util.spawn("xfce4-screensaver-command -l")
 end),
 
 awful.key({}, "XF86WebCam", function ()
