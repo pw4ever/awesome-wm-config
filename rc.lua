@@ -279,6 +279,8 @@ local tools = {
     },
     editor = {
     },
+    app = {
+    },
 }
 
 tools.system.filemanager = tools.terminal .. " -e ranger"
@@ -301,6 +303,8 @@ tools.editor.secondary = "emacs"
 -- alternative: override
 --tools.editor.primary = "nvim-qt"
 --tools.editor.secondary = "emacs"
+
+tools.app.mpcui = "ncmpcpp"
 
 local myapp = nil
 do
@@ -2415,6 +2419,10 @@ end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
+    awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
 end),
 
 uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
