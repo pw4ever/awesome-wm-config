@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.22"
+customization.config.version = "4.0.23"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -279,6 +279,8 @@ local tools = {
     },
     editor = {
     },
+    app = {
+    },
 }
 
 tools.system.filemanager = tools.terminal .. " -e ranger"
@@ -301,6 +303,8 @@ tools.editor.secondary = "emacs"
 -- alternative: override
 tools.editor.primary = "nvim-qt"
 tools.editor.secondary = "emacsclient -c -a emacs"
+
+tools.app.mpcui = "ncmpcpp"
 
 local myapp = nil
 do
@@ -2431,6 +2435,10 @@ end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virtualbox")
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
+    awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "z", function ()
