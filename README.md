@@ -99,11 +99,12 @@ On [Arch Linux][archlinux]:
 
 ```bash
 sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname gnome-keyring seahorse
-sudo pacman -S --needed --noconfirm alsa-utils pavucontrol xorg-xbacklight xf86-input-synaptics cheese mpd mpc workrave
+sudo pacman -S --needed --noconfirm xorg-xbacklight xf86-input-synaptics cheese workrave
+sudo pacman -S --needed --noconfirm alsa-utils pulseaudio pulseaudio-alsa pulseaudio-alsa pulseaudio-bluetooth pavucontrol pulsemixer
 sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
 sudo pacman -S --needed --noconfirm kitty tmux polkit
-sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina synergy goldendict
+sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc openjdk-src
 sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
@@ -112,6 +113,7 @@ sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
 sudo pacman -S --needed --noconfirm xclip xsel clipmenu
 sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
+sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
