@@ -379,6 +379,11 @@ customization.func.system_lock = function ()
     awful.util.spawn("xfce4-screensaver-command -l")
 end
 
+customization.func.system_screen_off = function ()
+    customization.func.system_lock()
+    awful.util.spawn_with_shell("sleep 3 && xset dpms force off")
+end
+
 customization.func.system_suspend = function ()
     awful.util.spawn("systemctl suspend")
 end
@@ -2348,6 +2353,8 @@ awful.key({ modkey, "Shift" }, "`", customization.func.client_toggle_titlebar),
 --- admin
 
 awful.key({ modkey, }, "`", customization.func.system_lock),
+
+awful.key({ modkey, "Control" }, "`", customization.func.system_screen_off),
 
 awful.key({ modkey, }, "Home", customization.func.system_lock),
 

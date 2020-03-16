@@ -356,6 +356,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 | key combo | app | my choice |
 | --- | --- | --- |
 |<kbd>Modkey</kbd><kbd>\`</kbd> | screen saver/locker | xfce4-screensaver |
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>\`</kbd> | display power off | xset dpms force off |
 |<kbd>Modkey</kbd><kbd>Home</kbd> | screen saver/locker | xfce4-screensaver |
 |<kbd>Modkey</kbd><kbd>End</kbd> | suspend | systemctl suspend |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Home</kbd> | hibernate (will confirm) | systemctl hibernate |
