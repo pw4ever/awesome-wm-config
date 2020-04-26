@@ -274,6 +274,8 @@ end
 local tools = {
     terminal = "kitty",
     system = {
+        filemanager = {
+        },
     },
     browser = {
     },
@@ -283,7 +285,8 @@ local tools = {
     },
 }
 
-tools.system.filemanager = tools.terminal .. " -e ranger"
+tools.system.filemanager.primary = tools.terminal .. " -e ranger"
+tools.system.filemanager.secondary = "pcmanfm"
 tools.system.taskmanager = "xfce4-taskmanager"
 
 tools.browser.primary = "chromium"
@@ -2373,15 +2376,19 @@ awful.key({ modkey, }, "/", customization.func.app_finder),
 --- everyday
 
 uniarg:key_repeat({ modkey, "Mod1", }, "l", function ()
-    awful.util.spawn(tools.system.filemanager)
+    awful.util.spawn(tools.system.filemanager.primary)
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "l", function ()
+    awful.util.spawn(tools.system.filemanager.primary)
 end),
 
 uniarg:key_repeat({ modkey,  }, "e", function ()
-    awful.util.spawn(tools.system.filemanager)
+    awful.util.spawn(tools.system.filemanager.primary)
 end),
 
-uniarg:key_repeat({ modkey,  }, "E", function ()
-    awful.util.spawn(tools.system.filemanager)
+uniarg:key_repeat({ modkey, "Shift", }, "e", function ()
+    awful.util.spawn(tools.system.filemanager.secondary)
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
