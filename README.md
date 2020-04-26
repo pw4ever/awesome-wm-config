@@ -369,9 +369,10 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 | key combo | app | my choice |
 | --- | --- | --- |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| file manager | ranger |
-|<kbd>Modkey</kbd><kbd>e</kbd>| file manager | ranger; MSFT Windows key |
-|<kbd>Modkey</kbd><kbd>E</kbd>| file manager | ranger; MSFT Windows key |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>l</kbd>| primary file manager | ranger |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>l</kbd>| secondary file manager | pcmanfm |
+|<kbd>Modkey</kbd><kbd>e</kbd>| primary file manager | ranger; MSFT Windows key |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>e</kbd>| secondary file manager | pcmanfm |
 |<kbd>Modkey</kbd><kbd>Enter</kbd>| terminal | kitty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>| terminal multiplexer | tmux |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| remote terminal | putty |
