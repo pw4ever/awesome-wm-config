@@ -2464,7 +2464,7 @@ uniarg:key_repeat({modkey, "Shift" }, "\\", function()
 end),
 
 uniarg:key_repeat({modkey, "Mod1" }, ";", function() 
-    awful.util.spawn("hotrecoll.py")
+    awful.util.spawn("pystopwatch")
 end),
 
 -- Negate/invert screen color.

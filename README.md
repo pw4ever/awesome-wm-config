@@ -119,6 +119,7 @@ sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
 sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-foldoc
 sudo aura -Ax --needed --noconfirm devdocs-desktop
+sudo aura -Ax --needed --noconfirm pystopwatch
 ```
 
 ### miscellaneous
@@ -390,7 +391,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| hypervisor | virtualbox |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>z</kbd>| doc viewer | zeal |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>|screen magnifier | kmag |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch| pystopwatch |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 
 #### the rest
