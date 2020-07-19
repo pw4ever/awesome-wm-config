@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.25"
+customization.config.version = "4.0.26"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1816,7 +1816,8 @@ end
 -- Create a wibox for each screen and add it
 
 customization.widgets.uniarg = {}
-customization.widgets.wibox = {}
+customization.widgets.wibox_top = {}
+customization.widgets.wibox_bottom = {}
 customization.widgets.promptbox = {}
 customization.widgets.layoutbox = {}
 customization.widgets.taglist = {}
@@ -1937,9 +1938,10 @@ function(s)
         )
 
     -- Create the wibox
-    customization.widgets.wibox[s] = awful.wibox({ position = "top", screen = s })
+    customization.widgets.wibox_top[s] = awful.wibox({ position = "top", screen = s })
+    customization.widgets.wibox_bottom[s] = awful.wibox({ position = "bottom", screen = s })
 
-    customization.widgets.wibox[s]:setup {
+    customization.widgets.wibox_top[s]:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
@@ -1961,6 +1963,12 @@ function(s)
             customization.widgets.date,
             customization.widgets.layoutbox[s],
         },
+    }
+
+    customization.widgets.wibox_bottom[s]:setup {
+        layout = wibox.layout.align.horizontal,
+        customization.widgets.launcher,
+        customization.widgets.tasklist[s],
     }
 
 end
