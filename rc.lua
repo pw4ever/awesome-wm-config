@@ -1817,6 +1817,7 @@ end
 
 customization.widgets.uniarg = {}
 customization.widgets.wibox_top = {}
+customization.widgets.wibox_top_compact = {}
 customization.widgets.wibox_bottom = {}
 customization.widgets.promptbox = {}
 customization.widgets.layoutbox = {}
@@ -1894,7 +1895,6 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
-local prev_scr_count = nil
 awful.screen.connect_for_each_screen(
 function(s)
     -- Wallpaper
@@ -1938,7 +1938,8 @@ function(s)
         )
 
     -- Create the wibox
-    customization.widgets.wibox_top[s] = awful.wibox({ position = "top", screen = s })
+    customization.widgets.wibox_top[s] = awful.wibox({ position = "top", screen = s, visible = false })
+    customization.widgets.wibox_top_compact[s] = awful.wibox({ position = "top", screen = s, visible = false })
     customization.widgets.wibox_bottom[s] = awful.wibox({ position = "bottom", screen = s })
 
     customization.widgets.wibox_top[s]:setup {
@@ -1964,6 +1965,38 @@ function(s)
             customization.widgets.layoutbox[s],
         },
     }
+
+    customization.widgets.wibox_top_compact[s]:setup {
+        layout = wibox.layout.align.horizontal,
+        { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            customization.widgets.launcher,
+            customization.widgets.taglist[s],
+            customization.widgets.uniarg[s],
+            customization.widgets.promptbox[s],
+        },
+        customization.widgets.tasklist[s], -- Middle widget
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            --customization.widgets.keyboardlayout,
+            --wibox.widget.systray(),
+            --customization.widgets.cpuusage,
+            --customization.widgets.memusage,
+            --customization.widgets.bat,
+            --customization.widgets.mpdstatus,
+            --customization.widgets.volume,
+            --customization.widgets.date,
+            customization.widgets.layoutbox[s],
+        },
+    }
+
+    if s == capi.screen.primary then
+        customization.widgets.wibox_top[s].visible = true
+        customization.widgets.wibox_top_compact[s].visible = false
+    else
+        customization.widgets.wibox_top[s].visible = false
+        customization.widgets.wibox_top_compact[s].visible = true
+    end
 
     customization.widgets.wibox_bottom[s]:setup {
         layout = wibox.layout.align.horizontal,
@@ -2069,7 +2102,22 @@ customization.func.restore_tag_to_screen = function ()
     end
 end
 
+customization.func.toggle_wibox_compactness = function ()
+    for s in screen do
+        if customization.widgets.wibox_top[s] ~= nil and customization.widgets.wibox_top_compact[s] ~= nil then
+            if s == capi.screen.primary then
+                customization.widgets.wibox_top[s].visible = true
+                customization.widgets.wibox_top_compact[s].visible = false
+            else
+                customization.widgets.wibox_top[s].visible = false
+                customization.widgets.wibox_top_compact[s].visible = true
+            end
+        end
+    end
+end
+
 capi.screen.connect_signal("list", customization.func.restore_tag_to_screen)
+capi.screen.connect_signal("primary_changed", customization.func.toggle_wibox_compactness)
 
 -- initial run
 customization.func.restore_tag_to_screen()
