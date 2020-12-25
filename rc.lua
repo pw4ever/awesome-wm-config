@@ -2499,6 +2499,10 @@ uniarg:key_repeat({ modkey, "Shift", "Ctrl", }, "b", function ()
     awful.util.spawn(tools.browser.secondary_private)
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "s", function ()
+    awful.util.spawn("signal-desktop --start-in-tray")
+end),
+
 uniarg:key_repeat({ modkey, }, "v", function ()
     awful.util.spawn("clipmenu")
 end),

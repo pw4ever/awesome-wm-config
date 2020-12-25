@@ -387,6 +387,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | google-chrome-stable --incognito |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| hypervisor | virtualbox |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>z</kbd>| doc viewer | zeal |
