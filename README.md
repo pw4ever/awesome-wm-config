@@ -98,7 +98,7 @@ Although not strictly dependencies, some of the packages are, in my opinion, nic
 On [Arch Linux][archlinux]:
 
 ```bash
-sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr kdeaccessibility wmname gnome-keyring seahorse
+sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr wmname gnome-keyring seahorse
 sudo pacman -S --needed --noconfirm xorg-xbacklight xf86-input-synaptics cheese workrave
 sudo pacman -S --needed --noconfirm alsa-utils pulseaudio pulseaudio-alsa pulseaudio-alsa pulseaudio-bluetooth pavucontrol pulsemixer
 sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
