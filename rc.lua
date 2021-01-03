@@ -2447,6 +2447,10 @@ uniarg:key_repeat({ modkey, "Shift", }, "e", function ()
     awful.util.spawn(tools.system.filemanager.secondary)
 end),
 
+uniarg:key_repeat({ modkey, "Ctrl", }, "e", function ()
+    awful.util.spawn(tools.terminal .. " -e bashmount")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
     awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
 end),
