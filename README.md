@@ -104,9 +104,9 @@ sudo pacman -S --needed --noconfirm alsa-utils pulseaudio pulseaudio-alsa pulsea
 sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
 sudo pacman -S --needed --noconfirm kitty tmux polkit
-sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty zeal remmina goldendict zeal
+sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty remmina goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
-sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc openjdk-src
+sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc
 sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
 sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
@@ -392,7 +392,6 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| hypervisor | virtualbox |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>z</kbd>| doc viewer | zeal |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch| pystopwatch |

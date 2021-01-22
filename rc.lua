@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.28"
+customization.config.version = "4.0.29"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2521,10 +2521,6 @@ end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
     awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
-end),
-
-uniarg:key_repeat({ modkey, "Mod1", }, "z", function ()
-    awful.util.spawn("zeal")
 end),
 
 uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
