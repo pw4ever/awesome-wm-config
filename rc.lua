@@ -2456,6 +2456,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
+    awful.util.spawn("passmenu")
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "p", function ()
     awful.util.spawn("putty")
 end),
 
@@ -2528,7 +2532,7 @@ uniarg:key_repeat({modkey, "Shift" }, "\\", function()
 end),
 
 uniarg:key_repeat({modkey, "Mod1" }, ";", function() 
-    awful.util.spawn("pystopwatch")
+    awful.util.spawn("gnome-clocks")
 end),
 
 -- Negate/invert screen color.
