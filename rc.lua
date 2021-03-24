@@ -2535,6 +2535,10 @@ uniarg:key_repeat({modkey, "Mod1" }, ";", function()
     awful.util.spawn("gnome-clocks")
 end),
 
+uniarg:key_repeat({modkey, "Mod1" }, "'", function()
+        awful.util.spawn("rofi -combi-modi window,drun,run -show combi -modi combi")
+end),
+
 -- Negate/invert screen color.
 awful.key({modkey, "Mod1", "Shift", "Control" }, "n", function() 
     awful.util.spawn("xcalib -i -a -s " .. ((screen[mouse.screen].index-1)))

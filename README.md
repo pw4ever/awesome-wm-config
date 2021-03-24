@@ -111,7 +111,7 @@ sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
 sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
-sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass
+sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi
 sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 
@@ -119,6 +119,7 @@ sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
 sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-foldoc
 sudo aura -Ax --needed --noconfirm devdocs-desktop
+sudo aura -Ax --needed --noconfirm rofi-dmenu
 ```
 
 ### miscellaneous
@@ -394,7 +395,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| hypervisor | virtualbox |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch| gnome-clocks |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>'</kbd>| window switcher | rofi |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 
 #### the rest
