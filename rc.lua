@@ -450,7 +450,8 @@ customization.func.system_power_off = function ()
 end
 
 customization.func.app_finder = function ()
-    awful.util.spawn("xfce4-appfinder")
+    --awful.util.spawn("xfce4-appfinder")
+    awful.util.spawn("rofi -combi-modi window,drun,run -show combi -modi combi")
 end
 
 -- {{ client actions
@@ -2536,7 +2537,7 @@ uniarg:key_repeat({modkey, "Mod1" }, ";", function()
 end),
 
 uniarg:key_repeat({modkey, "Mod1" }, "'", function()
-        awful.util.spawn("rofi -combi-modi window,drun,run -show combi -modi combi")
+    awful.util.spawn("passmenu")
 end),
 
 -- Negate/invert screen color.
