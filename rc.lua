@@ -2521,7 +2521,7 @@ uniarg:key_repeat({ modkey, }, "v", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
-    awful.util.spawn("virtualbox")
+    awful.util.spawn("virt-manager")
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
