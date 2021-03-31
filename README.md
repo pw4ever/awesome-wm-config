@@ -114,6 +114,7 @@ sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source
 sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi
 sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
+sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
