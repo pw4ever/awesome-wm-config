@@ -104,11 +104,13 @@ sudo pacman -S --needed --noconfirm alsa-utils pulseaudio pulseaudio-alsa pulsea
 sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
 sudo pacman -S --needed --noconfirm pcmanfm gvfs udiskie xarchiver mc ranger
 sudo pacman -S --needed --noconfirm kitty tmux polkit
-sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs firefox chromium putty remmina goldendict
+sudo pacman -S --needed --noconfirm gvim neovim neovim-qt python-neovim emacs ipython
+sudo pacman -S --needed --noconfirm firefox chromium putty remmina goldendict
 sudo pacman -S --needed --noconfirm fcitx-im fcitx-googlepinyin fcitx-configtool
 sudo pacman -S --needed --noconfirm jdk-openjdk openjdk-doc
 sudo pacman -S --needed --noconfirm nmap openssh aria2 wget the_silver_searcher
-sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family
+sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu ttf-droid ttf-roboto ttf-liberation ttf-ubuntu-font-family
+sudo pacman -S --needed --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
 sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi
@@ -386,6 +388,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>r</kbd>| R studio | rstudio-bin |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| dictionary | goldendict |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
+|<kbd>Modkey</kbd><kbd></kbd><kbd>i</kbd>| scripter | ipython |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>i</kbd>| secondary editor | emacs |
 |<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | google-chrome-stable |
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | google-chrome-stable --incognito |
