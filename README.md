@@ -91,7 +91,7 @@ cd $HOME/.config && git clone https://github.com/pw4ever/awesome-wm-config.git a
 
 ### dependencies and nice-to-haves
 
-These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xfce4-screensaver`), network management (`network-manager-applet`), terminal (`kitty`), task manager (`xfce4-taskmanager`), and screen setup (`arandr`), etc..
+These dependencies are mostly derived from the application keybindings. Some are needed to enable basic features like theming (`feh`), [Desktop Entry Specification](http://standards.freedesktop.org/desktop-entry-spec/latest/)-style autostart (`dex`), audio setup (`alsa-utils`), backlight (`xorg-xbacklight`), Webcam (`cheese`), music player (`mpd` and `mpc`), screen lock (`xfce4-screensaver`), network management (`network-manager-applet`), terminal (`kitty`), task manager (`atop`), and screen setup (`arandr`), etc..
 
 Although not strictly dependencies, some of the packages are, in my opinion, nice to have.
 
@@ -113,7 +113,7 @@ sudo pacman -S --needed --noconfirm ttf-bitstream-vera ttf-croscore ttf-dejavu t
 sudo pacman -S --needed --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 sudo pacman -S --needed --noconfirm ttf-anonymous-pro ttf-freefont adobe-source-code-pro-fonts ttf-linux-libertine adobe-source-sans-pro-fonts
 sudo pacman -S --needed --noconfirm adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts
-sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi
+sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi atop
 sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
@@ -164,7 +164,7 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>q</kbd>|forcibly quit|"q" for quit; quit without confirming with user|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
-|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|xfce4-taskmanager|
+|<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|atop|
 
 #### **layout**
 

@@ -287,7 +287,7 @@ local tools = {
 
 tools.system.filemanager.primary = tools.terminal .. " -e ranger"
 tools.system.filemanager.secondary = "pcmanfm"
-tools.system.taskmanager = "xfce4-taskmanager"
+tools.system.taskmanager = tools.terminal .. " -e atop"
 
 tools.browser.primary = "chromium"
 tools.browser.primary_private = tools.browser.primary .. " --incognito"
