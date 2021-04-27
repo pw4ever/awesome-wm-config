@@ -402,7 +402,6 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>'</kbd>| password manager | passmenu |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>'</kbd>| screen shooter/recorder | teiler |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 |<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen shooter/caster | teiler |
 
