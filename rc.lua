@@ -2488,6 +2488,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "i", function ()
     awful.util.spawn(tools.terminal .. ' -e ' .. "ipython")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "i", function ()
+    awful.util.spawn(tools.terminal .. ' -e ' .. "newsboat")
+end),
+
 uniarg:key_repeat({ modkey, "Shift" }, "i", function ()
     awful.util.spawn(tools.editor.secondary)
 end),

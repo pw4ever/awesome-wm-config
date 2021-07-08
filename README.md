@@ -117,6 +117,7 @@ sudo pacman -S --needed --noconfirm xclip xsel clipmenu pass rofi atop
 sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
+sudo pacman -S --needed --noconfirm newsboat
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -388,7 +389,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>r</kbd>| R studio | rstudio-bin |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| dictionary | goldendict |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
-|<kbd>Modkey</kbd><kbd></kbd><kbd>i</kbd>| scripter | ipython |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>i</kbd>| scripter | ipython |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>i</kbd>| RSS reader | newsboat |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>i</kbd>| secondary editor | emacs |
 |<kbd>Modkey</kbd><kbd>b</kbd>| primary browser | google-chrome-stable |
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | google-chrome-stable --incognito |
