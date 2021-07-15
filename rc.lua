@@ -2453,7 +2453,7 @@ uniarg:key_repeat({ modkey, "Ctrl", }, "e", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
-    awful.util.spawn(tools.terminal .. ' -e "' .. config_path .. '/bin/tmux-wrapper"')
+    awful.util.spawn("cawbird")
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
