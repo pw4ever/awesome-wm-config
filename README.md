@@ -401,6 +401,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>t</kbd>| Twitter client | cawbird |
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| virtual machine manager | virt-manager |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>v</kbd>| virtual phone service | google-voice-desktop |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |

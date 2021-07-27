@@ -2532,6 +2532,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
     awful.util.spawn("virt-manager")
 end),
 
+uniarg:key_repeat({ modkey, "Shift", }, "v", function ()
+    awful.util.spawn("google-voice-desktop")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
     awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
 end),
