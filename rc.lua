@@ -2528,6 +2528,10 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "s", function ()
     awful.util.spawn("syncthing-gtk")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "k", function ()
+    awful.util.spawn("google-keep-desktop")
+end),
+
 uniarg:key_repeat({ modkey, }, "v", function ()
     awful.util.spawn("clipmenu")
 end),

@@ -399,6 +399,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>k</kbd>| note taking | google-keep-desktop |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>t</kbd>| Twitter client | cawbird |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>t</kbd>| Telegram client | telegram-desktop |
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
