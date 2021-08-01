@@ -118,6 +118,7 @@ sudo pacman -S --needed --noconfirm xfce4 xfce4-goodies
 sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
 sudo pacman -S --needed --noconfirm newsboat cawbird
+sudo pacman -S --needed --noconfirm telegram-desktop signal-desktop
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
