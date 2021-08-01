@@ -2456,6 +2456,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "t", function ()
     awful.util.spawn("cawbird")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "t", function ()
+    awful.util.spawn("telegram-desktop")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
     awful.util.spawn("passmenu")
 end),
