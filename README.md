@@ -418,7 +418,6 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 
 #### the rest
 
-* currently optimized for [Thinkpad W530 keyboard layout](http://shop.lenovo.com/us/en/laptops/thinkpad/w-series/w530/) ![](http://www.lenovo.com/images/OneWebImages/SubSeries/gallery/laptops/ThinkPad-W530-Laptop-PC-Overhead-Keyboard-View-gallery-940x529.jpg)
 * take a look at [the config](https://github.com/pw4ever/awesome-wm-config/blob/master/rc.lua) for details.
 
 ### tag list
