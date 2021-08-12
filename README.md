@@ -119,6 +119,7 @@ sudo pacman -S --needed --noconfirm mpd mpc ncmpcpp xfmpc
 sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
 sudo pacman -S --needed --noconfirm newsboat cawbird
 sudo pacman -S --needed --noconfirm telegram-desktop signal-desktop
+sudo pacman -S --needed --noconfirm inkscape gimp
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -126,6 +127,7 @@ sudo aura -Ax --needed --noconfirm stardict-oald stardict-wordnet dict-wn dict-f
 sudo aura -Ax --needed --noconfirm devdocs-desktop
 sudo aura -Ax --needed --noconfirm rofi-dmenu
 sudo aura -Ax --needed --noconfirm teiler-git
+sudo aura -Ax --needed --noconfirm inkscape-open-symbols-git
 ```
 
 ### miscellaneous
@@ -405,6 +407,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| virtual machine manager | virt-manager |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>v</kbd>| virtual phone service | google-voice-desktop |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>y</kbd>| vector drawing | inkscape |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>y</kbd>| raster drawing | gimp |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
