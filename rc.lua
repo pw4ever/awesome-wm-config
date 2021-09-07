@@ -2480,7 +2480,7 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "d", function ()
     awful.util.spawn("goldendict")
 end),
 
-uniarg:key_repeat({ modkey, }, "d", function ()
+uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
     awful.util.spawn("google-drive-desktop")
 end),
 
