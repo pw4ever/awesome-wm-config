@@ -2476,8 +2476,12 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "r", function ()
     awful.util.spawn("rstudio-bin")
 end),
 
-uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
+uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "d", function ()
     awful.util.spawn("goldendict")
+end),
+
+uniarg:key_repeat({ modkey, }, "d", function ()
+    awful.util.spawn("google-drive-desktop")
 end),
 
 uniarg:key_repeat({ modkey, }, "d", function ()
