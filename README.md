@@ -120,6 +120,7 @@ sudo pacman -S --needed --noconfirm qemu virt-manager libvirt
 sudo pacman -S --needed --noconfirm newsboat cawbird
 sudo pacman -S --needed --noconfirm telegram-desktop signal-desktop
 sudo pacman -S --needed --noconfirm inkscape gimp
+sudo pacman -S --needed --noconfirm qutebrowser python-adblock pdfjs
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -401,6 +402,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private primary browser | google-chrome-stable --incognito |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>b</kbd>| additional browser | qutebrowser |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>k</kbd>| note taking | google-keep-desktop |
