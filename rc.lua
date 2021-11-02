@@ -2524,6 +2524,10 @@ uniarg:key_repeat({ modkey, "Shift", "Ctrl", }, "b", function ()
     awful.util.spawn(tools.browser.secondary_private)
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "b", function ()
+    awful.util.spawn("qutebrowser")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "s", function ()
     awful.util.spawn("signal-desktop --start-in-tray")
 end),
