@@ -392,7 +392,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>r</kbd>| R studio | rstudio-bin |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>d</kbd>| dictionary | goldendict |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| online docs | google-drive-desktop |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>d</kbd>| online docs | [Google Drive] |
 |<kbd>Modkey</kbd><kbd>d</kbd>| dev docs | devdocs-desktop |
 |<kbd>Modkey</kbd><kbd>i</kbd>| primary editor | gvim |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>i</kbd>| scripter | ipython |
@@ -405,12 +405,12 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>b</kbd>| additional browser | qutebrowser |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>k</kbd>| note taking | google-keep-desktop |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>k</kbd>| note taking | [Google Keep] |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>t</kbd>| Twitter client | cawbird |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>t</kbd>| Telegram client | telegram-desktop |
 |<kbd>Modkey</kbd><kbd>v</kbd>| clipboard manager | clipmenu |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>v</kbd>| virtual machine manager | virt-manager |
-|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>v</kbd>| virtual phone service | google-voice-desktop |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>v</kbd>| virtual phone service | [Google Voice] |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>y</kbd>| vector drawing | inkscape |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>y</kbd>| raster drawing | gimp |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |

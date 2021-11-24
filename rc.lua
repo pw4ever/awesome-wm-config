@@ -2481,7 +2481,7 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "d", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
-    awful.util.spawn("google-drive-desktop")
+    awful.util.spawn(tools.browser.primary .. " " .. "https://drive.google.com")
 end),
 
 uniarg:key_repeat({ modkey, }, "d", function ()
@@ -2537,7 +2537,7 @@ uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "s", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "k", function ()
-    awful.util.spawn("google-keep-desktop")
+    awful.util.spawn(tools.browser.primary .. " " .. "https://keep.google.com")
 end),
 
 uniarg:key_repeat({ modkey, }, "v", function ()
@@ -2549,7 +2549,7 @@ uniarg:key_repeat({ modkey, "Mod1", }, "v", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Shift", }, "v", function ()
-    awful.util.spawn("google-voice-desktop")
+    awful.util.spawn(tools.browser.primary .. " " .. "https://voice.google.com")
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "y", function ()
