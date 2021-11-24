@@ -2485,7 +2485,7 @@ uniarg:key_repeat({ modkey, "Mod1", }, "d", function ()
 end),
 
 uniarg:key_repeat({ modkey, }, "d", function ()
-    awful.util.spawn("devdocs-desktop")
+    awful.util.spawn(tools.browser.primary .. " " .. "https://devdocs.io")
 end),
 
 uniarg:key_repeat({ modkey, }, "i", function ()
