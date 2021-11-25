@@ -2564,6 +2564,14 @@ uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
     awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "m", function ()
+    awful.util.spawn(tools.browser.primary .. " " .. "https://mail.google.com")
+end),
+
+uniarg:key_repeat({ modkey, "Mod1", }, "n", function ()
+    awful.util.spawn(tools.browser.primary .. " " .. "https://calendar.google.com")
+end),
+
 uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
     awful.util.spawn("kmag")
 end),

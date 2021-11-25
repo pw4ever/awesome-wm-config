@@ -414,6 +414,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>y</kbd>| vector drawing | inkscape |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>y</kbd>| raster drawing | gimp |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>m</kbd>| email | https://mail.google.com |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>n</kbd>| calendar | https://calendar.google.com |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>'</kbd>| password manager | passmenu |
