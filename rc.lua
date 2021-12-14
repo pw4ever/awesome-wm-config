@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.29"
+customization.config.version = "4.0.30"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -133,8 +133,8 @@ end
 
 local cachedir = awful.util.getdir("cache")
 local awesome_tags_fname = cachedir .. "/awesome-tags"
-local awesome_autostart_once_fname = cachedir .. "/awesome-autostart-once-" .. os.getenv("XDG_SESSION_ID")
-local awesome_client_tags_fname = cachedir .. "/awesome-client-tags-" .. os.getenv("XDG_SESSION_ID")
+local awesome_autostart_once_fname = cachedir .. "/awesome-autostart-once-" .. (os.getenv("XDG_SESSION_ID") or "0")
+local awesome_client_tags_fname = cachedir .. "/awesome-client-tags-" .. (os.getenv("XDG_SESSION_ID") or "0")
 
 do
 
