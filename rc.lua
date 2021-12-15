@@ -451,7 +451,7 @@ end
 
 customization.func.app_finder = function ()
     --awful.util.spawn("xfce4-appfinder")
-    awful.util.spawn("rofi -combi-modi window,drun,run -show combi -modi combi")
+    awful.util.spawn("rofi -combi-modi windowcd,window,drun,run -show combi -modi combi,windowcd,window,drun,run")
 end
 
 -- {{ client actions
