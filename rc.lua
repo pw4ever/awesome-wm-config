@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.30"
+customization.config.version = "4.0.31"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -82,11 +82,11 @@ customization.default.property = {
 }
 
 customization.default.compmgr = 'xcompmgr'
-customization.default.compmgr_args = '-f -c -s'
+customization.default.compmgr_args = '-s'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
-customization.option.launch_compmgr_p = false
+customization.option.launch_compmgr_p = true
 customization.option.tag_persistent_p = true
 customization.option.low_battery_notification_p = true
 
