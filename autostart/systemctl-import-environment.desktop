@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=import environment variables in SystemD
+TryExec=systemctl
+Exec=systemctl --user import-environment DISPLAY
+Terminal=false
+Type=Application
+StartupNotify=false
