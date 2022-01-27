@@ -72,7 +72,7 @@ This repo holds my *personal* take of [awesome][awesome]'s configuration. Hightl
 * confirmation before quit/restart to minimize data loss accidents.
   * you have to type "yes" (case insensitive) before quitting/restarting.
   * this minimizes the chance that you lose your work by accidents.
-* keybindings for tuning transparency (using `xcompmgr`), stay-on-top, sticky.
+* keybindings for tuning transparency (using `picom`), stay-on-top, sticky.
   * these features combined, along with tiling and floating layouts, allow you to type in one window while seeing the content of others.
 * keybindings to *my* preferred applications.
 * only cycle through the most sensible (IMHO) layouts.
@@ -98,7 +98,7 @@ Although not strictly dependencies, some of the packages are, in my opinion, nic
 On [Arch Linux][archlinux]:
 
 ```bash
-sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot xcompmgr wmname gnome-keyring seahorse
+sudo pacman -S --needed --noconfirm feh dex xdg-utils screenfetch scrot picom wmname gnome-keyring seahorse
 sudo pacman -S --needed --noconfirm xorg-xbacklight xf86-input-synaptics cheese workrave gnome-clocks
 sudo pacman -S --needed --noconfirm alsa-utils pulseaudio pulseaudio-alsa pulseaudio-alsa pulseaudio-bluetooth pavucontrol pulsemixer
 sudo pacman -S --needed --noconfirm networkmanager network-manager-applet arandr
@@ -304,8 +304,8 @@ in the floating mode, the following mouse actions *on client window* are enabled
 |<kbd>Modkey</kbd><kbd>s</kbd>|toggle sticky status||
 |<kbd>Modkey</kbd><kbd>,</kbd>|toggle horizontal maximized status||
 |<kbd>Modkey</kbd><kbd>.</kbd>|toggle vertical maximized status||
-|<kbd>Modkey</kbd><kbd>[</kbd>|**decrease opacity by 10%**|need composite manager, e.g., xcompmgr|
-|<kbd>Modkey</kbd><kbd>]</kbd>|**increase opacity by 10%**|need composite manager, e.g., xcompmgr|
+|<kbd>Modkey</kbd><kbd>[</kbd>|**decrease opacity by 10%**|need composite manager |
+|<kbd>Modkey</kbd><kbd>]</kbd>|**increase opacity by 10%**|need composite manager |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>[</kbd>|**disable composite manager**||
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>]</kbd>|**enable composite manager**||
 
