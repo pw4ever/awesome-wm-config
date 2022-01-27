@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.31"
+customization.config.version = "4.0.32"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -81,8 +81,8 @@ customization.default.property = {
     minimal_client_height = 50,
 }
 
-customization.default.compmgr = 'xcompmgr'
-customization.default.compmgr_args = '-s'
+customization.default.compmgr = 'picom'
+customization.default.compmgr_args = '-b --unredir-if-possible --no-fading-openclose'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
