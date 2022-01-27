@@ -81,8 +81,8 @@ customization.default.property = {
     minimal_client_height = 50,
 }
 
-customization.default.compmgr = 'xcompmgr'
-customization.default.compmgr_args = '-s'
+customization.default.compmgr = 'picom'
+customization.default.compmgr_args = '-b --unredir-if-possible --no-fading-openclose'
 customization.default.wallpaper_change_interval = 15
 
 customization.option.wallpaper_change_p = true
