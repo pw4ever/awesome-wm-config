@@ -2193,6 +2193,26 @@ awful.key({ modkey, "Shift", "Control" }, "q", customization.orig.quit),
 
 awful.key({ modkey }, "\\", customization.func.systeminfo),
 
+awful.key({ modkey, "Control" }, "\\", naughty.destroy_all_notifications),
+
+awful.key({ modkey, "Mod1" }, "\\",
+function ()
+    naughty.toggle()
+    naughty.notify({
+        preset = naughty.config.presets.normal,
+        title="notification toggled",
+        text=(function ()
+            if naughty.is_suspended() then
+                return "suspended"
+            else
+                return "resumed"
+            end
+        end)(),
+        timeout = 3,
+        screen = awful.screen.focused(),
+    })
+end),
+
 awful.key({ modkey }, "F1", customization.func.help),
 
 awful.key({ modkey, "Shift" }, "F1", hotkeys_popup.show_help),
