@@ -157,6 +157,8 @@ There are two modes of universal argument: Regular and persistent. Regular unive
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>q</kbd>|quit|"q" for quit; exit the current Awesome session|
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>q</kbd>|forcibly quit|"q" for quit; quit without confirming with user|
 |<kbd>Modkey</kbd><kbd>\\</kbd>|system info popup||
+|<kbd>Modkey</kbd><kbd>Ctrl</kbd><kbd>\\</kbd>|clear all pending notifications||
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>\\</kbd>|toggle between suspending/resuming notifications||
 |<kbd>Modkey</kbd><kbd>f1</kbd>|open help in browser||
 |<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Esc</kbd>|open task manager|xfce4-taskmanager|
 
