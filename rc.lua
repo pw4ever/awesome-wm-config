@@ -63,7 +63,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.32"
+customization.config.version = "4.0.33"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -127,7 +127,7 @@ end
 -- {{{
 -- HACK! prevent Awesome start autostart items multiple times in a session
 -- cause: in-place restart by awesome.restart, xrandr change
--- idea: 
+-- idea:
 -- * create a file awesome-autostart-once when first time "dex" autostart items (at the end of this file)
 -- * only "rm" this file when awesome.quit
 
@@ -175,7 +175,7 @@ do
         else -- if restart, save client tags
             -- save tags for each client
             awful.util.mkdir(awesome_client_tags_fname)
-            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_client_tags_fname) 
+            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_client_tags_fname)
             -- race condition (whether awesome_client_tags_fname is created) due to asynchrony of "spawn_with_shell"
             for _, c in ipairs(client.get()) do
                 local client_id = c.pid .. '-' .. c.window
@@ -254,7 +254,7 @@ do
 
     customization.timer.change_wallpaper:connect_signal("timeout", customization.func.change_wallpaper)
 
-    customization.timer.change_wallpaper:connect_signal("property::timeout", 
+    customization.timer.change_wallpaper:connect_signal("property::timeout",
     function ()
         customization.timer.change_wallpaper:stop()
         customization.timer.change_wallpaper:start()
@@ -476,7 +476,7 @@ customization.func.client_move_next = function () util.client.rel_send(1) end
 
 customization.func.client_move_prev = function () util.client.rel_send(-1) end
 
-customization.func.client_move_to_tag = function () 
+customization.func.client_move_to_tag = function ()
     local keywords = {}
     local scr = awful.screen.focused()
     for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -496,7 +496,7 @@ customization.func.client_move_to_tag = function ()
     nil)
 end
 
-customization.func.client_toggle_tag = function (c) 
+customization.func.client_toggle_tag = function (c)
     local keywords = {}
     local scr = awful.screen.focused()
     for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -517,7 +517,7 @@ customization.func.client_toggle_tag = function (c)
     nil)
 end
 
-customization.func.client_toggle_titlebar = function ()  
+customization.func.client_toggle_titlebar = function ()
   awful.titlebar.toggle(client.focus)
 end
 
@@ -525,27 +525,27 @@ customization.func.client_raise = function (c)
   c:raise()
 end
 
-customization.func.client_fullscreen = function (c) 
-  c.fullscreen = not c.fullscreen  
+customization.func.client_fullscreen = function (c)
+  c.fullscreen = not c.fullscreen
 end
 
-customization.func.client_maximize_horizontal = function (c) 
+customization.func.client_maximize_horizontal = function (c)
   c.maximized_horizontal = not c.maximized_horizontal
 end
 
-customization.func.client_maximize_vertical = function (c) 
+customization.func.client_maximize_vertical = function (c)
   c.maximized_vertical = not c.maximized_vertical
 end
 
-customization.func.client_maximize = function (c) 
+customization.func.client_maximize = function (c)
   c.maximized = not c.maximized
 end
 
-customization.func.client_minimize = function (c) 
+customization.func.client_minimize = function (c)
   c.minimized = not c.minimized
 end
 
-do 
+do
 
   -- closures for client_status
   -- client_status[client] = {sidelined = <boolean>, geometry= <client geometry>}
@@ -771,8 +771,8 @@ customization.func.client_opaque_on = function (c)
   awful.util.spawn_with_shell(customization.default.compmgr.. " " .. customization.default.compmgr_args)
 end
 
-customization.func.client_swap_with_master = function (c) 
-  c:swap(awful.client.getmaster()) 
+customization.func.client_swap_with_master = function (c)
+  c:swap(awful.client.getmaster())
 end
 
 customization.func.client_toggle_top = function (c)
@@ -788,7 +788,7 @@ customization.func.client_kill = function (c)
 end
 
 do
-    local instance = nil 
+    local instance = nil
     customization.func.client_action_menu = function (c)
         local clear_instance = function ()
             if instance then
@@ -806,258 +806,258 @@ do
                 width = 200,
             },
             items = {
-                { 
-                    "&cancel", function () 
+                {
+                    "&cancel", function ()
                         clear_instance()
-                    end 
+                    end
                 },
-                { 
+                {
                     "=== task action menu ===", function ()
                         clear_instance()
                     end
                 },
-                { 
+                {
                     "--- status ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "&raise", function () 
+                    "&raise", function ()
                         clear_instance()
                         customization.func.client_raise(c)
                     end
                 },
                 {
-                    "&top", function () 
+                    "&top", function ()
                         clear_instance()
                         customization.func.client_toggle_top(c)
                     end
                 },
                 {
-                    "&sticky", function () 
+                    "&sticky", function ()
                         clear_instance()
-                        customization.func.client_toggle_sticky(c)    
+                        customization.func.client_toggle_sticky(c)
                     end
                 },
                 {
-                    "&kill", function () 
+                    "&kill", function ()
                         clear_instance()
                         customization.func.client_kill(c)
                     end
                 },
                 {
-                    "toggle title&bar", function () 
+                    "toggle title&bar", function ()
                         clear_instance()
                         customization.func.client_toggle_titlebar(c)
                     end
                 },
-                { 
+                {
                     "--- focus ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "&next client", function () 
+                    "&next client", function ()
                         clear_instance()
                         customization.func.client_focus_next(c)
                     end
                 },
                 {
-                    "&prev client", function () 
+                    "&prev client", function ()
                         clear_instance()
                         customization.func.client_focus_prev(c)
                     end
                 },
                 {
-                    "&urgent", function () 
+                    "&urgent", function ()
                         clear_instance()
                         customization.func.client_focus_urgent(c)
                     end
                 },
-                { 
+                {
                     "--- tag ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "move to next tag", function () 
+                    "move to next tag", function ()
                         clear_instance()
                         customization.func.client_move_next(c)
                     end
                 },
                 {
-                    "move to previous tag", function () 
+                    "move to previous tag", function ()
                         clear_instance()
                         customization.func.client_move_prev(c)
                     end
                 },
                 {
-                    "move to ta&g", function () 
+                    "move to ta&g", function ()
                         clear_instance()
                         customization.func.client_move_to_tag(c)
                     end
                 },
                 {
-                    "togg&le tag", function () 
+                    "togg&le tag", function ()
                         clear_instance()
                         customization.func.client_toggle_tag(c)
                     end
                 },
-                { 
+                {
                     "--- geometry ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "&fullscreen", function () 
+                    "&fullscreen", function ()
                         clear_instance()
                         customization.func.client_fullscreen(c)
                     end
                 },
                 {
-                    "m&aximize", function () 
+                    "m&aximize", function ()
                         clear_instance()
                         customization.func.client_maximize(c)
                     end
                 },
                 {
-                    "maximize h&orizontal", function () 
+                    "maximize h&orizontal", function ()
                         clear_instance()
                         customization.func.client_maximize_horizontal(c)
                     end
                 },
                 {
-                    "maximize &vertical", function () 
+                    "maximize &vertical", function ()
                         clear_instance()
                         customization.func.client_maximize_vertical(c)
                     end
                 },
                 {
-                    "m&inimize", function () 
+                    "m&inimize", function ()
                         clear_instance()
-                        customization.func.client_minimize(c) 
+                        customization.func.client_minimize(c)
                     end
                 },
                 {
-                    "move to left", function () 
+                    "move to left", function ()
                         clear_instance()
-                        customization.func.client_sideline_left(c) 
+                        customization.func.client_sideline_left(c)
                     end
                 },
                 {
-                    "move to right", function () 
+                    "move to right", function ()
                         clear_instance()
-                        customization.func.client_sideline_right(c) 
+                        customization.func.client_sideline_right(c)
                     end
                 },
                 {
-                    "move to top", function () 
+                    "move to top", function ()
                         clear_instance()
-                        customization.func.client_sideline_top(c) 
+                        customization.func.client_sideline_top(c)
                     end
                 },
                 {
-                    "move to bottom", function () 
+                    "move to bottom", function ()
                         clear_instance()
-                        customization.func.client_sideline_bottom(c) 
+                        customization.func.client_sideline_bottom(c)
                     end
                 },
                 {
-                    "extend left", function () 
+                    "extend left", function ()
                         clear_instance()
-                        customization.func.client_sideline_extend_left(c) 
+                        customization.func.client_sideline_extend_left(c)
                     end
                 },
                 {
-                    "extend right", function () 
+                    "extend right", function ()
                         clear_instance()
-                        customization.func.client_sideline_extend_right(c) 
+                        customization.func.client_sideline_extend_right(c)
                     end
                 },
                 {
-                    "extend top", function () 
+                    "extend top", function ()
                         clear_instance()
-                        customization.func.client_sideline_extend_top(c) 
+                        customization.func.client_sideline_extend_top(c)
                     end
                 },
                 {
-                    "extend bottom", function () 
+                    "extend bottom", function ()
                         clear_instance()
-                        customization.func.client_sideline_extend_bottom(c) 
+                        customization.func.client_sideline_extend_bottom(c)
                     end
                 },
                 {
-                    "shrink left", function () 
+                    "shrink left", function ()
                         clear_instance()
-                        customization.func.client_sideline_shrink_left(c) 
+                        customization.func.client_sideline_shrink_left(c)
                     end
                 },
                 {
-                    "shrink right", function () 
+                    "shrink right", function ()
                         clear_instance()
-                        customization.func.client_sideline_shrink_right(c) 
+                        customization.func.client_sideline_shrink_right(c)
                     end
                 },
                 {
-                    "shrink top", function () 
+                    "shrink top", function ()
                         clear_instance()
-                        customization.func.client_sideline_shrink_top(c) 
+                        customization.func.client_sideline_shrink_top(c)
                     end
                 },
                 {
-                    "shrink bottom", function () 
+                    "shrink bottom", function ()
                         clear_instance()
-                        customization.func.client_sideline_shrink_bottom(c) 
+                        customization.func.client_sideline_shrink_bottom(c)
                     end
                 },
-                { 
+                {
                     "--- opacity ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "&less opaque", function () 
+                    "&less opaque", function ()
                         clear_instance()
                         customization.func.client_opaque_less(c)
                     end
                 },
                 {
-                    "&more opaque", function () 
+                    "&more opaque", function ()
                         clear_instance()
                         customization.func.client_opaque_more(c)
                     end
                 },
                 {
-                    "opacity off", function () 
+                    "opacity off", function ()
                         clear_instance()
                         customization.func.client_opaque_off(c)
                     end
                 },
                 {
-                    "opacity on", function () 
+                    "opacity on", function ()
                         clear_instance()
                         customization.func.client_opaque_on(c)
                     end
                 },
-                { 
+                {
                     "--- ordering ---", function ()
                         clear_instance()
                     end
                 },
                 {
-                    "swap with master", function () 
+                    "swap with master", function ()
                         clear_instance()
                         customization.func.client_swap_with_master(c)
                     end
                 },
                 {
-                    "swap with next", function () 
+                    "swap with next", function ()
                         clear_instance()
                         customization.func.client_swap_next(c)
                     end
                 },
                 {
-                    "swap with prev", function () 
+                    "swap with prev", function ()
                         clear_instance()
                         customization.func.client_swap_prev(c)
                     end
@@ -1076,7 +1076,7 @@ customization.func.tag_add_after = function ()
     local focused = awful.screen.focused()
     local scr = focused
     local sel_idx = focused.selected_tag and focused.selected_tag.index or 0
-    local t = util.tag.add(nil, 
+    local t = util.tag.add(nil,
     {
         screen = scr,
         index = sel_idx and sel_idx+1 or 1,
@@ -1091,7 +1091,7 @@ customization.func.tag_add_before = function ()
     local focused = awful.screen.focused()
     local scr = focused.index
     local sel_idx = focused.selected_tag and focused.selected_tag.index or 1
-    local t = util.tag.add(nil, 
+    local t = util.tag.add(nil,
     {
         screen = scr,
         index = sel_idx and sel_idx or 1,
@@ -1119,7 +1119,7 @@ customization.func.tag_view_next = awful.tag.viewnext
 
 customization.func.tag_last = awful.tag.history.restore
 
-customization.func.tag_goto = function () 
+customization.func.tag_goto = function ()
     local keywords = {}
     local scr = awful.screen.focused()
     for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
@@ -1174,15 +1174,15 @@ customization.func.client_move_screen_relatively = function (index_offset)
     end
 end
 
-customization.func.tag_move_forward = function () 
-    util.tag.rel_move(awful.tag.selected(), 1) 
+customization.func.tag_move_forward = function ()
+    util.tag.rel_move(awful.tag.selected(), 1)
 end
 
-customization.func.tag_move_backward = function () 
-    util.tag.rel_move(awful.tag.selected(), -1) 
+customization.func.tag_move_backward = function ()
+    util.tag.rel_move(awful.tag.selected(), -1)
 end
 
-customization.func.tag_move_screen = function (scrdelta) 
+customization.func.tag_move_screen = function (scrdelta)
     local seltag = awful.tag.selected()
     local scrcount = capi.screen.count()
     if seltag then
@@ -1222,104 +1222,104 @@ do
                     width = 200,
                 },
                 items = {
-                    { 
-                        "&cancel", function () 
+                    {
+                        "&cancel", function ()
                             clear_instance()
                         end
                     },
-                    { 
+                    {
                         "=== tag action menu ===", function ()
                             clear_instance()
                         end
                     },
-                    { 
+                    {
                         "--- dynamic tagging ---", function ()
                             clear_instance()
                         end
                     },
                     {
-                        "add tag &after current one", function () 
+                        "add tag &after current one", function ()
                             clear_instance()
                             customization.func.tag_add_after(t)
                         end
                     },
                     {
-                        "add tag &before current one", function () 
+                        "add tag &before current one", function ()
                             clear_instance()
                             customization.func.tag_add_before(t)
                         end
                     },
                     {
-                        "&delete current tag if empty", function () 
+                        "&delete current tag if empty", function ()
                             clear_instance()
                             customization.func.tag_delete(t)
                         end
                     },
                     {
-                        "&rename current tag", function () 
+                        "&rename current tag", function ()
                             clear_instance()
                             customization.func.tag_rename(t)
                         end
                     },
-                    { 
+                    {
                         "--- focus ---", function ()
                             clear_instance()
                         end
                     },
                     {
-                        "&goto tag", function () 
+                        "&goto tag", function ()
                             clear_instance()
                             customization.func.tag_goto(t)
                         end
                     },
                     {
-                        "view &previous tag", function () 
+                        "view &previous tag", function ()
                             clear_instance()
                             customization.func.tag_view_prev(t)
                         end
                     },
                     {
-                        "view &next tag", function () 
+                        "view &next tag", function ()
                             clear_instance()
                             customization.func.tag_view_next(t)
                         end
                     },
                     {
-                        "view &last tag", function () 
+                        "view &last tag", function ()
                             clear_instance()
                             customization.func.tag_last(t)
                         end
                     },
-                    { 
+                    {
                         "--- ordering ---", function ()
                             clear_instance()
                         end
                     },
                     {
-                        "move tag &forward", function () 
+                        "move tag &forward", function ()
                             clear_instance()
                             customization.func.tag_move_forward()
                         end
                     },
                     {
-                        "move tag &backward", function () 
+                        "move tag &backward", function ()
                             clear_instance()
                             customization.func.tag_move_backward()
                         end
                     },
-                    { 
+                    {
                         "--- screen ---", function ()
                             clear_instance()
                         end
                     },
                     {
-                        "move tag to pre&vious window", function () 
+                        "move tag to pre&vious window", function ()
                             clear_instance()
                             customization.func.tag_move_screen_prev()
                         end
                     },
                     {
-                        "move tag to ne&xt window", function () 
+                        "move tag to ne&xt window", function ()
                             clear_instance()
                             customization.func.tag_move_screen_next()
                         end
@@ -1348,7 +1348,7 @@ do
             clear_instance()
             return
         end
-        local clients = { 
+        local clients = {
             items = {},
             theme = { width = 400 },
         }
@@ -1376,7 +1376,7 @@ do
     end
 end
 
-customization.func.clients_on_tag_prompt = function () 
+customization.func.clients_on_tag_prompt = function ()
   local clients = {}
   local next = next
   local t = awful.tag.selected()
@@ -1487,16 +1487,16 @@ end
 
 do
     local instance = nil
-    customization.func.systeminfo = function () 
+    customization.func.systeminfo = function ()
         if instance then
             naughty.destroy(instance)
             instance = nil
             return
         end
-        local info = "Version: " .. awesome.version 
+        local info = "Version: " .. awesome.version
         info = info ..  "\n" .. "Release: " .. awesome.release
         info = info ..  "\n" .. "Config: " .. awesome.conffile
-        info = info ..  "\n" .. "Config Version: " .. customization.config.version 
+        info = info ..  "\n" .. "Config Version: " .. customization.config.version
         info = info ..  "\n" .. "Config Help: " .. customization.config.help_url
         if awesome.composite_manager_running then
             info = info .. "\n" .. "<span fgcolor='red'>a composite manager is running</span>"
@@ -1584,7 +1584,7 @@ mymainmenu = awful.menu({
     { "&apps", myapp },
     { "&terminal", tools.terminal },
     { "a&wesome", myawesomemenu, beautiful.awesome_icon },
-    { "&client action", function () 
+    { "&client action", function ()
       customization.func.client_action_menu()
       mymainmenu:hide()
     end, beautiful.awesome_icon },
@@ -1610,7 +1610,7 @@ customization.widgets.keyboardlayout = awful.widget.keyboardlayout()
 customization.widgets.textclock = wibox.widget.textclock()
 
 -- Launcher
-customization.widgets.launcher = awful.widget.launcher({ 
+customization.widgets.launcher = awful.widget.launcher({
     image = beautiful.awesome_icon,
     menu = mymainmenu,
 })
@@ -1626,10 +1626,10 @@ customization.widgets.launcher = awful.widget.launcher({
 customization.widgets.cpuusage = awful.widget.graph()
 customization.widgets.cpuusage:set_width(50)
 customization.widgets.cpuusage:set_background_color("#494B4F")
-customization.widgets.cpuusage:set_color({ 
-  type = "linear", from = { 0, 0 }, to = { 10,0 }, 
+customization.widgets.cpuusage:set_color({
+  type = "linear", from = { 0, 0 }, to = { 10,0 },
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)                   
+vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)
 do
     local prog=tools.system.taskmanager
     local started=false
@@ -1676,7 +1676,7 @@ customization.widgets.bat:set_color({
     type = "linear", from = { 0, 0 }, to = { 0, 10 },
     stops = {{ 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}
 })
-vicious.register(customization.widgets.bat, vicious.widgets.bat, 
+vicious.register(customization.widgets.bat, vicious.widgets.bat,
     function (bat, args)
         local perc = args[2]
         -- "perc>0" checks for "no battery" (e.g., desktop computer).
@@ -1726,9 +1726,9 @@ vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
     local text = nil
     local state = args["{state}"]
     if state then
-      if state == "Stop" then 
+      if state == "Stop" then
         text = ""
-      else 
+      else
         text = args["{Artist}"]..' - '.. args["{Title}"]
       end
       return '<span fgcolor="light green"><b>[' .. state .. ']</b> <small>' .. text .. '</small></span>'
@@ -1901,7 +1901,7 @@ function(s)
     -- Wallpaper
     set_wallpaper(s)
     -- Set a default tag is there is none.
-    timer.delayed_call(function () 
+    timer.delayed_call(function ()
         local si = s.index
         if #s.tags < 1 then
             local tag = awful.tag.add("main" .. si,
@@ -1910,8 +1910,8 @@ function(s)
                 layout = customization.default.property.layout,
                 mwfact = customization.default.property.mwfact,
                 nmaster = customization.default.property.nmaster,
-                ncol = customization.default.property.ncol, 
-            } 
+                ncol = customization.default.property.ncol,
+            }
             )
             awful.tag.viewonly(tag)
         end
@@ -2029,7 +2029,7 @@ customization.func.restore_tag_to_screen = function ()
                 local count_index = s
                 local fname = awesome_tags_fname .. "." .. s
                 local f = io.open(fname, "r")
-                if f then 
+                if f then
                     f:close()
                     for tagname in io.lines(fname) do
                         local tag
@@ -2054,7 +2054,7 @@ customization.func.restore_tag_to_screen = function ()
         for s = 1, screen.count() do
             local tags = awful.tag.gettags(s)
             if #tags >= 1 then
-                local fname = awesome_tags_fname .. "-selected." .. s 
+                local fname = awesome_tags_fname .. "-selected." .. s
                 f = io.open(fname, "r")
                 local tagnum
                 if f then
@@ -2063,7 +2063,7 @@ customization.func.restore_tag_to_screen = function ()
                         tagnum = 1
                     end
                     f:close()
-                else 
+                else
                     tagnum = 1
                 end
                 local tag = awful.tag.gettags(s)[tagnum]
@@ -2075,8 +2075,8 @@ customization.func.restore_tag_to_screen = function ()
                     layout = customization.default.property.layout,
                     mwfact = customization.default.property.mwfact,
                     nmaster = customization.default.property.nmaster,
-                    ncol = customization.default.property.ncol, 
-                } 
+                    ncol = customization.default.property.ncol,
+                }
                 )
                 awful.tag.viewonly(tag)
             end
@@ -2093,8 +2093,8 @@ customization.func.restore_tag_to_screen = function ()
                     layout = customization.default.property.layout,
                     mwfact = customization.default.property.mwfact,
                     nmaster = customization.default.property.nmaster,
-                    ncol = customization.default.property.ncol, 
-                } 
+                    ncol = customization.default.property.ncol,
+                }
                 )
                 awful.tag.viewonly(tag)
             end
@@ -2194,6 +2194,26 @@ awful.key({ modkey, "Shift", "Control" }, "q", customization.orig.quit),
 
 awful.key({ modkey }, "\\", customization.func.systeminfo),
 
+awful.key({ modkey, "Control" }, "\\", naughty.destroy_all_notifications),
+
+awful.key({ modkey, "Mod1" }, "\\",
+function ()
+    naughty.toggle()
+    naughty.notify({
+        preset = naughty.config.presets.normal,
+        title="notification toggled",
+        text=(function ()
+            if naughty.is_suspended() then
+                return "suspended"
+            else
+                return "resumed"
+            end
+        end)(),
+        timeout = 3,
+        screen = awful.screen.focused(),
+    })
+end),
+
 awful.key({ modkey }, "F1", customization.func.help),
 
 awful.key({ modkey, "Shift" }, "F1", hotkeys_popup.show_help),
@@ -2280,7 +2300,7 @@ awful.key({modkey}, "F4", function()
     )
 end),
 
-awful.key({ modkey }, "c", function () 
+awful.key({ modkey }, "c", function ()
     awful.util.spawn(tools.editor.primary .. " " .. awful.util.getdir("config") .. "/rc.lua" )
 end),
 
@@ -2315,7 +2335,7 @@ end),
 
 -- dynamic tagging
 
-awful.key({ modkey, "Ctrl", "Mod1" }, "t", function () 
+awful.key({ modkey, "Ctrl", "Mod1" }, "t", function ()
   customization.option.tag_persistent_p = not customization.option.tag_persistent_p
   local msg = nil
   if customization.option.tag_persistent_p then
@@ -2354,9 +2374,9 @@ awful.key({modkey,}, "g", customization.func.tag_goto),
 
 --- move
 
-uniarg:key_repeat({modkey, "Control"}, "p", customization.func.tag_move_backward), 
+uniarg:key_repeat({modkey, "Control"}, "p", customization.func.tag_move_backward),
 
-uniarg:key_repeat({modkey, "Control"}, "n", customization.func.tag_move_forward), 
+uniarg:key_repeat({modkey, "Control"}, "n", customization.func.tag_move_forward),
 
 -- client management
 
@@ -2572,11 +2592,11 @@ uniarg:key_repeat({ modkey, "Mod1", }, "n", function ()
     awful.util.spawn(tools.browser.primary .. " " .. "https://calendar.google.com")
 end),
 
-uniarg:key_repeat({modkey, "Shift" }, "\\", function() 
+uniarg:key_repeat({modkey, "Shift" }, "\\", function()
     awful.util.spawn("kmag")
 end),
 
-uniarg:key_repeat({modkey, "Mod1" }, ";", function() 
+uniarg:key_repeat({modkey, "Mod1" }, ";", function()
     awful.util.spawn("gnome-clocks")
 end),
 
@@ -2585,11 +2605,11 @@ uniarg:key_repeat({modkey, "Mod1" }, "'", function()
 end),
 
 -- Negate/invert screen color.
-awful.key({modkey, "Mod1", "Shift", "Control" }, "n", function() 
+awful.key({modkey, "Mod1", "Shift", "Control" }, "n", function()
     awful.util.spawn("xcalib -i -a -s " .. ((screen[mouse.screen].index-1)))
 end),
 
-awful.key({modkey, "Mod1", "Shift", "Control" }, "N", function() 
+awful.key({modkey, "Mod1", "Shift", "Control" }, "N", function()
     awful.util.spawn("xcalib -i -a -s " .. ((screen[mouse.screen].index-1)))
 end),
 
@@ -3002,7 +3022,7 @@ root.keys(globalkeys)
 awful.rules.rules = {
 
     -- All clients will match this rule.
-    { 
+    {
         rule = { },
         properties = {
             border_width = beautiful.border_width,
@@ -3017,19 +3037,19 @@ awful.rules.rules = {
         }
     },
 
-    { 
+    {
         rule = { class = "MPlayer" },
-        properties = { 
+        properties = {
             floating = true,
             opacity = 1,
-        } 
+        }
     },
 
-    { 
+    {
         rule = { class = "gimp" },
-        properties = { 
-            floating = true, 
-        }, 
+        properties = {
+            floating = true,
+        },
     },
 
     --[[
