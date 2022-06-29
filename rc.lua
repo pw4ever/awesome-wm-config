@@ -304,7 +304,6 @@ tools.editor.primary = "gvim"
 tools.editor.secondary = "emacs"
 
 -- alternative: override
-tools.editor.primary = "nvim-qt"
 tools.editor.secondary = "emacsclient -c -a emacs"
 
 tools.app.mpcui = "ncmpcpp"
