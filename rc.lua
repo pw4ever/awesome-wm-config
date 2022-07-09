@@ -13,6 +13,7 @@ awful.mouse = require("awful.mouse")
 awful.rules = require("awful.rules")
 awful.menu = require("awful.menu")
 awful.ewmh = require("awful.ewmh")
+awful.spawn = require("awful.spawn")
 require("awful.autofocus")
 require("awful.dbus")
 require("awful.remote")
@@ -152,7 +153,7 @@ do
         for s = 1, scrcount do
             local f = io.open(awesome_tags_fname .. "." .. s, "w+")
             if f then
-                local tags = awful.tag.gettags(s)
+                local tags = screen[s].tags
                 for _, tag in ipairs(tags) do
                     f:write(tag.name .. "\n")
                 end
@@ -166,16 +167,16 @@ do
         end
         customization.func.client_opaque_off(nil) -- prevent compmgr glitches
         if not restart then
-            awful.util.spawn_with_shell("rm -rf " .. awesome_autostart_once_fname)
-            awful.util.spawn_with_shell("rm -rf " .. awesome_client_tags_fname)
+            awful.spawn.with_shell("rm -rf " .. awesome_autostart_once_fname)
+            awful.spawn.with_shell("rm -rf " .. awesome_client_tags_fname)
             if not customization.option.tag_persistent_p then
-                awful.util.spawn_with_shell("rm -rf " .. awesome_tags_fname .. '*')
+                awful.spawn.with_shell("rm -rf " .. awesome_tags_fname .. '*')
             end
             bashets.stop()
         else -- if restart, save client tags
             -- save tags for each client
             awful.util.mkdir(awesome_client_tags_fname)
-            -- !! avoid awful.util.spawn_with_shell("mkdir -p " .. awesome_client_tags_fname)
+            -- !! avoid awful.spawn.with_shell("mkdir -p " .. awesome_client_tags_fname)
             -- race condition (whether awesome_client_tags_fname is created) due to asynchrony of "spawn_with_shell"
             for _, c in ipairs(client.get()) do
                 local client_id = c.pid .. '-' .. c.window
@@ -240,13 +241,13 @@ do
 
     init_theme("zenburn")
 
-    awful.util.spawn_with_shell("hsetroot -solid '#000000'")
+    awful.spawn.with_shell("hsetroot -solid '#000000'")
 
     -- randomly select a background picture
     --{{
     function customization.func.change_wallpaper()
         if customization.option.wallpaper_change_p then
-            awful.util.spawn_with_shell("cd " .. config_path .. "/wallpaper/; ./my-wallpaper-pick.sh")
+            awful.spawn.with_shell("cd " .. config_path .. "/wallpaper/; ./my-wallpaper-pick.sh")
         end
     end
 
@@ -384,7 +385,7 @@ end
 
 customization.func.system_screen_off = function ()
     customization.func.system_lock()
-    awful.util.spawn_with_shell("sleep 3 && xset dpms force off")
+    awful.spawn.with_shell("sleep 3 && xset dpms force off")
 end
 
 customization.func.system_suspend = function ()
@@ -478,7 +479,7 @@ customization.func.client_move_prev = function () util.client.rel_send(-1) end
 customization.func.client_move_to_tag = function ()
     local keywords = {}
     local scr = awful.screen.focused()
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    for _, t in ipairs(scr.tags) do -- only the current screen
         table.insert(keywords, t.name)
     end
     awful.prompt.run({prompt = "Move client to tag: "},
@@ -498,7 +499,7 @@ end
 customization.func.client_toggle_tag = function (c)
     local keywords = {}
     local scr = awful.screen.focused()
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    for _, t in ipairs(scr.tags) do -- only the current screen
         table.insert(keywords, t.name)
     end
     local c = c or client.focus
@@ -763,11 +764,11 @@ customization.func.client_opaque_more = function (c)
 end
 
 customization.func.client_opaque_off = function (c)
-  awful.util.spawn_with_shell("pkill " .. customization.default.compmgr)
+  awful.spawn.with_shell("pkill " .. customization.default.compmgr)
 end
 
 customization.func.client_opaque_on = function (c)
-  awful.util.spawn_with_shell(customization.default.compmgr.. " " .. customization.default.compmgr_args)
+  awful.spawn.with_shell(customization.default.compmgr.. " " .. customization.default.compmgr_args)
 end
 
 customization.func.client_swap_with_master = function (c)
@@ -1121,7 +1122,7 @@ customization.func.tag_last = awful.tag.history.restore
 customization.func.tag_goto = function ()
     local keywords = {}
     local scr = awful.screen.focused()
-    for _, t in ipairs(awful.tag.gettags(scr)) do -- only the current screen
+    for _, t in ipairs(scr.tags) do -- only the current screen
         table.insert(keywords, t.name)
     end
     awful.prompt.run({prompt = "Goto tag: "},
@@ -1129,7 +1130,7 @@ customization.func.tag_goto = function ()
     function (t)
         local tag = util.tag.name2tag(t)
         if tag then
-            awful.tag.viewonly(tag)
+            tag:view_only()
         end
     end,
     function (t, p, n)
@@ -1188,7 +1189,7 @@ customization.func.tag_move_screen = function (scrdelta)
         local s = awful.tag.getscreen(seltag) + scrdelta
         if s > scrcount then s = 1 elseif s < 1 then s = scrcount end
         awful.tag.setscreen(seltag, s)
-        awful.tag.viewonly(seltag)
+        seltag:view_only()
         awful.screen.focus(s)
     end
 end
@@ -1433,7 +1434,7 @@ do
                     function ()
                         local t = c:tags()
                         if t then
-                            awful.tag.viewonly(t[1])
+                            t[1]:view_only()
                         end
                         clear_instance()
                         client.focus = c
@@ -1472,7 +1473,7 @@ customization.func.all_clients_prompt = function ()
       if c then
         local t = c:tags()
         if t then
-          awful.tag.viewonly(t[1])
+          t[1]:view_only()
         end
         client.focus = c
         c:raise()
@@ -1543,7 +1544,7 @@ do
             timeout = 20,
             screen = awful.screen.focused(),
         })
-        awful.util.spawn_with_shell(tools.browser.primary .. " '" .. customization.config.help_url .. "'")
+        awful.spawn.with_shell(tools.browser.primary .. " '" .. customization.config.help_url .. "'")
     end
 end
 
@@ -1622,12 +1623,12 @@ customization.widgets.launcher = awful.widget.launcher({
 
 -- vicious widgets: http://awesome.naquadah.org/wiki/Vicious
 
-customization.widgets.cpuusage = awful.widget.graph()
-customization.widgets.cpuusage:set_width(50)
+customization.widgets.cpuusage = wibox.widget.graph()
 customization.widgets.cpuusage:set_background_color("#494B4F")
 customization.widgets.cpuusage:set_color({
   type = "linear", from = { 0, 0 }, to = { 10,0 },
   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
+customization.widgets.cpuusage = wibox.container.constraint(customization.widgets.cpuusage, "max", 50, nil)
 vicious.register(customization.widgets.cpuusage, vicious.widgets.cpu, "$1", 5)
 do
     local prog=tools.system.taskmanager
@@ -1662,19 +1663,18 @@ do
     ))
 end
 
-customization.widgets.bat = awful.widget.progressbar()
+customization.widgets.bat = wibox.widget.progressbar()
 customization.widgets.bat.last_perc = nil
 customization.widgets.bat.warning_threshold = 10
 customization.widgets.bat.instance = "BAT0"
-customization.widgets.bat:set_width(8)
-customization.widgets.bat:set_height(10)
-customization.widgets.bat:set_vertical(true)
 customization.widgets.bat:set_background_color("#494B4F")
 customization.widgets.bat:set_border_color(nil)
 customization.widgets.bat:set_color({
     type = "linear", from = { 0, 0 }, to = { 0, 10 },
     stops = {{ 0, "#AECF96" }, { 0.5, "#88A175" }, { 1, "#FF5656" }}
 })
+customization.widgets.bat = wibox.container.constraint(customization.widgets.bat, "max", 8, 10)
+customization.widgets.bat = wibox.container.rotate(customization.widgets.bat, "west")
 vicious.register(customization.widgets.bat, vicious.widgets.bat,
     function (bat, args)
         local perc = args[2]
@@ -1735,7 +1735,7 @@ vicious.register(customization.widgets.mpdstatus, vicious.widgets.mpd,
     return ""
   end, 1)
 -- http://git.sysphere.org/vicious/tree/README
-customization.widgets.mpdstatus = wibox.layout.constraint(customization.widgets.mpdstatus, "max", 180, nil)
+customization.widgets.mpdstatus = wibox.container.constraint(customization.widgets.mpdstatus, "max", 180, nil)
 do
     customization.widgets.mpdstatus:buttons(awful.util.table.join(
     awful.button({ }, 1, function ()
@@ -1823,7 +1823,7 @@ customization.widgets.promptbox = {}
 customization.widgets.layoutbox = {}
 customization.widgets.taglist = {}
 customization.widgets.taglist.buttons = awful.util.table.join(
-awful.button({ }, 1, awful.tag.viewonly),
+awful.button({ }, 1, function (t) t:view_only() end),
 awful.button({ modkey }, 1, awful.client.movetotag),
 awful.button({ }, 2, awful.tag.viewtoggle),
 awful.button({ modkey }, 2, awful.client.toggletag),
@@ -1846,7 +1846,7 @@ awful.button({ }, 1, function (c)
         -- :isvisible() makes no sense
         c.minimized = false
         if not c:isvisible() then
-            awful.tag.viewonly(c:tags()[1])
+            c:tags()[1]:view_only()
         end
         -- This will also un-minimize
         -- the client, if needed
@@ -1912,7 +1912,7 @@ function(s)
                 ncol = customization.default.property.ncol,
             }
             )
-            awful.tag.viewonly(tag)
+            tag:view_only()
         end
     end)
     -- Create a promptbox for each screen
@@ -1938,9 +1938,9 @@ function(s)
         )
 
     -- Create the wibox
-    customization.widgets.wibox_top[s] = awful.wibox({ position = "top", screen = s, visible = false })
-    customization.widgets.wibox_top_compact[s] = awful.wibox({ position = "top", screen = s, visible = false })
-    customization.widgets.wibox_bottom[s] = awful.wibox({ position = "bottom", screen = s })
+    customization.widgets.wibox_top[s] = awful.wibar({ position = "top", screen = s, visible = false })
+    customization.widgets.wibox_top_compact[s] = awful.wibar({ position = "top", screen = s, visible = false })
+    customization.widgets.wibox_bottom[s] = awful.wibar({ position = "bottom", screen = s })
 
     customization.widgets.wibox_top[s]:setup {
         layout = wibox.layout.align.horizontal,
@@ -2043,15 +2043,15 @@ customization.func.restore_tag_to_screen = function ()
                                 ncol = customization.default.property.ncol,
                             })
                         end
-                        awful.tag.move(count[count_index], tag)
-                        count[count_index] = count[count_index]+1
+                        tag.index = count[count_index]
+                        count[count_index] = count[count_index] + 1
                     end
                 end
             end
         end
 
         for s = 1, screen.count() do
-            local tags = awful.tag.gettags(s)
+            local tags = screen[s].tags
             if #tags >= 1 then
                 local fname = awesome_tags_fname .. "-selected." .. s
                 f = io.open(fname, "r")
@@ -2065,8 +2065,7 @@ customization.func.restore_tag_to_screen = function ()
                 else
                     tagnum = 1
                 end
-                local tag = awful.tag.gettags(s)[tagnum]
-                awful.tag.viewonly(tag)
+                tags[tagnum]:view_only()
             else
                 local tag = awful.tag.add("main" .. s,
                 {
@@ -2077,14 +2076,14 @@ customization.func.restore_tag_to_screen = function ()
                     ncol = customization.default.property.ncol,
                 }
                 )
-                awful.tag.viewonly(tag)
+                tag:view_only()
             end
         end
 
     else -- if f then
 
         for s = 1, screen.count() do
-            local tags = awful.tag.gettags(s)
+            local tags = screen[s].tags
             if #tags < 1 then
                 local tag = awful.tag.add("main" .. s,
                 {
@@ -2095,7 +2094,7 @@ customization.func.restore_tag_to_screen = function ()
                     ncol = customization.default.property.ncol,
                 }
                 )
-                awful.tag.viewonly(tag)
+                tag:view_only()
             end
         end
 
@@ -2287,7 +2286,7 @@ end),
 
 awful.key({modkey}, "F3", function()
     local config_path = awful.util.getdir("config")
-    awful.util.spawn_with_shell(config_path .. "/bin/trackpad-toggle.sh")
+    awful.spawn.with_shell(config_path .. "/bin/trackpad-toggle.sh")
 end),
 
 awful.key({modkey}, "F4", function()
@@ -2796,7 +2795,7 @@ for i = 1, 10 do
     awful.key({ modkey }, keycode,
     function ()
         local tag
-        local tags = awful.tag.gettags(awful.screen.focused())
+        local tags = awful.screen.focused().tags
         if i <= #tags then
             tag = tags[i]
         else
@@ -2807,21 +2806,21 @@ for i = 1, 10 do
                 if #text>0 then
                     tag = awful.tag.add(text)
                     awful.tag.setscreen(tag, scr)
-                    awful.tag.move(#tags+1, tag)
-                    awful.tag.viewonly(tag)
+                    tag.index = #tags + 1
+                    tag:view_only()
                 end
             end,
             nil)
         end
         if tag then
-            awful.tag.viewonly(tag)
+            tag:view_only()
         end
     end),
 
     awful.key({ modkey, "Control" }, keycode,
     function ()
         local tag
-        local tags = awful.tag.gettags(awful.screen.focused())
+        local tags = awful.screen.focused().tags
         if i <= #tags then
             tag = tags[i]
         else
@@ -2832,8 +2831,8 @@ for i = 1, 10 do
                 if #text>0 then
                     tag = awful.tag.add(text)
                     awful.tag.setscreen(tag, scr)
-                    awful.tag.move(#tags+1, tag)
-                    awful.tag.viewonly(tag)
+                    tag.index = #tags + 1
+                    tag:view_only()
                 end
             end,
             nil)
@@ -2849,7 +2848,7 @@ for i = 1, 10 do
 
         if focus then
             local tag
-            local tags = awful.tag.gettags(focus.screen)
+            local tags = focus.screen.tags
             if i <= #tags then
                 tag = tags[i]
             else
@@ -2860,8 +2859,8 @@ for i = 1, 10 do
                     if #text>0 then
                         tag = awful.tag.add(text)
                         awful.tag.setscreen(tag, scr)
-                        awful.tag.move(#tags+1, tag)
-                        awful.tag.viewonly(tag)
+                        tag.index = #tags + 1
+                        tag:view_only()
                     end
                 end,
                 nil)
@@ -2878,7 +2877,7 @@ for i = 1, 10 do
 
         if focus then
             local tag
-            local tags = awful.tag.gettags(client.focus.screen)
+            local tags = client.focus.screen.tags
             if i <= #tags then
                 tag = tags[i]
             else
@@ -2889,8 +2888,8 @@ for i = 1, 10 do
                     if #text>0 then
                         tag = awful.tag.add(text)
                         awful.tag.setscreen(tag, scr)
-                        awful.tag.move(#tags+1, tag)
-                        awful.tag.viewonly(tag)
+                        tag.index = #tags + 1
+                        tag:view_only()
                     end
                 end,
                 nil)
@@ -3098,14 +3097,14 @@ client.connect_signal("manage", customization.func.client_manage_tag)
 
 -- disable startup-notification globally
 -- prevent unintended mouse cursor change
-customization.orig.awful_util_spawn = awful.util.spawn
+customization.orig.awful_util_spawn = awful.spawn.spawn
 awful.util.spawn = function (s)
     customization.orig.awful_util_spawn(s, false)
 end
 
 -- XDG style autostart with "dex"
 -- HACK continue
-awful.util.spawn_with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
+awful.spawn.with_shell("if ! [ -e " .. awesome_autostart_once_fname .. " ]; then dex -a; touch " .. awesome_autostart_once_fname .. "; fi")
 
 if customization.option.launch_compmgr_p then
     customization.func.client_opaque_on(nil) -- start xcompmgr
