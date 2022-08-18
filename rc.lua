@@ -64,7 +64,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.34"
+customization.config.version = "4.0.35"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2654,7 +2654,7 @@ awful.key({}, "XF86AudioMicMute", function ()
 end),
 
 awful.key({}, "XF86ScreenSaver", function ()
-    awful.util.spawn("xfce4-screensaver-command -l")
+    customization.func.system_lock()
 end),
 
 awful.key({}, "XF86WebCam", function ()
