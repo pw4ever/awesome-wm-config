@@ -422,7 +422,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>'</kbd>| password manager | passmenu |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
-|<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen shooter/caster | teiler |
+|<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen recorder | teiler |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>PrtSc</kbd>| Xrandr app | arandr |
 
 #### the rest
 
