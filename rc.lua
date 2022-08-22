@@ -2596,6 +2596,14 @@ awful.key({}, "Print", function ()
     awful.util.spawn("xfce4-screenshooter")
 end),
 
+awful.key({modkey}, "Print", function()
+        awful.util.spawn("teiler")
+end),
+
+awful.key({modkey, "Mod1"}, "Print", function()
+        awful.util.spawn("arandr")
+end),
+
 uniarg:key_repeat({}, "XF86Launch1", function ()
     awful.util.spawn(tools.terminal)
 end),
