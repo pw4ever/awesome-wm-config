@@ -390,6 +390,8 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>m</kbd>| MPD client | ncmpcpp |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>|screen magnifier | kmag |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
+|<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen recorder | teiler |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>PrtSc</kbd>| Xrandr app | arandr |
 
 #### the rest
 

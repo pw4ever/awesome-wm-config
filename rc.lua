@@ -64,7 +64,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.35"
+customization.config.version = "4.0.36"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -2594,6 +2594,14 @@ end),
 
 awful.key({}, "Print", function ()
     awful.util.spawn("xfce4-screenshooter")
+end),
+
+awful.key({modkey}, "Print", function()
+        awful.util.spawn("teiler")
+end),
+
+awful.key({modkey, "Mod1"}, "Print", function()
+        awful.util.spawn("arandr")
 end),
 
 uniarg:key_repeat({}, "XF86Launch1", function ()
