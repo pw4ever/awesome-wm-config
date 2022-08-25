@@ -1,7 +1,5 @@
--- widget types initialization
--- Copyright (C) 2010  Adrian C. (anrxc) <anrxc@sysphere.org>
--- Copyright (C) 2011,2012  Jörg Thalheim <jthalheim@gmail.com>
--- Copyright (C) 2012  Arvydas Sidorenko <asido4@gmail.com>
+-- template for synchronous widet types
+-- Copyright (C) 2019  Nguyễn Gia Phong <vn.mcsinyx@gmail.com>
 --
 -- This file is part of Vicious.
 --
@@ -18,7 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with Vicious.  If not, see <https://www.gnu.org/licenses/>.
 
-local setmetatable = setmetatable
-local wrequire = require("vicious.helpers").wrequire
+local helpers = require"vicious.helpers"
 
-return setmetatable({ _NAME = "vicious.widgets" }, { __index = wrequire })
+return helpers.setcall(function (format, warg)
+    -- Do the processing and return a table here.
+end)
+
+-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
