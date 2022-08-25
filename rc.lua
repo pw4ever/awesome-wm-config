@@ -64,7 +64,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.0.36"
+customization.config.version = "4.1.0"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1956,9 +1956,9 @@ function(s)
             layout = wibox.layout.fixed.horizontal,
             customization.widgets.keyboardlayout,
             wibox.widget.systray(),
-            customization.widgets.cpuusage,
+            --customization.widgets.cpuusage,
             customization.widgets.memusage,
-            customization.widgets.bat,
+            --customization.widgets.bat,
             customization.widgets.mpdstatus,
             customization.widgets.volume,
             customization.widgets.date,

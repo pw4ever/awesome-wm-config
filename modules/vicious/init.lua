@@ -1,28 +1,57 @@
----------------------------------------------------
--- Vicious widgets for the awesome window manager
----------------------------------------------------
--- Licensed under the GNU General Public License v2
---  * (c) 2010, Adrian C. <anrxc@sysphere.org>
---  * (c) 2009, Lucas de Vries <lucas@glacicle.com>
----------------------------------------------------
+-- Vicious module initialization
+-- Copyright (C) 2009  Lucas de Vries <lucas@glacicle.com>
+-- Copyright (C) 2009-2013  Adrian C. (anrxc) <anrxc@sysphere.org>
+-- Copyright (C) 2011-2017  Joerg Thalheim <joerg@thalheim.io>
+-- Copyright (C) 2012  Arvydas Sidorenko <asido4@gmail.com>
+-- Copyright (C) 2013  Dodo <dodo.the.last@gmail.com>
+-- Copyright (C) 2014  blastmaster <blastmaster@tuxcode.org>
+-- Copyright (C) 2015,2019  Daniel Hahler <github@thequod.de>
+-- Copyright (C) 2017  James Reed <supplantr@users.noreply.github.com>
+-- Copyright (C) 2017  getzze <getzze@gmail.com>
+-- Copyright (C) 2017  mutlusun <mutlusun@github.com>
+-- Copyright (C) 2018  Beniamin Kalinowski <beniamin.kalinowski@gmail.com>
+-- Copyright (C) 2018,2020  Nguyễn Gia Phong <mcsinyx@disroot.org>
+-- Copyright (C) 2022  Constantin Piber <cp.piber@gmail.com>
+--
+-- This file is part of Vicious.
+--
+-- Vicious is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as
+-- published by the Free Software Foundation, either version 2 of the
+-- License, or (at your option) any later version.
+--
+-- Vicious is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with Vicious.  If not, see <https://www.gnu.org/licenses/>.
 
 -- {{{ Setup environment
 local type  = type
 local pairs = pairs
 local tonumber = tonumber
-local timer = (type(timer) == 'table' and timer or require("gears.timer"))
+local timer = type(timer) == "table" and timer or require("gears.timer")
 local os    = { time = os.time }
 local table = {
     insert  = table.insert,
     remove  = table.remove
 }
-
 local helpers = require("vicious.helpers")
+local dstatus, debug = pcall(require, "gears.debug")
+local stderr = io.stderr
+local warn
+if dstatus then
+  warn = debug.print_warning
+else
+  warn = function (msg) stderr:write("Warning (vicious): ", msg, "\n") end
+end
 
 -- Vicious: widgets for the awesome window manager
 local vicious = {}
 vicious.widgets = require("vicious.widgets")
-vicious.contrib = require("vicious.contrib")
+--vicious.contrib = require("vicious.contrib")
 
 -- Initialize tables
 local timers       = {}
@@ -47,41 +76,82 @@ local function update(widget, reg, disablecache)
         return
     end
 
-    local t = os.time()
-    local data = {}
+    local update_time = os.time()
 
-    -- Check for chached output newer than the last update
-    if widget_cache[reg.wtype] ~= nil then
-        local c = widget_cache[reg.wtype]
+    local function format_data(data)
+        local ret
+        if type(data) == "table" then
+            local escaped_data = {}
+            for k, v in pairs(data) do
+                if type(v) == "string" then
+                    escaped_data[k] = helpers.escape(v)
+                else
+                    escaped_data[k] = v
+                end
+            end
 
-        if (c.time == nil or c.time <= t-reg.timer) or disablecache then
-            c.time, c.data = t, reg.wtype(reg.format, reg.warg)
+            if type(reg.format) == "string" then
+                ret = helpers.format(reg.format, escaped_data)
+            elseif type(reg.format) == "function" then
+                ret = reg.format(widget, escaped_data)
+            end
         end
-
-        data = c.data
-    else
-        data = reg.wtype and reg.wtype(reg.format, reg.warg)
+        return ret or data
     end
 
-    if type(data) == "table" then
-        if type(reg.format) == "string" then
-            data = helpers.format(reg.format, data)
-        elseif type(reg.format) == "function" then
-            data = reg.format(widget, data)
+    local function topercent(e) return tonumber(e) and tonumber(e) / 100 end
+
+    local function update_value(data)
+        local fmtd_data = format_data(data)
+        if widget.add_value ~= nil then
+            if widget.get_stack ~= nil and widget:get_stack() then
+                for idx, _ in ipairs(widget:get_stack_colors()) do
+                    if fmtd_data[idx] then
+                        widget:add_value(topercent(fmtd_data[idx]), idx)
+                    end
+                end
+            else
+                widget:add_value(topercent(fmtd_data))
+            end
+        elseif widget.set_value ~= nil then
+            widget:set_value(topercent(fmtd_data))
+        elseif widget.set_markup ~= nil then
+            widget:set_markup(fmtd_data)
+        else
+            widget.text = fmtd_data
         end
     end
 
-    if widget.add_value ~= nil then
-        widget:add_value(tonumber(data) and tonumber(data)/100)
-    elseif widget.set_value ~= nil then
-        widget:set_value(tonumber(data) and tonumber(data)/100)
-    elseif widget.set_markup ~= nil then
-        widget:set_markup(data)
-    else
-        widget.text = data
+    local function update_cache(data, t, cache)
+        -- Update cache
+        if t and cache then
+            cache.time, cache.data = t, data
+        end
     end
 
-    return data
+    -- Check for cached output newer than the last update
+    local c = widget_cache[reg.wtype]
+    if c and update_time < c.time + reg.timeout and not disablecache then
+        update_value(c.data)
+    elseif reg.wtype then
+        if type(reg.wtype) == "table" and reg.wtype.async then
+            if not reg.lock then
+                reg.lock = true
+                return reg.wtype.async(reg.format,
+                    reg.warg,
+                    function(data)
+                        update_cache(data, update_time, c)
+                        local status, res = pcall(update_value, data)
+                        if not status then warn(res) end
+                        reg.lock=false
+                    end)
+            end
+        else
+            local data = reg.wtype(reg.format, reg.warg)
+            update_cache(data, update_time, c)
+            update_value(data)
+        end
+    end
 end
 -- }}}
 
@@ -115,18 +185,18 @@ local function regregister(reg)
         end
 
         -- Start the timer
-        if reg.timer > 0 then
-            local tm = timers[reg.timer] and timers[reg.timer].timer
-            tm = tm or timer({ timeout = reg.timer })
+        if reg.timeout > 0 then
+            local tm = timers[reg.timeout] and timers[reg.timeout].timer
+            tm = tm or timer({ timeout = reg.timeout })
             if tm.connect_signal then
                 tm:connect_signal("timeout", reg.update)
             else
                 tm:add_signal("timeout", reg.update)
             end
-            if not timers[reg.timer] then
-                timers[reg.timer] = { timer = tm, refs = 1 }
+            if not timers[reg.timeout] then
+                timers[reg.timeout] = { timer = tm, refs = 1 }
             else
-                timers[reg.timer].refs = timers[reg.timer].refs + 1
+                timers[reg.timeout].refs = timers[reg.timeout].refs + 1
             end
             if not tm.started then
                 tm:start()
@@ -143,24 +213,21 @@ end
 
 -- {{{ Global functions
 -- {{{ Register a widget
-function vicious.register(widget, wtype, format, timer, warg)
-    local widget = widget
+function vicious.register(widget, wtype, format, timeout, warg)
     local reg = {
         -- Set properties
-        wtype  = wtype,
-        format = format,
-        timer  = timer,
-        warg   = warg,
-        widget = widget,
+        wtype   = wtype,
+        lock    = false,
+        format  = format,
+        timeout = timeout or 2,
+        warg    = warg,
+        widget  = widget,
     }
-    -- Set functions
-    reg.update = function ()
-        update(widget, reg)
-    end
+    reg.timer = timeout  -- For backward compatibility.
 
-    -- Default to 2s timer
-    if reg.timer == nil then
-        reg.timer = 2
+    -- Set functions
+    function reg.update()
+        update(widget, reg)
     end
 
     -- Register a reg object
@@ -202,7 +269,7 @@ function vicious.unregister(widget, keep, reg)
     end
 
     -- Disconnect from timer
-    local tm  = timers[reg.timer]
+    local tm  = timers[reg.timeout]
     if tm.timer.disconnect_signal then
         tm.timer:disconnect_signal("timeout", reg.update)
     else
@@ -223,7 +290,7 @@ end
 function vicious.cache(wtype)
     if wtype ~= nil then
         if widget_cache[wtype] == nil then
-            widget_cache[wtype] = {}
+            widget_cache[wtype] = { data = nil, time = 0 }
         end
     end
 end
@@ -261,6 +328,39 @@ function vicious.activate(widget)
 end
 -- }}}
 
-return vicious
+-- {{{ Get formatted data from a synchronous widget type
+function vicious.call(wtype, format, warg)
+    if wtype.async ~= nil then return nil end
 
+    local data = wtype(format, warg)
+    if type(format) == "string" then
+        return helpers.format(format, data)
+    elseif type(format) == "function" then
+        return format(wtype, data)
+    end
+end
+-- }}}
+
+-- {{{ Get formatted data from an asynchronous widget type
+function vicious.call_async(wtype, format, warg, callback)
+    if wtype.async == nil then
+        callback()
+        return
+    end
+
+    wtype.async(
+        format, warg,
+        function (data)
+            if type(format) == "string" then
+                callback(helpers.format(format, data))
+            elseif type(format) == "function" then
+                callback(format(wtype, data))
+            else
+                callback()
+            end
+        end)
+end
+-- }}}
+
+return vicious
 -- }}}
