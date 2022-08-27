@@ -455,7 +455,7 @@ customization.func.app_finder = function ()
 end
 
 customization.func.calc = function ()
-    awful.util.spawn("rofi -show calc -modi calc -no-show-match -no-sort")
+    awful.util.spawn("rofi -show calc -modes 'calc,emoji'")
 end
 
 -- {{ client actions
