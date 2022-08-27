@@ -454,6 +454,10 @@ customization.func.app_finder = function ()
     awful.util.spawn("rofi -combi-modi windowcd,window,drun,run -show combi -modi combi,windowcd,window,drun,run")
 end
 
+customization.func.calc = function ()
+    awful.util.spawn("rofi -show calc -modi calc -no-show-match -no-sort")
+end
+
 -- {{ client actions
 
 customization.func.client_focus_next = function ()
@@ -2447,6 +2451,8 @@ awful.key({ modkey, }, "Insert", customization.func.system_reboot),
 awful.key({ modkey, }, "Delete", customization.func.system_power_off),
 
 awful.key({ modkey, }, "/", customization.func.app_finder),
+
+awful.key({ modkey, "Mod1", }, "/", customization.func.calc),
 
 --- everyday
 

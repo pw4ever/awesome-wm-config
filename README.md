@@ -121,6 +121,7 @@ sudo pacman -S --needed --noconfirm newsboat cawbird
 sudo pacman -S --needed --noconfirm telegram-desktop signal-desktop
 sudo pacman -S --needed --noconfirm inkscape gimp
 sudo pacman -S --needed --noconfirm qutebrowser python-adblock pdfjs
+sudo pacman -S --needed --noconfirm rofi rofi-calc rofi-emoji
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -424,6 +425,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 |<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen recorder | teiler |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>PrtSc</kbd>| Xrandr app | arandr |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>/</kbd> | calculator | rofi-calc |
 
 #### the rest
 
