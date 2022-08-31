@@ -64,7 +64,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.1.1"
+customization.config.version = "4.1.0"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1076,6 +1076,36 @@ end
 
 -- {{ tag actions
 
+customization.func.tag_add_after = function ()
+    local focused = awful.screen.focused()
+    local scr = focused
+    local sel_idx = focused.selected_tag and focused.selected_tag.index or 0
+    local t = util.tag.add(nil,
+    {
+        screen = scr,
+        index = sel_idx and sel_idx+1 or 1,
+        layout = customization.default.property.layout,
+        mwfact = customization.default.property.mwfact,
+        nmaster = customization.default.property.nmaster,
+        ncol = customization.default.property.ncol,
+    })
+end
+
+customization.func.tag_add_before = function ()
+    local focused = awful.screen.focused()
+    local scr = focused.index
+    local sel_idx = focused.selected_tag and focused.selected_tag.index or 1
+    local t = util.tag.add(nil,
+    {
+        screen = scr,
+        index = sel_idx and sel_idx or 1,
+        layout = customization.default.property.layout,
+        mwfact = customization.default.property.mwfact,
+        nmaster = customization.default.property.nmaster,
+        ncol = customization.default.property.ncol,
+    })
+end
+
 customization.func.tag_delete = function ()
     local sel = awful.screen.focused().selected_tag
     if sel then sel:delete() end
@@ -1085,42 +1115,6 @@ customization.func.tag_rename = function ()
     local focused = awful.screen.focused()
     local sel = focused.selected_tag
     util.tag.rename(sel)
-end
-
-customization.func.tag_add_after = function ()
-    local focused = awful.screen.focused()
-    local scr = focused
-    local sel_idx = focused.selected_tag and focused.selected_tag.index or 0
-    local sel_name = focused.selected_tag and focused.selected_tag.name or " "
-    local t = util.tag.add(sel_name,
-    {
-        screen = scr,
-        index = sel_idx and sel_idx+1 or 1,
-        layout = customization.default.property.layout,
-        mwfact = customization.default.property.mwfact,
-        nmaster = customization.default.property.nmaster,
-        ncol = customization.default.property.ncol,
-    })
-    t:view_only()
-    util.tag.rename(t)
-end
-
-customization.func.tag_add_before = function ()
-    local focused = awful.screen.focused()
-    local scr = focused.index
-    local sel_idx = focused.selected_tag and focused.selected_tag.index or 1
-    local sel_name = focused.selected_tag and focused.selected_tag.name or " "
-    local t = util.tag.add(sel_name,
-    {
-        screen = scr,
-        index = sel_idx and sel_idx or 1,
-        layout = customization.default.property.layout,
-        mwfact = customization.default.property.mwfact,
-        nmaster = customization.default.property.nmaster,
-        ncol = customization.default.property.ncol,
-    })
-    t:view_only()
-    util.tag.rename(t)
 end
 
 customization.func.tag_view_prev = awful.tag.viewprev
