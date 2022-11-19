@@ -2489,7 +2489,7 @@ uniarg:key_repeat({ modkey, "Mod1", }, "p", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "p", function ()
-    awful.util.spawn("putty")
+    awful.util.spawn("bitwarden-desktop")
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "r", function ()
@@ -2606,6 +2606,10 @@ end),
 
 uniarg:key_repeat({modkey, "Mod1" }, "'", function()
     awful.util.spawn("passmenu")
+end),
+
+uniarg:key_repeat({modkey, "Mod1", "Shift", }, "'", function()
+    awful.util.spawn("bitwarden-desktop")
 end),
 
 -- Negate/invert screen color.

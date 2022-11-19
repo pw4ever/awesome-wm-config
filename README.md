@@ -122,6 +122,7 @@ sudo pacman -S --needed --noconfirm telegram-desktop signal-desktop
 sudo pacman -S --needed --noconfirm inkscape gimp
 sudo pacman -S --needed --noconfirm qutebrowser python-adblock pdfjs
 sudo pacman -S --needed --noconfirm rofi rofi-calc rofi-emoji
+sudo pacman -S --needed --noconfirm bitwarden bitwarden-cli
 
 sudo aura -Ax --needed --noconfirm google-chrome
 sudo aura -Ax --needed --noconfirm rstudio-desktop-bin
@@ -391,7 +392,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Enter</kbd>| terminal | kitty |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Enter</kbd>| terminal multiplexer | tmux |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>p</kbd>| password manager | pass |
-|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>p</kbd>| remote terminal | putty |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>p</kbd>| password manager | bitwarden-desktop |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>r</kbd>| remote terminal | remmina |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>r</kbd>| R studio | rstudio-bin |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>d</kbd>| dictionary | goldendict |
@@ -422,6 +423,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>\\</kbd>| screen magnifier | kmag |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>;</kbd>| stop watch | gnome-clocks |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>'</kbd>| password manager | passmenu |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><<kbd>'</kbd>| password manager | bitwarden-desktop |
 |<kbd>PrtSc</kbd>| screen shooter | xfce4-screenshooter |
 |<kbd>Modkey</kbd><kbd>PrtSc</kbd>| screen recorder | teiler |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>PrtSc</kbd>| Xrandr app | arandr |
