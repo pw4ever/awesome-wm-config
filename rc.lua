@@ -2585,11 +2585,11 @@ uniarg:key_repeat({ modkey, "Shift", }, "y", function ()
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "m", function ()
-    awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
+    awful.util.spawn(tools.browser.primary .. " " .. "https://mail.google.com")
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", "Shift", }, "m", function ()
-    awful.util.spawn(tools.browser.primary .. " " .. "https://mail.google.com")
+    awful.util.spawn(tools.terminal .. ' -e ' .. tools.app.mpcui)
 end),
 
 uniarg:key_repeat({ modkey, "Mod1", }, "n", function ()
