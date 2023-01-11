@@ -408,6 +408,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>b</kbd>| additional browser | qutebrowser |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
+|<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>s</kbd>| Scala REPL | amm |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>k</kbd>| note taking | https://keep.google.com |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>t</kbd>| Twitter client | cawbird |

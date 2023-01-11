@@ -2556,6 +2556,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "s", function ()
     awful.util.spawn("signal-desktop --start-in-tray")
 end),
 
+uniarg:key_repeat({ modkey, "Shift", }, "s", function ()
+    awful.util.spawn(tools.terminal .. ' -e ' .. "amm")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", "Shift" }, "s", function ()
     awful.util.spawn("syncthing-gtk")
 end),
