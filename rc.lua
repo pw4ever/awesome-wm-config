@@ -2552,6 +2552,10 @@ uniarg:key_repeat({ modkey, "Mod1", }, "b", function ()
     awful.util.spawn("qutebrowser")
 end),
 
+uniarg:key_repeat({ modkey, "Mod1", }, "c", function ()
+    awful.util.spawn(tools.terminal .. ' -e ' .. "cling")
+end),
+
 uniarg:key_repeat({ modkey, "Mod1", }, "s", function ()
     awful.util.spawn("signal-desktop --start-in-tray")
 end),

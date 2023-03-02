@@ -407,6 +407,7 @@ shortcut keys are bound for most common apps; the keybinding is designed to be b
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>b</kbd>| secondary browser | firefox |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>b</kbd>| private secondary browser | firefox --private |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>b</kbd>| additional browser | qutebrowser |
+|<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>c</kbd>| C++ REPL | cling |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>s</kbd>| instant messenging | signal-desktop --start-in-tray |
 |<kbd>Modkey</kbd><kbd>Shift</kbd><kbd>s</kbd>| Scala REPL | amm |
 |<kbd>Modkey</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>s</kbd>| file sync | syncthing-gtk |
