@@ -64,7 +64,7 @@ customization.option = {}
 customization.timer = {}
 customization.widgets = {}
 
-customization.config.version = "4.1.0"
+customization.config.version = "4.1.1"
 customization.config.help_url = "https://github.com/pw4ever/awesome-wm-config/tree/" .. customization.config.version
 
 customization.default.property = {
@@ -1076,6 +1076,35 @@ end
 
 -- {{ tag actions
 
+customization.config.preset_tags = {
+    -- work
+    "w", "w1", "w2",
+    -- learn
+    "l", "l1", "l2",
+    -- play
+    "p", "p1", "p2",
+    -- misc
+    "adm", "mail"}
+customization.func.tag_add_presets = function (prefix)
+    local focused = awful.screen.focused()
+    local scr = focused
+    prefix = prefix or (scr.index == 1 and '' or scr.index)
+    local sel_idx = focused.selected_tag and focused.selected_tag.index or 0
+    local props = {
+        screen = scr,
+        index = sel_idx and sel_idx+1 or 1,
+        layout = customization.default.property.layout,
+        mwfact = customization.default.property.mwfact,
+        nmaster = customization.default.property.nmaster,
+        ncol = customization.default.property.ncol,
+    }
+    local tags = customization.config.preset_tags
+    for i = #tags, 1, -1 do
+        local tag = tags[i]
+        awful.tag.add(prefix .. tag, props)
+    end
+end
+
 customization.func.tag_add_after = function ()
     local focused = awful.screen.focused()
     local scr = focused
@@ -1239,6 +1268,12 @@ do
                     {
                         "--- dynamic tagging ---", function ()
                             clear_instance()
+                        end
+                    },
+                    {
+                        "add tag &after current one", function ()
+                            clear_instance()
+                            customization.func.tag_add_after(t)
                         end
                     },
                     {
@@ -2357,6 +2392,10 @@ end),
 --- add/delete/rename
 
 awful.key({modkey}, "a", customization.func.tag_add_after),
+
+uniarg:key_numarg({modkey, "Mod1"}, "a",
+    customization.func.tag_add_presets,
+    customization.func.tag_add_presets),
 
 awful.key({modkey, "Shift"}, "a", customization.func.tag_add_before),
 
