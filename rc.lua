@@ -2231,20 +2231,19 @@ awful.key({ modkey, "Control" }, "\\", naughty.destroy_all_notifications),
 
 awful.key({ modkey, "Mod1" }, "\\",
 function ()
+    if not naughty.is_suspended() then
+        naughty.destroy_all_notifications()
+    end
     naughty.toggle()
-    naughty.notify({
-        preset = naughty.config.presets.normal,
-        title="notification toggled",
-        text=(function ()
-            if naughty.is_suspended() then
-                return "suspended"
-            else
-                return "resumed"
-            end
-        end)(),
-        timeout = 3,
-        screen = awful.screen.focused(),
-    })
+    if not naughty.is_suspended() then
+        naughty.notify({
+            preset = naughty.config.presets.normal,
+            title="notification toggled",
+            text="resumed",
+            timeout = 3,
+            screen = awful.screen.focused(),
+        })
+    end
 end),
 
 awful.key({ modkey }, "F1", customization.func.help),
